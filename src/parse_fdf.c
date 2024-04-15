@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/15 15:21:13 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:34:52 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,15 @@ static int	get_map_width(char *str)
 	int	i;
 
 	i = 0;
-	while (*str)
-	{
-		if ('0' <= *str && *str <= '9')
-		{
-			while (('0' <= *str && *str <= '9'))
-				str++;
-			i++;
-		}
-		str++;
-	}
-	return (i);
 }
 void	set_map_points(fdf_t *fdf, int y_coord, char *str)
 {	
-	int	width;
-	int	x_coord;
+	int		width;
+	int		x_coord;
+	char	**curr_line;
 
-	width = get_map_width(str);
+	curr_line = ft_split(str, ' '); // deal with missing points
+	width = get_map_width(curr_line);
 	if (width == 0)
 		exit (EXIT_FAILURE);
 	fdf->map[y_coord] = malloc(sizeof(int) * width + 1);
