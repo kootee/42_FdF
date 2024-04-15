@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/15 15:13:39 by ktoivola         ###   ########.fr       */
+/*   Created: 2024/04/15 10:00:12 by ktoivola          #+#    #+#             */
+/*   Updated: 2024/04/15 15:13:49 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+int	check_map(char **argv, fdf_t *fdf_args)
 {
-	fdf_t	*fdf;
-
-	// check and init map
-	fdf = malloc(sizeof(fdf_t));
-	if (argc != 2 || !check_map(argv, fdf))
-	{
-		ft_putstr_fd(strerror(EXIT_FAILURE), STDERR_FILENO);
-		exit (EXIT_FAILURE);
-	}
-	if ((fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true)) == NULL)
-	{
-		ft_putstr(mlx_strerror(mlx_errno));
-		exit (EXIT_FAILURE);
-	}
-	// FDF loop mlx_loop_hook(mlx, ft_hook, mlx);
+	char	*s_ptr;
+	int		fd;
+	
+	if (argv[1] == NULL)
+		return (-1);
+	s_ptr = ft_strncmp(argv[1], ".fdf", ft_strlen(argv[1]));
+	if (ft_strncmp(s_ptr, *(argv[1] - 3), 4) == NULL)
+		return (-1);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	parse_fdf(fd, fdf_args);
 }
