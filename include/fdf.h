@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/15 14:39:23 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:09:48 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,28 @@
 typedef struct fdf_s
 {
 	mlx_t	*mlx;
-	int		**map;
+	map_t	*map;
 }	fdf_t;
 
-typedef struct map_pt_s 
+typedef struct point_s 
 {
-	int	x_coord;
-	int	y_coord;
-	int	height;
-}				map_pt_t;
+	int	x;
+	int	y;
+	int	z;
+	int	colour;
+}				point_t;
+
+typedef struct map_s
+{
+	int		**pt_array;
+	int		height;
+	int		width;
+	int		zoom_min;
+	int		zoom_max;
+}				map_t;
+
+/* Map init functions */
+
+int	check_map(char **argv, fdf_t *fdf_args);
 
 #endif
