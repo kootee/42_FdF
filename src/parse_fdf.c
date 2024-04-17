@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/16 17:10:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/17 08:45:50 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	get_map_width(char *str)
 	i = 0;
 }
 
-void	parse_line(fdf_t *fdf, char *curr_line)
+void	parse_line(t_fdf *fdf, char *curr_line)
 {
 	int	i;
 	int	j;
@@ -44,7 +44,7 @@ void	parse_line(fdf_t *fdf, char *curr_line)
 	
 }
 
-void	set_map_points(fdf_t *fdf, int y_coord, char *curr_line)
+void	set_map_points(t_fdf *fdf, int y_coord, char *curr_line)
 {	
 	int		width;
 	int		x_coord;
@@ -61,7 +61,7 @@ void	set_map_points(fdf_t *fdf, int y_coord, char *curr_line)
 	}
 }
 
-int	parse_fdf_file(int fd, fdf_t *fdf_args)
+int	parse_fdf_file(int fd, t_fdf *fdf_args)
 {
 	char *line;
 	int	**map_axis;

@@ -6,13 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:00:12 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/16 16:44:22 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/17 15:19:42 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	check_map(char **argv, fdf_t *fdf_args)
+int	check_map(char **argv, t_fdf *fdf_args)
 {
 	char	*str;
 	int		fd;

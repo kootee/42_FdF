@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/Users/ktoivola/MLX42/include",
-                "/Users/ktoivola"
+                "/Users/ktoivola",
+                "/Users/ktoivola/.brew/Cellar/glfw/3.4/include"
             ],
             "defines": [],
             "macFrameworkPath": [

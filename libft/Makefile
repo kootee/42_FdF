@@ -36,11 +36,11 @@ SRCS = 	srcs/ft_memset.c \
 		srcs/ft_striteri.c \
 		srcs/ft_putchar_fd.c \
 		srcs/ft_putchar.c \
-		srcs/ft_putstr_fd.c \
 		srcs/ft_putendl_fd.c \
 		srcs/ft_putnbr_fd.c \
 		srcs/ft_putstr.c \
-		srcs/ft_putstr.c
+		srcs/ft_putstr.c \
+		srcs/ft_putstr_fd.c
 
 BSRCS = srcs/ft_lstnew_bonus.c \
 		srcs/ft_lstadd_front_bonus.c \
