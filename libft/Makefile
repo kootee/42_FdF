@@ -60,6 +60,7 @@ PRINTF = srcs/printf/ft_printf.c \
 GNL = 	srcs/getnextline/get_next_line.c \
 		srcs/getnextline/get_next_line_utils.c 
 
+.SILENT:
 OBJS = ${SRCS:.c=.o} 
 
 PRINTFOBJS = ${PRINTF:.c=.o}

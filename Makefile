@@ -1,26 +1,28 @@
 NAME	= fdf
 CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -Ofast
 LIBMLX	= ../MLX42
+LIBFT	= ./libft
 
 HEADERS	= -I ./include -I $(LIBMLX)/include -I ./libft/includes
-LIBS	= ${LIBMLX}/build/libmlx42.a -Llibft -lft -ldl -lglfw \
-			-L"/Users/$(USER)/.brew/opt/glfw/lib/" -pthread -lm
+
+LIBS	= ${LIBMLX}/build/libmlx42.a -ldl -lglfw \
+			-L"/Users/$(USER)/.brew/opt/glfw/lib/" -pthread -lm \
+			-L${LIBFT} -lft
 
 
 SRCS	:= src/main.c \
 			src/error_handling.c
 OBJS	:= ${SRCS:.c=.o}
 
-all: libmlx libft $(NAME)
+all: libs $(NAME)
 
-libmlx:
+libs:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
-
-libft:
-	${MAKE} -C libft
+	@echo "Building libft library..."
+	@${MAKE} -C libft
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
