@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/17 08:45:50 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:00:27 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,29 @@ void	set_map_points(t_fdf *fdf, int y_coord, char *curr_line)
 	}
 }
 
-int	parse_fdf_file(int fd, t_fdf *fdf_args)
+int	check_map(char *str, t_fdf *fdf_args)
 {
-	char *line;
-	int	**map_axis;
-	int i;
+	char	*str;
+	int		fd;
+	
+	if (str == NULL)
+		handle_error(mlx_strerror(mlx_errno));
+	fd = open(str, O_RDONLY);
+	if (fd < 0)
+		handle_error(mlx_strerror(mlx_errno));
+	return (fd);
+}
+
+int	parse_fdf_file(char *str, t_fdf *fdf)
+{
+	char	*line;
+	int		**map_axis;
+	int		fd;
+	int		i;
 
 	i = 0;
-	map_axis = fdf_args->map->pt_array;
+	fd = open_map(str, fdf);
+	map_axis = fdf->map->pt_array;
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -77,8 +92,8 @@ int	parse_fdf_file(int fd, t_fdf *fdf_args)
 		map_axis[i] = malloc(sizeof(int));
 		if (map_axis[i] == NULL)
 			return (-1);
-		set_map_points(fdf_args, map_axis[i], line);
-		fdf_args->map->height++;
+		set_map_points(fdf, map_axis[i], line);
+		fdf->map->height++;
 	}
 	return (0);
 }

@@ -6,20 +6,15 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/17 15:20:33 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:56:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_fdf	*init_fdf(char **argv)
+static void	*init_fdf(t_fdf *fdf)
 {
-	t_fdf *fdf;
-	char *str;
-
-	str = argv[1];
 	/* Start mlx */
-	fdf = malloc(sizeof(t_fdf));
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true);
 	if (fdf->mlx == NULL)
 		handle_error(mlx_strerror(mlx_errno));
@@ -39,17 +34,21 @@ static t_fdf	*init_fdf(char **argv)
 	mlx_delete_texture(texture);
 	if (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0)
 		handle_img_error(mlx_strerror(mlx_errno), fdf);
-	// go back from init and loop mlx
-	/* *** */
-	
-/* 	if (check_map(argv, fdf) < 0)
-		handle_error(strerror(EXIT_FAILURE)); */
-	return (fdf);
 }
+
 static void	close_fdf(t_fdf *fdf)
 {
 	mlx_delete_image(fdf->mlx, fdf->img);
 	mlx_terminate(fdf->mlx);
+}
+
+void	ft_hook(void *param)
+{
+	mlx_t *fdf;
+	
+	fdf = param; // is it not possible to use param straight?
+	if (mlx_is_key_down(fdf, MLX_KEY_ESCAPE))
+		mlx_close_window(fdf);
 }
 
 int32_t	main(int argc, char **argv)
@@ -57,14 +56,19 @@ int32_t	main(int argc, char **argv)
 	t_fdf	*fdf;
 
 	if (argc != 2)
-		handle_error(strerror(EXIT_FAILURE)); // add errnos
-	fdf = init_fdf(argv);
+	{
+		ft_printf("nothing to see here\n");
+		// handle_error(strerror(EXIT_FAILURE)); // add errnos
+	}
+	fdf = malloc(sizeof(t_fdf));
+	if (fdf == NULL)
+		handle_error(mlx_strerror(mlx_errno));
+	init_fdf(fdf);
+	parse_fdf_file(argv[1], fdf);
 	
-	mlx_loop(fdf->mlx);
-	
-	if (mlx_is_key_down(fdf->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(fdf->mlx);
+	mlx_loop_hook(fdf->mlx, ft_hook, fdf->mlx);
 		
+	mlx_loop(fdf->mlx);
 	close_fdf(fdf);
 	return (EXIT_SUCCESS);
 	// FDF loop mlx_loop_hook(mlx, ft_hook, mlx);

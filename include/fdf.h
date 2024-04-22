@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/17 16:53:39 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:51:48 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <sys/wait.h>
-# include "MLX42/MLX42.h"
+# include "MLX42.h"
 # include "libft.h"
 
 # define WIDTH 100
@@ -75,7 +75,8 @@ typedef struct s_fdf
 	
 }	t_fdf;
 
-/* Map init functions */
+/* Map parse functions */
+int	parse_fdf_file(int fd, t_fdf *fdf_args);
 // int	check_map(char **argv, t_fdf *fdf_args);
 
 /* Error handling */

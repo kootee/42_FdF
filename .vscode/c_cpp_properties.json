@@ -4,9 +4,9 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Users/ktoivola/MLX42/include",
                 "/Users/ktoivola",
-                "/Users/ktoivola/.brew/Cellar/glfw/3.4/include"
+                "/Users/ktoivola/.brew/Cellar/glfw/3.4/include",
+                "${workspaceFolder}/MLX42/include/MLX42"
             ],
             "defines": [],
             "macFrameworkPath": [
