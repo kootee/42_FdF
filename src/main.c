@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/22 11:56:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 10:06:40 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	*init_fdf(t_fdf *fdf)
 	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
 	if (fdf->img == NULL)
 		handle_img_error(mlx_strerror(mlx_errno), fdf);
-		
+
 	/* Extra */
 	mlx_texture_t *texture = mlx_load_png("./images/pixil-frame-0.png");
 	if (texture == NULL)
@@ -64,7 +64,7 @@ int32_t	main(int argc, char **argv)
 	if (fdf == NULL)
 		handle_error(mlx_strerror(mlx_errno));
 	init_fdf(fdf);
-	parse_fdf_file(argv[1], fdf);
+	parse_map_file(argv[1], fdf);
 	
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf->mlx);
 		

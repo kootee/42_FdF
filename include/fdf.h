@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/22 11:51:48 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:59:04 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,17 @@ typedef struct s_camera
 
 typedef struct point_s 
 {
-	int	x;
-	int	y;
-	int	z;
-	int	colour;
+	int		Z;
+	int16_t	colour;
 }				point_t;
 
 typedef struct s_map
 {
-	int		**pt_array;
+	void	**pt_array;
 	int		height;
 	int		width;
-	int		zoom_min;
-	int		zoom_max;
+	// int		zoom_min;
+	// int		zoom_max;
 }				t_map;
 
 typedef struct s_fdf
@@ -76,7 +74,7 @@ typedef struct s_fdf
 }	t_fdf;
 
 /* Map parse functions */
-int	parse_fdf_file(int fd, t_fdf *fdf_args);
+int		parse_map_file(char *str, t_fdf *fdf);
 // int	check_map(char **argv, t_fdf *fdf_args);
 
 /* Error handling */
