@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "/Users/ktoivola",
                 "/Users/ktoivola/.brew/Cellar/glfw/3.4/include",
-                "${workspaceFolder}/MLX42/include/MLX42"
+                "${workspaceFolder}/MLX42/include/MLX42",
+                "${workspaceFolder}/libft/include"
             ],
             "defines": [],
             "macFrameworkPath": [

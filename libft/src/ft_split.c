@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:37:01 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/03/25 14:57:40 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:56:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../include/libft.h"
 
 static int	ft_count_strs(const char *s, char c)
 {

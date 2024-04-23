@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:12:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/05 10:22:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:57:17 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/get_next_line.h"
+#include "../../include/get_next_line.h"
 
 static void	copy_til_newline(char *new_line, t_gnl_lst *list_node)
 {

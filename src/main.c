@@ -6,13 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/23 10:06:40 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:03:01 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	*init_fdf(t_fdf *fdf)
+static void	init_fdf(t_fdf *fdf)
 {
 	/* Start mlx */
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true);

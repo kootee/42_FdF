@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:46:59 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/03/01 13:10:32 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:56:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../include/libft.h"
 
 char	*ft_strtrim(char const *s1, char const *set)
 {

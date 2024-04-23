@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 12:56:58 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/03/01 13:10:32 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:56:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../include/libft.h"
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {

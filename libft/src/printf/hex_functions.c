@@ -6,12 +6,12 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 10:46:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/03/01 13:17:42 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:57:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/ft_printf.h"
-#include "../../includes/libft.h"
+#include "../../include/ft_printf.h"
+#include "../../include/libft.h"
 
 static int	check_hexlength(unsigned long n)
 {

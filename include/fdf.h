@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/23 13:59:04 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:10:11 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@ int		parse_map_file(char *str, t_fdf *fdf);
 // int	check_map(char **argv, t_fdf *fdf_args);
 
 /* Error handling */
-void	handle_error(const char *error_message);
+void	handle_error(int errno);
 void	handle_img_error(const char *error_message, t_fdf *fdf);
+
+int16_t	get_colour(int16_t hex_val);
 
 #endif

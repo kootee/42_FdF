@@ -4,14 +4,14 @@ LIBMLX	= MLX42
 LIBFT	= libft
 debug	?= 0
 
-HEADERS	= -I ./include -I ${LIBMLX}/include/MLX42 -I ./libft/includes
+HEADERS	= -I ./include -I ${LIBMLX}/include/MLX42 -I ./libft/include
 
 LIBS	= ${LIBMLX}/build/libmlx42.a -ldl -lglfw \
 			-L"/Users/${USER}/.brew/opt/glfw/lib/" -pthread -lm \
 			-L${LIBFT} -lft
 
-SRCS	= src/main.c \
-			src/error_handling.c
+SRCS	= ${wildcard src/*.c}
+
 OBJS	= ${SRCS:.c=.o}
 
 all: libs $(NAME)

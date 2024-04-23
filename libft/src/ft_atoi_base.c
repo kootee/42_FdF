@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:57:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/23 13:03:27 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:56:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/libft.h"
 
 static char	to_lower(char c)
 {

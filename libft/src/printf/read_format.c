@@ -6,12 +6,12 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 10:43:58 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/03/01 13:18:57 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:57:11 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/ft_printf.h"
-#include "../../includes/libft.h"
+#include "../../include/ft_printf.h"
+#include "../../include/libft.h"
 
 int	read_format(char c, va_list args)
 {

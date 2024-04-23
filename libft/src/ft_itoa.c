@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 14:36:46 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/03/01 13:10:32 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:56:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../include/libft.h"
 
 static int	check_length(long n)
 {

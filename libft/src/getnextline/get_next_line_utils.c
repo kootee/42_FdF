@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:08:45 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/04 14:05:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:57:15 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/get_next_line.h" 
+#include "../../include/get_next_line.h" 
 
 char	*clear_list(t_gnl_lst **list, t_gnl_lst *new_node, char *buffer)
 {

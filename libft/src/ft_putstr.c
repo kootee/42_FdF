@@ -6,11 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 09:53:22 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/05 10:21:54 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:56:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../include/libft.h"
 
 int	ft_putstr(char *s)
 {
