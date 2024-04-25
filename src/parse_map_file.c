@@ -6,23 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 09:26:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:06:01 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static int	open_map(char *str)
-{
-	int		fd;
-	
-	if (str == NULL)
-		return (-1);
-	fd = open(str, O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	return (fd);
-}
 
 int	get_row_len(char *str)
 {
@@ -34,10 +22,10 @@ int	get_row_len(char *str)
 		if (!ft_isalnum(*str))
 			return (-1); // could be more elaborate
 		while (*str && *str == ' ')
-			*str++;
+			str++;
 		while (*str && (ft_isdigit(*str) || is_hexa_letter(*str) 
 			|| *str == 'x'))
-			*str++;
+			str++;
 		count++;
 	}
 	return (count);
@@ -60,9 +48,10 @@ static point_t *alloc_map_row(int width)
 		map_row[i].colour = 0;
 		i++;
 	}
+	return (map_row);
 }
 
-void	parse_line(t_fdf *fdf, char *curr_line)
+/* void	parse_line(t_fdf *fdf, char *curr_line)
 {
 	int	i;
 	int	j;
@@ -86,7 +75,7 @@ void	parse_line(t_fdf *fdf, char *curr_line)
 	}
 	fdf->map->width = width;
 	
-}
+} */
 
 static void	set_map_points(point_t *row, char *curr_line)
 {	
@@ -104,7 +93,7 @@ static void	set_map_points(point_t *row, char *curr_line)
 			|| pts[x][i] == 'x'))
 		{
 			if (pts[x][i] == ',')
-				row[x].colour = get_colour(ft_atoi_base(pts[x][++i], 16));
+				row[x].colour = get_colour(ft_atoi_base(&pts[x][++i], 16));
 			i++;
 		}
 		row[x].Z = ft_atoi(pts[x]);
@@ -120,9 +109,10 @@ int	parse_map_file(char *str, t_fdf *fdf)
 	int		fd;
 
 	row = 0;
-	fd = open_map(str);
+	map_grid = NULL;
+	fd = open(str, O_RDONLY);
 	if (fd < 0)
-		handle_error(strerror(mlx_errno));
+		handle_error(mlx_errno);
 	while (1)
 	{
 		line = get_next_line(fd);

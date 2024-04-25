@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/23 16:10:11 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:37:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct point_s
 
 typedef struct s_map
 {
-	void	**pt_array;
+	point_t	**pt_array;
 	int		height;
 	int		width;
 	// int		zoom_min;
@@ -81,6 +81,9 @@ int		parse_map_file(char *str, t_fdf *fdf);
 void	handle_error(int errno);
 void	handle_img_error(const char *error_message, t_fdf *fdf);
 
-int16_t	get_colour(int16_t hex_val);
+int32_t	get_colour(int32_t hex_val);
+
+/* FDF utilities */
+bool	is_hexa_letter(char c);
 
 #endif
