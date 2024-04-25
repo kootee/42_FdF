@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/23 16:10:35 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:26:16 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,17 @@ static int	open_map(char *str)
 
 int	get_row_len(char *str)
 {
-	int	i;
 	int	count;
 
-	i = 0;
 	count = 0;
 	while (*str)
 	{
 		if (!ft_isalnum(*str))
-			return (-1);
+			return (-1); // could be more elaborate
 		while (*str && *str == ' ')
 			*str++;
-		while (*str && ft_isalnum(*str))
+		while (*str && (ft_isdigit(*str) || is_hexa_letter(*str) 
+			|| *str == 'x'))
 			*str++;
 		count++;
 	}
@@ -49,14 +48,17 @@ static point_t *alloc_map_row(int width)
 	int 	i;
 	point_t *map_row;
 	
+	if (width == -1)
+		return (NULL);
 	i = 0;
 	map_row = malloc(sizeof(point_t) * width);
 	if (!map_row)
-		handle_error(EXIT_FAILURE); // handle error properly
-	while (width--)
+		return (NULL);
+	while (i < width)
 	{
 		map_row[i].Z = 0;
 		map_row[i].colour = 0;
+		i++;
 	}
 }
 
@@ -86,32 +88,29 @@ void	parse_line(t_fdf *fdf, char *curr_line)
 	
 }
 
-static int	set_map_points(point_t *row, char *curr_line)
+static void	set_map_points(point_t *row, char *curr_line)
 {	
-	int		x_coord;
+	char 	**pts;
+	int		x;
 	int		i;
 	
-	x_coord = 0;
-	while (*curr_line)
+	x = 0;
+	pts = ft_split(curr_line, ' ');
+	while (pts[x])
 	{
 		i = 0;
-		while (*curr_line && *curr_line == ' ')
-			*curr_line++;
-		while (*curr_line && ft_isalnum(*curr_line))
+		while (pts[x][i] && (ft_isdigit(pts[x][i]) 
+			|| is_hexa_letter(pts[x][i]) 
+			|| pts[x][i] == 'x'))
 		{
-			if (*curr_line == ',')
-			{
-				row[x_coord].colour = get_colour((int16_t)ft_atoi_base(*(curr_line + 1), 16));
-				curr_line = *(curr_line + 3);
-			}
+			if (pts[x][i] == ',')
+				row[x].colour = get_colour(ft_atoi_base(pts[x][++i], 16));
 			i++;
 		}
-		row[x_coord++].Z = ft_atoi(ft_substr(curr_line, 0, i));
-		curr_line = *(curr_line + i);
+		row[x].Z = ft_atoi(pts[x]);
+		x++;
 	}
-	return (0);
 }
-
 
 int	parse_map_file(char *str, t_fdf *fdf)
 {
@@ -131,10 +130,8 @@ int	parse_map_file(char *str, t_fdf *fdf)
 			break ;
 		map_grid[row] = alloc_map_row(get_row_len(line));
 		if (map_grid[row] == NULL)
-			handle_error(EXIT_FAILURE);
-		if (set_map_points(map_grid[row], line) < 0)
-			handle_error(EXIT_FAILURE);
-		row++;
+			handle_error(EXIT_FAILURE); // error parsing map
+		set_map_points(map_grid[row++], line);
 	}
 	fdf->map->pt_array = map_grid;
 	fdf->map->height = row;
