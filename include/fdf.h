@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 09:37:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:51:50 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_fdf
 }	t_fdf;
 
 /* Map parse functions */
-int		parse_map_file(char *str, t_fdf *fdf);
+int		parse_map_file(int fd, t_fdf *fdf);
 // int	check_map(char **argv, t_fdf *fdf_args);
 
 /* Error handling */

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 09:58:02 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:58:21 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,54 @@ static void	close_fdf(t_fdf *fdf)
 	mlx_terminate(fdf->mlx);
 }
 
+void	draw_line(t_fdf *fdf)
+{
+	int i = 0;
+	mlx_t *mlx_inst = fdf->mlx;
+	ft_printf("pressed space \n");
+	while(i < mlx_inst->width && i < mlx_inst->height)
+	{
+		mlx_put_pixel(fdf->img, 0 + i, 0 + i, 255);
+		i++;
+	}
+}
+
 void	ft_hook(void *param)
 {
-	mlx_t *fdf;
-	
+	t_fdf *fdf;
+	mlx_t *mlx_inst;
 	fdf = param; // is it not possible to use param straight?
-	if (mlx_is_key_down(fdf, MLX_KEY_ESCAPE))
-		mlx_close_window(fdf);
+	mlx_inst = fdf->mlx;
+	if (mlx_is_key_down(fdf->mlx, MLX_KEY_SPACE))
+		draw_line(fdf);
+	if (mlx_is_key_down(fdf->mlx, MLX_KEY_1))
+		printf("width is %i\n", mlx_inst->width);
+	if (mlx_is_key_down(fdf->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(fdf->mlx);
 }
 
 int32_t	main(int argc, char **argv)
 {
-	t_fdf	*fdf;
+	t_fdf	fdf;
+	int	fd;
 
 	if (argc != 2)
 	{
 		ft_printf("nothing to see here\n");
 		// handle_error(strerror(EXIT_FAILURE)); // add errnos
 	}
-	fdf = malloc(sizeof(t_fdf));
-	if (fdf == NULL)
+	init_fdf(&fdf);
+	fd = open(argv[1], O_RDONLY);
+	ft_printf("path is %s\n", argv[1]);
+	ft_printf("fd is %i\n", fd);
+	if (fd < 0)
 		handle_error(mlx_errno);
-	init_fdf(fdf);
-	parse_map_file(argv[1], fdf);
+	// parse_map_file(fd, fdf);
 	
-	mlx_loop_hook(fdf->mlx, ft_hook, fdf->mlx);
+	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 		
-	mlx_loop(fdf->mlx);
-	close_fdf(fdf);
+	mlx_loop(fdf.mlx);
+	close_fdf(&fdf);
 	return (EXIT_SUCCESS);
 	// FDF loop mlx_loop_hook(mlx, ft_hook, mlx);
 }

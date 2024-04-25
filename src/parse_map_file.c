@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 10:06:01 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:04:25 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,14 @@ static void	set_map_points(point_t *row, char *curr_line)
 	}
 }
 
-int	parse_map_file(char *str, t_fdf *fdf)
+int	parse_map_file(int fd, t_fdf *fdf)
 {
 	point_t	**map_grid;
 	char	*line;
 	int		row;
-	int		fd;
 
 	row = 0;
 	map_grid = NULL;
-	fd = open(str, O_RDONLY);
-	if (fd < 0)
-		handle_error(mlx_errno);
 	while (1)
 	{
 		line = get_next_line(fd);
