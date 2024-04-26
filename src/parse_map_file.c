@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/26 11:26:56 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:20:20 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ bool	is_hexa_letter(char c)
 	return (false);
 }
 
-static point_t *alloc_map_row(char **pts)
+static void alloc_map_row(point_t **map_row, char **pts, int row)
 {
-	point_t *map_row;
 	int		width;
 	int 	i;
 	
@@ -31,18 +30,17 @@ static point_t *alloc_map_row(char **pts)
 	while (pts[width])
 		width++;
 	ft_printf("width is %i\n", width);
-	map_row = malloc(sizeof(point_t) * (width + 1));
-	if (!map_row)
-		return (NULL);
+	map_row[row] = malloc(sizeof(point_t) * (width + 1));
+	if (!map_row[row])
+		handle_error(EXIT_FAILURE);
 	while (i < width)
 	{
-		map_row[i].Z = 0;
-		map_row[i].colour = 0;
-		map_row[i].last = false;
+		map_row[row][i].Z = 0;
+		map_row[row][i].colour = 0;
+		map_row[row][i].last = false;
 		i++;
 	}
-	map_row[i].last = true;
-	return (map_row);
+	map_row[row][i].last = true;
 }
 
 /* void	parse_line(t_fdf *fdf, char *curr_line)
@@ -76,14 +74,15 @@ static void	set_map_points(map_t *map, int row, char *curr_line)
 	char 	**pts;
 	int		i;
 	int		j;
-	
+	// have a function print out a map each time
 	pts = ft_split(curr_line, ' ');
-	map->pt_array[row] = alloc_map_row(pts);
+	alloc_map_row(map->pt_array, pts, row);
 	if (map->pt_array[row] == NULL)
 		handle_error(EXIT_FAILURE); //free map points that are mallocd so far   !
 	i = 0;
 	while (pts[i])
 	{
+		ft_printf("number is %s and index is %d\n", pts[i], i);
 		j = 0;
 		while (pts[i][j] && (ft_isdigit(pts[i][j]) || is_hexa_letter(pts[i][j]) 
 			|| pts[i][j] == 'x'))
@@ -117,6 +116,15 @@ int	get_map_width(map_t *map)
 	}
 	return (comp);
 }
+void	init_fdf_map(fdf_t *fdf)
+{
+	fdf->map = malloc(sizeof(map_t)); // init map func instead
+	if (fdf->map == NULL)
+		handle_error(EXIT_FAILURE); // don't have to free but should close mlx window as they're mallocd
+	fdf->map->pt_array = malloc(sizeof(point_t));
+	if (fdf->map->pt_array == NULL)
+		handle_error(EXIT_FAILURE);
+}
 
 int	parse_map_file(int fd, fdf_t *fdf)
 {
@@ -124,9 +132,7 @@ int	parse_map_file(int fd, fdf_t *fdf)
 	int		row;
 
 	row = 0;
-	fdf->map = malloc(sizeof(map_t));
-	if (fdf->map == NULL)
-		handle_error(EXIT_FAILURE); // don't have to free but should close mlx window as they're mallocd
+	init_fdf_map(fdf);
 	while (1)
 	{
 		line = get_next_line(fd);

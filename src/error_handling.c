@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 08:52:57 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 09:04:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:48:02 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_error(int errno)
 	// free stuff when necessary
 }
 
-void	handle_img_error(const char *error_message, t_fdf *fdf)
+void	handle_img_error(const char *error_message, fdf_t *fdf)
 {
 	mlx_close_window(fdf->mlx);
 	ft_putstr_fd((char *)error_message, STDERR_FILENO);
