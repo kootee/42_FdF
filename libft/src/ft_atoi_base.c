@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:57:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/23 15:56:35 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:03:37 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ int ft_atoi_base(const char *str, int str_base)
 	int sign = 1;
 	int digit;
 
+	if (str == NULL)
+		return (-1);
 	if (*str == '-')
 	{
 		sign = -1;
 		++str;
 	}
-
 	while ((digit = get_digit(to_lower(*str), str_base)) >= 0)
 	{
 		result = result * str_base;

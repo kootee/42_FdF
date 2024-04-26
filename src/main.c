@@ -6,13 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 11:58:21 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:52:50 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	init_fdf(t_fdf *fdf)
+static void	init_fdf(fdf_t *fdf)
 {
 	/* Start mlx */
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true);
@@ -28,13 +28,13 @@ static void	init_fdf(t_fdf *fdf)
 		handle_img_error(mlx_strerror(mlx_errno), fdf);
 }
 
-static void	close_fdf(t_fdf *fdf)
+static void	close_fdf(fdf_t *fdf)
 {
 	mlx_delete_image(fdf->mlx, fdf->img);
 	mlx_terminate(fdf->mlx);
 }
 
-void	draw_line(t_fdf *fdf)
+void	draw_line(fdf_t *fdf)
 {
 	int i = 0;
 	mlx_t *mlx_inst = fdf->mlx;
@@ -48,7 +48,7 @@ void	draw_line(t_fdf *fdf)
 
 void	ft_hook(void *param)
 {
-	t_fdf *fdf;
+	fdf_t *fdf;
 	mlx_t *mlx_inst;
 	fdf = param; // is it not possible to use param straight?
 	mlx_inst = fdf->mlx;
@@ -62,7 +62,7 @@ void	ft_hook(void *param)
 
 int32_t	main(int argc, char **argv)
 {
-	t_fdf	fdf;
+	fdf_t	fdf;
 	int	fd;
 
 	if (argc != 2)
@@ -76,12 +76,11 @@ int32_t	main(int argc, char **argv)
 	ft_printf("fd is %i\n", fd);
 	if (fd < 0)
 		handle_error(mlx_errno);
-	// parse_map_file(fd, fdf);
+	parse_map_file(fd, &fdf);
 	
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 		
 	mlx_loop(fdf.mlx);
 	close_fdf(&fdf);
 	return (EXIT_SUCCESS);
-	// FDF loop mlx_loop_hook(mlx, ft_hook, mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/25 11:51:50 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:20:14 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@
 # define WIDTH 100
 # define HEIGHT 100
 
-typedef struct s_mouse
+typedef struct mouse_s
 {
 	int	button;
 	int	x;
 	int	y;
 	int	prev_x;
 	int	prev_y;
-}			t_mouse;
+}			mouse_t;
 
-typedef struct s_camera
+typedef struct cam_s
 {
 	int		zoom;
 	double	x_angle;
@@ -45,45 +45,46 @@ typedef struct s_camera
 	int		x_offset;
 	int		y_offset;
 	int		iso;
-}			t_camera;
+}			cam_t;
 
 typedef struct point_s 
 {
 	int		Z;
-	int16_t	colour;
+	bool	last;
+	int32_t	colour;
 }				point_t;
 
-typedef struct s_map
+typedef struct map_s
 {
 	point_t	**pt_array;
 	int		height;
 	int		width;
 	// int		zoom_min;
 	// int		zoom_max;
-}				t_map;
+}				map_t;
 
-typedef struct s_fdf
+typedef struct fdf_s
 {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	t_map		*map;
-	t_camera	*camera;
-	t_mouse		*mouse;
+	void	*mlx;
+	void	*win;
+	void	*img;
+	map_t	*map;
+	cam_t	*camera;
+	mouse_t	*mouse;
 	
-}	t_fdf;
+}	fdf_t;
 
 /* Map parse functions */
-int		parse_map_file(int fd, t_fdf *fdf);
+int		parse_map_file(int fd, fdf_t *fdf);
 // int	check_map(char **argv, t_fdf *fdf_args);
 
 /* Error handling */
 void	handle_error(int errno);
-void	handle_img_error(const char *error_message, t_fdf *fdf);
+void	handle_img_error(const char *error_message, fdf_t *fdf);
 
 int32_t	get_colour(int32_t hex_val);
 
 /* FDF utilities */
-bool	is_hexa_letter(char c);
+// bool	is_hexa_letter(char c);
 
 #endif
