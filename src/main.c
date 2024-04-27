@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/26 10:52:50 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:25:15 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,30 +52,27 @@ void	ft_hook(void *param)
 	mlx_t *mlx_inst;
 	fdf = param; // is it not possible to use param straight?
 	mlx_inst = fdf->mlx;
-	if (mlx_is_key_down(fdf->mlx, MLX_KEY_SPACE))
+ 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_SPACE))
 		draw_line(fdf);
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_1))
-		printf("width is %i\n", mlx_inst->width);
+		ft_printf("width is %i\n", mlx_inst->width);
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(fdf->mlx);
 }
-
+/* add above to fdf.c file */
 int32_t	main(int argc, char **argv)
 {
 	fdf_t	fdf;
-	int	fd;
+	int		fd;
 
+	// ft_printf("path is %s\n", argv[1]);
+	
 	if (argc != 2)
-	{
-		ft_printf("nothing to see here\n");
-		// handle_error(strerror(EXIT_FAILURE)); // add errnos
-	}
-	init_fdf(&fdf);
+		handle_error(EXIT_CMD_COUNT_ERROR);
 	fd = open(argv[1], O_RDONLY);
-	ft_printf("path is %s\n", argv[1]);
-	ft_printf("fd is %i\n", fd);
 	if (fd < 0)
 		handle_error(mlx_errno);
+	init_fdf(&fdf);
 	parse_map_file(fd, &fdf);
 	
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);

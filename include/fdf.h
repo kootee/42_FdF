@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/26 11:20:14 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:44:20 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 
 # define WIDTH 100
 # define HEIGHT 100
+/* 
+typedef enum {
+	EXIT_CMD_COUNT_ERROR = 900,
+	MAP_ALLOC_FAIL = 901
+} ErrorCode; */
 
 typedef struct mouse_s
 {
@@ -76,15 +81,13 @@ typedef struct fdf_s
 
 /* Map parse functions */
 int		parse_map_file(int fd, fdf_t *fdf);
-// int	check_map(char **argv, t_fdf *fdf_args);
 
 /* Error handling */
 void	handle_error(int errno);
 void	handle_img_error(const char *error_message, fdf_t *fdf);
 
+/* FDF utility functions */
+bool	is_hexa_letter(char c);
 int32_t	get_colour(int32_t hex_val);
-
-/* FDF utilities */
-// bool	is_hexa_letter(char c);
 
 #endif
