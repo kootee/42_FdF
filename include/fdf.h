@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 10:35:07 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:09:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	handle_error_and_free(fdf_t *fdf, int errno);
 /* FDF utility functions */
 int32_t	get_colour(int32_t hex_val);
 bool	is_hexa_letter(char c);
-void	free_strs(char **strs)
+void	free_strs(char **strs);
+void	free_map_pts(point_t **pts);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 10:35:23 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:08:27 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,22 @@ bool	is_hexa_letter(char c)
 	return (false);
 }
 
+void	free_map_pts(point_t **pts)
+{
+	while(pts)
+	{
+		free(*pts);
+		pts++;
+	}
+	free(pts);
+}
+
 void	free_strs(char **strs)
 {
-	while(strs)
+	while (strs)
+	{
 		free(*strs);
+		strs++;
+	}
 	free(strs);
 }

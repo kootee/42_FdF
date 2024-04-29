@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 10:38:20 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:07:23 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int alloc_map_row(point_t **map_row, char **pts, int row)
 	width = 0;
 	while (pts[width])
 		width++;
-	// ft_printf("width is %i\n", width);
 	map_row[row] = malloc(sizeof(point_t) * (width + 1));
 	if (!map_row[row])
 		return (-1);
@@ -63,9 +62,8 @@ void	init_fdf_map(fdf_t *fdf, char **pts, int row)
 		handle_error_and_free(fdf, EXIT_MAP_ALLOC_FAIL);
 }
 
-static void	set_map_points(fdf_t *fdf, map_t *map, int row, char **pts)
+static void	set_map_points(fdf_t *fdf, map_t *map, char **pts, int row)
 {	
-	char 	**pts;
 	int		i;
 	int		j;
 	
@@ -127,13 +125,13 @@ int	parse_map_file(int fd, fdf_t *fdf)
 		pts = ft_split(line, ' ');
 		if (pts == NULL)
 			handle_error_and_free(fdf, EXIT_MALLOC_FAIL);
-		set_map_points(fdf, fdf->map, row, line);
+		free(line);
+		set_map_points(fdf, fdf->map, pts, row);
 		print_map_so_far(row, fdf->map->pt_array);
 		row++;
 	}
-	fdf->map->height = row; // what to do with this
+	fdf->map->height = row;
 	fdf->map->width = get_map_width(fdf->map);
 	free_strs(pts);
-	free(line);
 	return (0);
 }
