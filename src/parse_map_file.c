@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 14:55:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:06:51 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,30 +60,30 @@ int	get_row_width(char **pts)
 	return (width);
 }
 
-static int alloc_map_row(fdf_t *fdf, int row, int width)
+static int alloc_map_row(map_t *map, int row, int width)
 {
 	int 	i;
 	
-	fdf->map->pt_array = malloc(sizeof(point_t)); 
-	if (fdf->map->pt_array == NULL)
+	map->pt_array = malloc(sizeof(point_t)); 
+	if (map->pt_array == NULL)
 		handle_error(EXIT_FAILURE);
-	fdf->map->pt_array[row] = malloc(sizeof(point_t) * (width + 1));
-	if (!fdf->map->pt_array[row])
+	map->pt_array[row] = malloc(sizeof(point_t) * (width + 1));
+	if (map->pt_array[row])
 		return (-1);
 	i = 0;
 	while (i < width)
 	{
-		fdf->map->pt_array[row][i].Z = 0;
-		fdf->map->pt_array[row][i].colour = 0;
-		fdf->map->pt_array[row][i].last = false;
+		map->pt_array[row][i].Z = 0;
+		map->pt_array[row][i].colour = 0;
+		map->pt_array[row][i].last = false;
 		i++;
 	}
-	fdf->map->pt_array[row][i].last = true;
+	map->pt_array[row][i].last = true;
 	ft_printf("alloced row %d of width %d\n", row, width);
 	return (0);
 }
 
-static void	set_map_points(fdf_t *fdf, char **pts, int row)
+static void	set_map_points(map_t *map, char **pts, int row)
 {	
 	int		i;
 	int		j;
@@ -108,24 +108,32 @@ static void	set_map_points(fdf_t *fdf, char **pts, int row)
 			// ft_printf("j is %d and char is %c\n", j, pts[i][j]);
 			if (!ft_isdigit(pts[i][j]) && !is_hexa_letter(pts[i][j]) 
 			&& pts[i][j] != 'x')
-				handle_error_and_free(fdf, EXIT_INVALID_MAP);
+				handle_error(EXIT_INVALID_MAP);
 			if (pts[i][j] == ',')
-				fdf->map->pt_array[row][i].colour = ft_atoi_base(&pts[i][++j], 16);
+				map->pt_array[row][i].colour = ft_atoi_base(&pts[i][++j], 16);
 			j++;
 		}
-		fdf->map->pt_array[row][i].Z = ft_atoi(pts[i]);
+		map->pt_array[row][i].Z = ft_atoi(pts[i]);
 		i++;
 	}
 	ft_printf("map points set, returning\n");
 }
 
-int	parse_map_file(int fd, fdf_t *fdf)
+void	init_map(map_t *map)
+{
+	map->height = 0;
+	map->width = 0;
+	map->pt_array = NULL;
+}
+
+int	load_map(int fd, map_t *map)
 {
 	char	*line;
 	char	**pts;
 	int		row;
 
 	row = 0;
+	init_map(map);
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -133,14 +141,14 @@ int	parse_map_file(int fd, fdf_t *fdf)
 			break ;
 		pts = ft_split(line, ' ');
 		if (pts == NULL)
-			handle_error_and_free(fdf, EXIT_MALLOC_FAIL);
-		alloc_map_row(fdf, row, get_row_width(pts)); // FDF->MAP gets allocated here
-		set_map_points(fdf, pts, row);
-		print_map_so_far(row, fdf->map->pt_array);
+			handle_error(EXIT_MALLOC_FAIL);
+		alloc_map_row(map, row, get_row_width(pts)); 
+		set_map_points(map, pts, row);
+		print_map_so_far(row, map->pt_array);
 		row++;
 	}
-	fdf->map->height = row;
-	fdf->map->width = get_row_width(pts);
+	map->height = row;
+	map->width = get_row_width(pts);
 	free(line);
 	free_strs(pts);
 	return (0);

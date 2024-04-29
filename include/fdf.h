@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 11:09:35 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:56:34 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,14 @@ typedef struct fdf_s
 	void	*mlx;
 	void	*win;
 	void	*img;
-	map_t	*map;
+	map_t	map;
 	cam_t	*camera;
 	mouse_t	*mouse;
 	
 }	fdf_t;
 
 /* Map parse functions */
-int		parse_map_file(int fd, fdf_t *fdf);
+int		load_map(int fd, map_t *map);
 
 /* Error handling */
 void	handle_error(int errno);
