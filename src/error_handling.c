@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 08:52:57 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 11:09:01 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 14:13:45 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	handle_error(int errno)
 {
+	ft_printf("got to error");
 	if (errno == EXIT_CMD_COUNT_ERROR)
 		ft_putstr_fd("Error: Invalid command count\n", STDERR_FILENO);
 	ft_putstr_fd(strerror(errno), STDERR_FILENO);
@@ -22,6 +23,7 @@ void	handle_error(int errno)
 
 void	handle_error_and_free(fdf_t *fdf, int errno)
 {
+	ft_printf("got to error");
 	if (errno == EXIT_MAP_ALLOC_FAIL)
 		free_map_pts(fdf->map->pt_array);
 	mlx_terminate(fdf->mlx);

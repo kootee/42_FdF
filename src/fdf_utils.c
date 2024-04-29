@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 11:08:27 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:50:31 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@ void	free_map_pts(point_t **pts)
 
 void	free_strs(char **strs)
 {
-	while (strs)
+	int	i;
+
+	i = 0;
+	while (strs[i])
 	{
-		free(*strs);
-		strs++;
+		free(strs[i]);
+		i++;
 	}
 	free(strs);
 }
