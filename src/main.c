@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/27 14:25:15 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:19:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,18 @@
 static void	init_fdf(fdf_t *fdf)
 {
 	/* Start mlx */
-	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true);
+	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true); // add function to put name of map
 	if (fdf->mlx == NULL)
 		handle_error(mlx_errno);
 		
 	/* Init mlx image */
 	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
 	if (fdf->img == NULL)
-		handle_img_error(mlx_strerror(mlx_errno), fdf);
+		handle_error_and_free(fdf, mlx_errno);
 
+	/* Put image to window */
 	if (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0)
-		handle_img_error(mlx_strerror(mlx_errno), fdf);
-}
-
-static void	close_fdf(fdf_t *fdf)
-{
-	mlx_delete_image(fdf->mlx, fdf->img);
-	mlx_terminate(fdf->mlx);
+		handle_error_and_free(fdf, mlx_errno);
 }
 
 void	draw_line(fdf_t *fdf)
@@ -65,19 +60,17 @@ int32_t	main(int argc, char **argv)
 	fdf_t	fdf;
 	int		fd;
 
-	// ft_printf("path is %s\n", argv[1]);
-	
 	if (argc != 2)
 		handle_error(EXIT_CMD_COUNT_ERROR);
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		handle_error(mlx_errno);
-	init_fdf(&fdf);
 	parse_map_file(fd, &fdf);
+	init_fdf(&fdf);
 	
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
-		
 	mlx_loop(fdf.mlx);
-	close_fdf(&fdf);
+	
+	mlx_terminate(fdf.mlx);
 	return (EXIT_SUCCESS);
 }
