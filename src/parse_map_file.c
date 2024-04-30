@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 14:00:25 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:15:57 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void	init_map(map_t *map)
 {
 	/* ADD MISSING INITS */
+	// init colours
 	map->pt_array = NULL;
+	map->min_Z = 0; // int max or the like?
 }
 char *read_map_data(int fd)
 {
@@ -84,6 +86,8 @@ void	add_points(char *line, map_t *map, int line_number)
 			map->pt_array[idx].hex_colour = set_hexcolour(pts[idx]);
 		if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
 			map->dim.axis[Z] = map->pt_array[idx].axis[Z];
+		if (map->pt_array[idx].axis[Z] < map->min_Z)
+			map->min_Z = map->pt_array[idx].axis[Z];
 		// need to check the other values?
 		idx++;
 	}

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 14:06:31 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:11:15 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,12 @@ typedef struct point_s {
 }				point_t;
 
 typedef struct map_s {
-	point_t	dim;
-	point_t	*pt_array;
-	char	*map_data;
-	int		len;
+	point_t		dim;
+	point_t		*pt_array;
+	colours_t	colours;
+	char		*map_data;
+	int			min_Z;
+	int			len;
 	// int		zoom_min;
 	// int		zoom_max;
 }				map_t;
