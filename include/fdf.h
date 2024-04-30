@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 15:56:34 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:06:31 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@
 # include "MLX42.h"
 # include "libft.h"
 
-# define WIDTH 100
-# define HEIGHT 100
+# define WIDTH	100
+# define HEIGHT	100
+
+# define BLACK		0x000000
+# define MAGENTA	0xff0099
+
+# define DEFAULT_COLOUR MAGENTA
 
 typedef enum {
 	EXIT_CMD_COUNT_ERROR = 200,
@@ -33,8 +38,18 @@ typedef enum {
 	EXIT_INVALID_MAP = 204
 } ErrorCode;
 
-typedef struct mouse_s
-{
+typedef	enum {
+	X, Y, Z
+} Coordinates;
+
+typedef	struct	colours_s {
+	int32_t top;
+	int32_t bottom;
+	int32_t background;
+	int32_t top;	
+}				colours_t;
+
+typedef struct mouse_s {
 	int	button;
 	int	x;
 	int	y;
@@ -42,8 +57,7 @@ typedef struct mouse_s
 	int	prev_y;
 }			mouse_t;
 
-typedef struct cam_s
-{
+typedef struct cam_s {
 	int		zoom;
 	double	x_angle;
 	double	y_angle;
@@ -54,24 +68,23 @@ typedef struct cam_s
 	int		iso;
 }			cam_t;
 
-typedef struct point_s 
-{
-	int		Z;
-	bool	last;
+typedef struct point_s {
+	float	axis[3];
 	int32_t	colour;
+	int32_t	hex_colour;
+	bool	fill_color;
 }				point_t;
 
-typedef struct map_s
-{
-	point_t	**pt_array;
-	int		height;
-	int		width;
+typedef struct map_s {
+	point_t	dim;
+	point_t	*pt_array;
+	char	*map_data;
+	int		len;
 	// int		zoom_min;
 	// int		zoom_max;
 }				map_t;
 
-typedef struct fdf_s
-{
+typedef struct fdf_s {
 	void	*mlx;
 	void	*win;
 	void	*img;
@@ -82,7 +95,7 @@ typedef struct fdf_s
 }	fdf_t;
 
 /* Map parse functions */
-int		load_map(int fd, map_t *map);
+int		load_map(char *map_file_path, map_t *map);
 
 /* Error handling */
 void	handle_error(int errno);
@@ -93,5 +106,8 @@ int32_t	get_colour(int32_t hex_val);
 bool	is_hexa_letter(char c);
 void	free_strs(char **strs);
 void	free_map_pts(point_t **pts);
+
+/* Map utilities */
+void    set_colours(map_t *map);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 16:02:02 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:09:53 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,10 @@ void	ft_hook(void *param)
 int32_t	main(int argc, char **argv)
 {
 	fdf_t	fdf;
-	int		fd;
 
 	if (argc != 2) 
 		handle_error(EXIT_CMD_COUNT_ERROR);
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		handle_error(mlx_errno);
-	load_map(fd, &fdf.map);
-	close(fd);
+	load_map(argv[1], &fdf.map);
 	
 	init_fdf(&fdf);
 	

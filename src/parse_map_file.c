@@ -6,150 +6,130 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 16:06:51 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:00:25 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/* test functions - remove before evaluation */
-void	print_map_so_far(int row, point_t **map)
-{
-	int	i = 0;
-
-	ft_printf("ROW %d: [", row);
-	while (!(map[row][i].last))
-	{
-		ft_printf("%i	", map[row][i].Z);
-		if (map[row][i].last == true)
-			ft_printf(".");
-		i++;
-	}
-	ft_printf("]\n");
-}
-/* --- */
-
-/* int	get_map_width(map_t *map)
-{
-	int	i;
-	int	width;
-	int comp;
-	
-	i = 0;
-	comp = 0;
-	while (i < map->height)
-	{
-		width = 0;
-		while (!map->pt_array[i][width].last)
-			width++;
-		if (width > comp)
-			comp = width;
-		i++;
-	}
-	return (comp);
-} */
-
-int	get_row_width(char **pts)
-{
-	int	width;
-
-	width = 0;
-	while (pts[width])
-		width++;
-	ft_printf("width: %d\n", width);
-	return (width);
-}
-
-static int alloc_map_row(map_t *map, int row, int width)
-{
-	int 	i;
-	
-	map->pt_array = malloc(sizeof(point_t)); 
-	if (map->pt_array == NULL)
-		handle_error(EXIT_FAILURE);
-	map->pt_array[row] = malloc(sizeof(point_t) * (width + 1));
-	if (map->pt_array[row])
-		return (-1);
-	i = 0;
-	while (i < width)
-	{
-		map->pt_array[row][i].Z = 0;
-		map->pt_array[row][i].colour = 0;
-		map->pt_array[row][i].last = false;
-		i++;
-	}
-	map->pt_array[row][i].last = true;
-	ft_printf("alloced row %d of width %d\n", row, width);
-	return (0);
-}
-
-static void	set_map_points(map_t *map, char **pts, int row)
-{	
-	int		i;
-	int		j;
-	
-	
-	i = 0;
-	ft_printf("pts are: ");
-	while (pts[i])
-	{
-		ft_printf(" %s ", pts[i]);
-		i++;
-	}
-	ft_printf("\n");
-	
-	i = 0;
-	while (pts[i])
-	{
-		j = 0;
-		// ft_printf("i is %d and value is %s\n", i, pts[i]);
-		while (pts[i][j] != '\0' && pts[i][j] != '\n')
-		{
-			// ft_printf("j is %d and char is %c\n", j, pts[i][j]);
-			if (!ft_isdigit(pts[i][j]) && !is_hexa_letter(pts[i][j]) 
-			&& pts[i][j] != 'x')
-				handle_error(EXIT_INVALID_MAP);
-			if (pts[i][j] == ',')
-				map->pt_array[row][i].colour = ft_atoi_base(&pts[i][++j], 16);
-			j++;
-		}
-		map->pt_array[row][i].Z = ft_atoi(pts[i]);
-		i++;
-	}
-	ft_printf("map points set, returning\n");
-}
-
 void	init_map(map_t *map)
 {
-	map->height = 0;
-	map->width = 0;
+	/* ADD MISSING INITS */
 	map->pt_array = NULL;
 }
-
-int	load_map(int fd, map_t *map)
+char *read_map_data(int fd)
 {
 	char	*line;
-	char	**pts;
-	int		row;
-
-	row = 0;
-	init_map(map);
+	char	*map_data;
+	char	*temp_to_free;
+	
+	map_data = ft_calloc(1, sizeof(char));
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		pts = ft_split(line, ' ');
-		if (pts == NULL)
-			handle_error(EXIT_MALLOC_FAIL);
-		alloc_map_row(map, row, get_row_width(pts)); 
-		set_map_points(map, pts, row);
-		print_map_so_far(row, map->pt_array);
-		row++;
+		temp_to_free = map_data;
+		map_data = ft_strjoin(map_data, line);		
+		free(temp_to_free);
 	}
-	map->height = row;
-	map->width = get_row_width(pts);
-	free(line);
+	free(line);	
+	return (map_data);
+}
+void	set_map_dimensions(map_t *map)
+{
+	int	pt_count;
+	int	i;
+
+	i = -1;
+	pt_count = 0;
+	while(map->map_data[++i])
+	{
+		if (map->map_data[i] == '\n' && map->map_data[i + 1] == '\0')
+			break ;
+		if (ft_isalnum(map->map_data[i]) && (map->map_data[i + 1] == '\0' \
+			|| map->map_data[i] == ' ' || map->map_data[i] == '\n')) 
+			pt_count++;// is a valid input and next one is a space or newline add to the counter of elements
+		if	(map->map_data[i] == '\n')
+		{
+			map->dim.axis[Y]++;
+			if (map->dim.axis[X] == 0)
+				map->dim.axis[X] = pt_count;
+			if (pt_count != map->dim.axis[X])
+				handle_error(EXIT_FAILURE);
+			pt_count = 0;
+		}
+	}
+	if (pt_count != 0 && pt_count != map->dim.axis[X])
+		handle_error(EXIT_FAILURE); // handle map error
+	map->dim.axis[Y]++;
+}
+
+void	add_points(char *line, map_t *map, int line_number)
+{
+	char **pts;
+	int	idx;
+	
+	pts = ft_split(line, ' ');
+	idx = 0;
+	while (pts[idx] && pts[idx][0] != '\n')
+	{
+		// check if its valid input
+		map->pt_array[idx].axis[Z] = ft_atoi(pts[idx]);
+		map->pt_array[idx].axis[X] = idx - map->dim.axis[X] / 2;
+		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
+		map->pt_array[idx].fill_color = true;
+		map->pt_array[idx].colour = DEFAULT_COLOUR;
+		if (ft_strchr(pts[idx], ','))
+			map->pt_array[idx].hex_colour = set_hexcolour(pts[idx]);
+		if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
+			map->dim.axis[Z] = map->pt_array[idx].axis[Z];
+		// need to check the other values?
+		idx++;
+	}
 	free_strs(pts);
+}
+
+void	set_map_points(map_t *map)
+{
+	int		i;
+	char	*line;
+	char	*remainder;
+	int		line_number;
+	
+	line = NULL;
+	remainder = map->map_data;
+	map->pt_array = ft_calloc(map->len, sizeof(point_t));
+	i = 0;
+	line_number = 0;
+	while (++i)
+	{
+		if (map->map_data[i] == '\n')
+		{
+			line = ft_substr(remainder, 0, &map->pt_array[i] - remainder);
+			remainder = &map->pt_array[i + 1];
+			add_points(line, map, line_number++);
+			free(line);
+		}
+		if (map->map_data[i] == '\0')
+			break ;
+	}
+	free(line);
+}
+
+int	load_map(char *map_file_path, map_t *map)
+{
+	int		fd;
+
+	init_map(map);
+	fd = open(map_file_path, O_RDONLY);
+	if (fd < 0)
+		handle_error(mlx_errno);
+	map->map_data = read_map_data(fd);
+	set_map_dimensions(map);
+	map->len = map->dim.axis[X] * map->dim.axis[Y];
+	set_map_points(map);
+	set_colours(map);
+	close(fd);
 	return (0);
 }

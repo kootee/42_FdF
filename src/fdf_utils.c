@@ -6,17 +6,19 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/29 13:50:31 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:50:58 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int32_t	get_colour(int32_t hex_val)
+int32_t	set_hexcolour(char *str)
 {
 	int32_t colour;
-
-	colour = (hex_val << 24 | hex_val << 16 | hex_val << 8);
+	
+	while(*str != ',')
+		str++;
+	colour = ft_atoi_base(++str, 16);
 	return (colour);
 }
 
