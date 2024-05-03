@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 14:11:15 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:57:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct cam_s {
 }			cam_t;
 
 typedef struct point_s {
-	float	axis[3];
+	int	axis[3];
 	int32_t	colour;
 	int32_t	hex_colour;
 	bool	fill_color;
