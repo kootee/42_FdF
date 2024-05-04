@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/03 14:57:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/04 14:33:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 # include <stdio.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <math.h>
 # include "MLX42.h"
 # include "libft.h"
 
-# define WIDTH	100
-# define HEIGHT	100
+# define WIDTH	512
+# define HEIGHT	512
 
 # define BLACK		0x000000
 # define MAGENTA	0xff0099
@@ -46,7 +47,6 @@ typedef	struct	colours_s {
 	int32_t top;
 	int32_t bottom;
 	int32_t background;
-	int32_t top;	
 }				colours_t;
 
 typedef struct mouse_s {
@@ -69,7 +69,7 @@ typedef struct cam_s {
 }			cam_t;
 
 typedef struct point_s {
-	int	axis[3];
+	float	axis[3];
 	int32_t	colour;
 	int32_t	hex_colour;
 	bool	fill_color;
@@ -111,5 +111,12 @@ void	free_map_pts(point_t **pts);
 
 /* Map utilities */
 void    set_colours(map_t *map);
+
+/* Xiaolin Wu's line drawing algorithm functions */
+void	wu_line(point_t start, point_t end, mlx_image_t *img);
+void	draw_wire(mlx_image_t *img, point_t start, point_t end, int16_t *xpxl1, int16_t *xpxl2,  int16_t *ypxl1, int16_t *ypxl2);
+
+/* Drawing functions */
+void	plot_line(mlx_image_t *image, int16_t x, int16_t y, uint16_t alpha);
 
 #endif
