@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <MLX42/MLX42.h>
+#include "fdf.h"
 
-#define WIDTH 512
-#define HEIGHT 512
+/* #define WIDTH 512
+#define HEIGHT 512 */
 
 static mlx_image_t* image;
 
@@ -54,6 +55,12 @@ void ft_hook(void* param)
 int32_t main(void)
 {
 	mlx_t* mlx;
+	point_t start;
+	point_t end;
+	start.axis[X] = 30;
+	start.axis[Y] = 20;
+	end.axis[X] = 250;
+	end.axis[Y] = 150;
 
 	// Gotta error check this stuff
 	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
@@ -73,7 +80,8 @@ int32_t main(void)
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	
+	//wu_line(start, end, image);
+
 	mlx_loop_hook(mlx, ft_randomize, mlx);
 	mlx_loop_hook(mlx, ft_hook, mlx);
 
