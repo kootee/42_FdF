@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 10:09:53 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:03:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static void	init_fdf(fdf_t *fdf)
 		handle_error_and_free(fdf, mlx_errno);
 
 	/* Put image to window */
-	if (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0)
+	fdf->win = mlx_image_to_window(fdf->mlx, fdf->img, 0, 0);
+	if (fdf->win < 0)
 		handle_error_and_free(fdf, mlx_errno);
 	
 	/* Dynamic memory allocation of necessary pointers */
-	fdf->win = NULL;
 	fdf->camera = NULL;
 	fdf->mouse = NULL;
 }
@@ -60,7 +60,7 @@ void	ft_hook(void *param)
 		mlx_close_window(fdf->mlx);
 }
 /* add above to fdf.c file */
-int32_t	main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	fdf_t	fdf;
 
@@ -69,7 +69,8 @@ int32_t	main(int argc, char **argv)
 	load_map(argv[1], &fdf.map);
 	
 	init_fdf(&fdf);
-	
+	draw_map(fdf);
+
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);
 	

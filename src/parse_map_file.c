@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 14:15:57 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:25:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void	init_map(map_t *map)
 {
-	/* ADD MISSING INITS */
-	// init colours
+	map->dim.axis[X] = 0;
+	map->dim.axis[Y] = 0;
+	map->dim.axis[Z] = 0;
+	map->len = 0;
+	map->map_data = NULL;
 	map->pt_array = NULL;
-	map->min_Z = 0; // int max or the like?
+	map->min_Z = INT32_MAX;
+	init_colours(map);
 }
 char *read_map_data(int fd)
 {

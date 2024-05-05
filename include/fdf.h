@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 14:11:15 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:29:46 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define HEIGHT	100
 
 # define BLACK		0x000000
+# define WHITE		0xffffff
 # define MAGENTA	0xff0099
 
 # define DEFAULT_COLOUR MAGENTA
@@ -110,6 +111,7 @@ void	free_strs(char **strs);
 void	free_map_pts(point_t **pts);
 
 /* Map utilities */
+void    init_colours(map_t *map);
 void    set_colours(map_t *map);
 
 #endif
