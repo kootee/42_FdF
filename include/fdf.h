@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/05 12:09:58 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:45:06 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,14 @@ void	free_map_pts(point_t **pts);
 
 /* Map utilities */
 void    init_colours(map_t *map);
-void    set_colours(map_t *map);
+void    set_point_colours(map_t *map);
+
+/* Draw functions */
+int		draw_map(fdf_t *fdf);
+
+/* Map modification functions */
+
+
 
 /* Xiaolin Wu's line drawing algorithm functions */
 void	wu_line(point_t start, point_t end, mlx_image_t *img);

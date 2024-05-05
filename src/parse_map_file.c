@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/05 12:09:10 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:45:25 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	load_map(char *map_file_path, map_t *map)
 	set_map_dimensions(map);
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
 	set_map_points(map);
-	set_colours(map);
+	set_point_colours(map);
 	close(fd);
 	return (0);
 }

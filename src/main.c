@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/02 15:03:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:43:15 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static void	init_fdf(fdf_t *fdf)
 		handle_error_and_free(fdf, mlx_errno);
 
 	/* Put image to window */
-	fdf->win = mlx_image_to_window(fdf->mlx, fdf->img, 0, 0);
-	if (fdf->win < 0)
+	if (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0)
 		handle_error_and_free(fdf, mlx_errno);
 	
 	/* Dynamic memory allocation of necessary pointers */
@@ -69,8 +68,8 @@ int	main(int argc, char **argv)
 	load_map(argv[1], &fdf.map);
 	
 	init_fdf(&fdf);
-	draw_map(fdf);
-
+	// draw_map(&fdf);
+	/* Error check */
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);
 	
