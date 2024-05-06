@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/05 13:43:15 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:05:24 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static void	init_fdf(fdf_t *fdf)
 {
 	/* Start mlx */
-	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", true); // add function to put name of map
+	fdf->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "FDF", true); // add function to put name of map
 	if (fdf->mlx == NULL)
 		handle_error(mlx_errno);
 		
 	/* Init mlx image */
-	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
+	fdf->img = mlx_new_image(fdf->mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (fdf->img == NULL)
 		handle_error_and_free(fdf, mlx_errno);
 
@@ -31,6 +31,7 @@ static void	init_fdf(fdf_t *fdf)
 	/* Dynamic memory allocation of necessary pointers */
 	fdf->camera = NULL;
 	fdf->mouse = NULL;
+	fdf->win = fdf->mlx->window;
 }
 
 void	draw_line(fdf_t *fdf)
@@ -65,8 +66,8 @@ int	main(int argc, char **argv)
 
 	if (argc != 2) 
 		handle_error(EXIT_CMD_COUNT_ERROR);
-	load_map(argv[1], &fdf.map);
 	
+	load_map(argv[1], &fdf.map);
 	init_fdf(&fdf);
 	// draw_map(&fdf);
 	/* Error check */

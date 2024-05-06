@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/05 13:45:25 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:05:59 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_map(map_t *map)
 	map->map_data = NULL;
 	map->pt_array = NULL;
 	map->min_Z = INT32_MAX;
+	map->scale = 1;
 	init_colours(map);
 }
 char *read_map_data(int fd)

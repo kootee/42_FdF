@@ -6,25 +6,154 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/05 13:34:17 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:45:16 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int set_background(fdf_t *fdf)
+void    init_projection_map(point_t *src_pts, int len, point_t *dest_pts)
 {
-    (void)fdf;
-    return (1);
+    int i;
+
+    i = 0;
+    while (i < len)
+    {
+        dest_pts[i] = src_pts[i];
+        i++;
+    }
+}
+
+point_t  isometric_project(point_t point)
+{
+ int tmp;
+
+ tmp = point.axis[X];
+ point.axis[X] = (tmp - point.axis[Y]) * cos(0.523599);
+ point.axis[Y] = (tmp + point.axis[Y]) * sin(0.523599) - point.axis[Z];
+}
+
+/* void    set_isometric_projection(fdf_t *fdf, point_t *map_projection)
+{
+    // int j;
+    // float transf_matrix[3][3];
+    while (i < 3)
+    {
+        j = 0;
+        while (j < 3)
+        {
+            transf_matrix[i][j] = 0;
+            j++;
+        }
+        i++;
+    }
+    transf_matrix[0][0] = 1;
+    transf_matrix[1][1] = 1;
+} */
+
+void    center_map_to_window(point_t *points, int len)
+{
+    int i;
+    int x_offset;
+    int y_offset;
+
+    i = 0;
+    x_offset = WIN_WIDTH / 2;
+    y_offset = WIN_HEIGHT / 2;
+    while(i < len)
+    {
+        points[i].axis[X] = points[i].axis[X] + x_offset;
+        points[i].axis[Y] = points[i].axis[Y] + y_offset;
+        // what to do with Z? check from ref
+    }
+}
+
+void    line(fdf_t *fdf, point_t start, point_t end)
+{
+    // check that the pixel is within the window
+    point_t delta;
+    point_t pixel;
+    
+    delta.axis[X] = end.axis[X] - start.axis[X];
+    delta.axis[Y] = end.axis[Y] - start.axis[Y];
+    pixels = 
+}
+/* Loop through columns */
+void    wire(point_t *point, fdf_t *fdf, int current_line_nbr)
+{
+    int i;
+    int x_end;
+    int y_end;
+    int map_width;
+    int map_height;
+    
+    i = 0;
+    map_width = (int)fdf->map.dim.axis[X];
+    map_height = (int)fdf->map.dim.axis[Y];
+    while(i < map_width)
+    {
+        x_end = i + 1;
+        if (x_end >= map_width)
+            x_end = map_width - 1;
+        y_end = i + map_width;
+        line(fdf, point[i], point[x_end]);
+        if (current_line_nbr + 1 < map_height)
+            line(fdf, point[i], point[y_end]);
+        i++;
+    }
+}
+/* Loop through rows */
+void    draw_wires(fdf_t *fdf, point_t *map_projection)
+{
+    int i;
+    
+    i = 0;
+    while (i < fdf->map.len)
+    {
+        wire(&map_projection[i], fdf, i / fdf->map.dim.axis[X]);
+        i = i + fdf->map.dim.axis[X];
+    }
+}
+
+void    scale_map(point_t *points, int scale, int len)
+{
+    int i;
+
+    i = 0;
+    while (i < len)
+    {
+        points[i].axis[X] *= scale;
+        points[i].axis[Y] *= scale;
+        points[i].axis[Z] *= scale;
+        i++;
+    }
 }
 
 int draw_map(fdf_t *fdf)
 {
-    point_t *orto_map;
+    int i;
+    point_t *map_projection;
     
-    orto_map = malloc(fdf->map.len * sizeof(point_t));
-    if (orto_map == NULL)
+    i = 0;
+    map_projection = malloc(fdf->map.len * sizeof(point_t));
+    if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL);
     set_background(fdf);
+    init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
+    
+    /* Test that the projection works */
+    i = 0;
+    while (i < fdf->map.len)
+    {
+        map_projection[i] = isometric_project(map_projection[i]);
+    }
+    /* --- */
+    // set scale ?
+    // if move on user input then move here
+    // set_isometric_projection(fdf, map_projection);
+    scale_map(map_projection, fdf->map.scale, fdf->map.len);
+    center_map_to_window(map_projection, fdf->map.len);
+    /* Draw the lines */
+    draw_wires(fdf, map_projection);
     return (1);
 }

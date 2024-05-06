@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/05 13:45:06 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:03:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "MLX42.h"
 # include "libft.h"
 
-# define WIDTH	512
-# define HEIGHT	512
+# define WIN_WIDTH	512
+# define WIN_HEIGHT	512
 
 # define BLACK		0x000000
 # define WHITE		0xffffff
@@ -77,23 +77,24 @@ typedef struct point_s {
 }				point_t;
 
 typedef struct map_s {
-	point_t		dim;
 	point_t		*pt_array;
+	point_t		dim;
 	colours_t	colours;
 	char		*map_data;
 	int			min_Z;
 	int			len;
+	float		scale;
 	// int		zoom_min;
 	// int		zoom_max;
 }				map_t;
 
 typedef struct fdf_s {
-	void	*mlx;
-	void	*win;
-	void	*img;
-	map_t	map;
-	cam_t	*camera;
-	mouse_t	*mouse;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	map_t		map;
+	void		*win; // not used?
+	cam_t		*camera;
+	mouse_t		*mouse;
 	
 }	fdf_t;
 
@@ -116,7 +117,6 @@ void    set_point_colours(map_t *map);
 
 /* Draw functions */
 int		draw_map(fdf_t *fdf);
-
 /* Map modification functions */
 
 
@@ -125,7 +125,8 @@ int		draw_map(fdf_t *fdf);
 void	wu_line(point_t start, point_t end, mlx_image_t *img);
 void	draw_wire(mlx_image_t *img, point_t start, point_t end, int16_t *xpxl1, int16_t *xpxl2,  int16_t *ypxl1, int16_t *ypxl2);
 
-/* Drawing functions */
+/* Drawing utilities */
 void	plot_line(mlx_image_t *image, int16_t x, int16_t y, uint16_t alpha);
+int		set_background(fdf_t *fdf);
 
 #endif
