@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/06 16:05:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:19:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	main(int argc, char **argv)
 
 	if (argc != 2) 
 		handle_error(EXIT_CMD_COUNT_ERROR);
-	
-	load_map(argv[1], &fdf.map);
+	if (load_map(argv[1], &fdf.map) > 0)
+		handle_error(EXIT_INVALID_MAP);
 	init_fdf(&fdf);
 	// draw_map(&fdf);
 	/* Error check */
