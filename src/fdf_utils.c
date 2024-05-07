@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/30 13:50:58 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:42:27 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,14 @@ void	free_strs(char **strs)
 		i++;
 	}
 	free(strs);
+}
+
+int	round_to_int(double n)
+{
+	int	rounded;
+
+	rounded = (int)n;
+	if (n - rounded >= 0.5)
+		rounded++;
+	return (rounded);
 }

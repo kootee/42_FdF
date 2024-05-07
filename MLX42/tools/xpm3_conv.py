@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    xpm3_conv.py                                       :+:    :+:             #
-#                                                      +:+                     #
-#    By: pvan-dij <pvan-dij@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2022/02/09 21:04:31 by pvan-dij      #+#    #+#                  #
-#    Updated: 2022/02/23 16:48:19 by lde-la-h      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    xpm3_conv.py                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/09 21:04:31 by pvan-dij          #+#    #+#              #
+#    Updated: 2024/05/07 12:56:18 by ktoivola         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ import sys
 # This script takes an XPM3 as argument and converts it to XPM42.
 
 # This is a generated dictionary from the XFree86 distribution.
-colours = {
+colors = {
 	"snow":"fffafa",
 	"ghost white":"f8f8ff",
 	"ghostwhite":"f8f8ff",
@@ -796,7 +796,7 @@ def main():
 		if "#" not in out[2:]:
 			repcol = out[cpp+1:]
 			temp = repcol[:-3].lower()
-			repcol = colours[repcol[:-3].lower()]
+			repcol = colors[repcol[:-3].lower()]
 			out = out[:cpp+1] + "#" + repcol.upper() + "FF\n"
 			if temp == "none":
 				out = out[:-3] + "00\n" 

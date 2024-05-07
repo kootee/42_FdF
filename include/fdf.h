@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/06 16:03:36 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:23:57 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,15 @@ typedef	enum {
 	X, Y, Z
 } Coordinates;
 
-typedef	struct	colours_s {
+typedef	enum {
+	R, G, B, A
+} rgb_values;
+
+typedef	struct	colors_s {
 	int32_t top;
 	int32_t bottom;
 	int32_t background;
-}				colours_t;
+}				colors_t;
 
 typedef struct mouse_s {
 	int	button;
@@ -70,16 +74,15 @@ typedef struct cam_s {
 }			cam_t;
 
 typedef struct point_s {
-	float	axis[3];
 	int32_t	colour;
 	int32_t	hex_colour;
-	bool	fill_color;
+	float	axis[3];
 }				point_t;
 
 typedef struct map_s {
 	point_t		*pt_array;
 	point_t		dim;
-	colours_t	colours;
+	colors_t	colors;
 	char		*map_data;
 	int			min_Z;
 	int			len;
@@ -106,27 +109,26 @@ void	handle_error(int errno);
 void	handle_error_and_free(fdf_t *fdf, int errno);
 
 /* FDF utility functions */
-int32_t	get_colour(int32_t hex_val);
 bool	is_hexa_letter(char c);
 void	free_strs(char **strs);
 void	free_map_pts(point_t **pts);
+int		round_to_int(double n);
 
 /* Map utilities */
-void    init_colours(map_t *map);
-void    set_point_colours(map_t *map);
+void    init_colors(map_t *map);
+void    set_point_colors(map_t *map, point_t *pts, colors_t clrs, int len);
 
 /* Draw functions */
 int		draw_map(fdf_t *fdf);
+
+/* Colour functions */
+int32_t	get_colour(int32_t hex_val);
+int32_t	set_hexcolour(char *str);
+int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
+
 /* Map modification functions */
 
-
-
-/* Xiaolin Wu's line drawing algorithm functions */
-void	wu_line(point_t start, point_t end, mlx_image_t *img);
-void	draw_wire(mlx_image_t *img, point_t start, point_t end, int16_t *xpxl1, int16_t *xpxl2,  int16_t *ypxl1, int16_t *ypxl2);
-
 /* Drawing utilities */
-void	plot_line(mlx_image_t *image, int16_t x, int16_t y, uint16_t alpha);
-int		set_background(fdf_t *fdf);
+void	set_background(fdf_t *fdf);
 
 #endif

@@ -57,13 +57,9 @@ int32_t main(void)
 	mlx_t* mlx;
 	point_t start;
 	point_t end;
-	start.axis[X] = 30;
-	start.axis[Y] = 20;
-	end.axis[X] = 250;
-	end.axis[Y] = 150;
 
 	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	if (!(mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);

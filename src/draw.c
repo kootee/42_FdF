@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/06 16:45:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:21:47 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ point_t  isometric_project(point_t point)
  tmp = point.axis[X];
  point.axis[X] = (tmp - point.axis[Y]) * cos(0.523599);
  point.axis[Y] = (tmp + point.axis[Y]) * sin(0.523599) - point.axis[Z];
+ return (point);
 }
 
 /* void    set_isometric_projection(fdf_t *fdf, point_t *map_projection)
@@ -71,12 +72,28 @@ void    center_map_to_window(point_t *points, int len)
 void    line(fdf_t *fdf, point_t start, point_t end)
 {
     // check that the pixel is within the window
-    point_t delta;
-    point_t pixel;
+    point_t delta_v;
+    point_t pixel; // the individual pixel to be drawn
+    int     line;
+    int     len;
     
-    delta.axis[X] = end.axis[X] - start.axis[X];
-    delta.axis[Y] = end.axis[Y] - start.axis[Y];
-    pixels = 
+    delta_v.axis[X] = end.axis[X] - start.axis[X];
+    delta_v.axis[Y] = end.axis[Y] - start.axis[Y];
+    line = sqrt((delta_v.axis[X] * delta_v.axis[X]) + \
+        (delta_v.axis[Y] * delta_v.axis[Y]));
+    len = line;
+    delta_v.axis[X] /= line;
+    delta_v.axis[Y] /= line;
+    pixel.axis[X] = start.axis[X];
+    pixel.axis[Y] = start.axis[Y];
+    while (line > 0)
+    {
+        pixel.colour = gradient(start.colour, end.colour, len, len - line);
+        mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.colour);
+        pixel.axis[X] += delta_v.axis[X];
+        pixel.axis[Y] += delta_v.axis[Y];
+        line -= 1;
+    }
 }
 /* Loop through columns */
 void    wire(point_t *point, fdf_t *fdf, int current_line_nbr)

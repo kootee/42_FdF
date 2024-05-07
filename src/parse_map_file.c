@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/06 16:05:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:14:49 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_map(map_t *map)
 	map->pt_array = NULL;
 	map->min_Z = INT32_MAX;
 	map->scale = 1;
-	init_colours(map);
+	init_colors(map);
 }
 char *read_map_data(int fd)
 {
@@ -85,7 +85,6 @@ void	add_points(char *line, map_t *map, int line_number)
 		map->pt_array[idx].axis[Z] = ft_atoi(pts[idx]);
 		map->pt_array[idx].axis[X] = idx - map->dim.axis[X] / 2;
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
-		map->pt_array[idx].fill_color = true;
 		map->pt_array[idx].colour = DEFAULT_COLOUR;
 		if (ft_strchr(pts[idx], ','))
 			map->pt_array[idx].hex_colour = set_hexcolour(pts[idx]);
@@ -115,8 +114,9 @@ void	set_map_points(map_t *map)
 	{
 		if (map->map_data[i] == '\n')
 		{
-			line = ft_substr(remainder, 0, &map->pt_array[i] - remainder);
-			remainder = &map->pt_array[i + 1];
+			line = ft_substr(remainder, 0, \
+							((char *)&map->pt_array[i] - remainder));
+			remainder = (char *)&map->pt_array[i + 1];
 			add_points(line, map, line_number++);
 			free(line);
 		}
@@ -138,7 +138,7 @@ int	load_map(char *map_file_path, map_t *map)
 	set_map_dimensions(map);
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
 	set_map_points(map);
-	set_point_colours(map);
+	set_point_colors(map, map->pt_array, map->colors, map->len);
 	close(fd);
 	return (0);
 }

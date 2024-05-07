@@ -6,40 +6,41 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/06 10:50:49 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:02:39 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void    init_colours(map_t *map)
+void    init_colors(map_t *map)
 {
-    map->colours.background = BLACK;
-    map->colours.bottom = WHITE;
-    map->colours.top = MAGENTA;
+    map->colors.background = BLACK;
+    map->colors.bottom = WHITE;
+    map->colors.top = MAGENTA;
 }
 /* Add colour to all the points, according to the Z position or given colour */
-void    set_point_colours(map_t *map)
+void    set_point_colors(map_t *map, point_t *points, colors_t colors, int len)
 {
     int i;
+    int z_len;
     
     i = 0;
-    while (i < map->len)
+    z_len = map->dim.axis[Z] - map->min_Z;
+    while (i < len)
     {
-        init_point_colour((int)map->dim.axis[Z], map->min_Z, &map->pt_array[i], \
-        map->colours);
+        points[i].colour = DEFAULT_COLOUR;
+        if (points[i].hex_colour > 0)
+        {
+            points[i].colour = points[i].hex_colour;
+        }
+        else if (points[i].axis[Z] == map->min_Z)
+            points[i].colour = colors.bottom;
+        else if (points[i].axis[Z] == map->dim.axis[Z])
+            points[i].colour = colors.top;
+        else
+            points[i].colour = gradient(colors.bottom, colors.top, \
+                                z_len, z_len - points[i].axis[Z]);
         i++;
     }
-}
-
-void    init_point_colour(int max_z, int min_z, point_t *point, colours_t colours)
-{
-    point->fill_color = true;
-    point->colour = DEFAULT_COLOUR;
-    if (point->hex_colour > 0)
-    {
-        point->colour = point->hex_colour;
-        return;
-    }
-    /* set the rest of the colours depending on the position according to Z */
+    /* set the rest of the colors depending on the position according to Z */
 }
