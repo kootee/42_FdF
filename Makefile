@@ -21,7 +21,7 @@ libs:
 	@${MAKE} -C libft
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
