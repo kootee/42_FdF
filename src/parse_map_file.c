@@ -6,11 +6,12 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 13:49:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:08:07 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
 void	init_map(map_t *map)
 {
@@ -82,12 +83,14 @@ void	add_points(char *line, map_t *map, int line_number)
 	char **pts;
 	int	idx;
 	
-	pts = ft_split(line, ' ');
+	pts = ft_split(line, ' '); // malloc protect
 	idx = 0;
 	while (pts[idx] && pts[idx][0] != '\n')
 	{
 		// check if its valid input
 		map->pt_array[idx].axis[Z] = ft_atoi(pts[idx]);
+		printf("axis x %d divided by 2 %d\n", (int)map->dim.axis[X], (int)map->dim.axis[X] / 2);
+		printf("axis x %f divided by 2 %f\n", map->dim.axis[X],  map->dim.axis[X] / 2);
 		map->pt_array[idx].axis[X] = idx - map->dim.axis[X] / 2;
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
 		map->pt_array[idx].colour = DEFAULT_COLOUR;
@@ -98,6 +101,8 @@ void	add_points(char *line, map_t *map, int line_number)
 		if (map->pt_array[idx].axis[Z] < map->min_Z)
 			map->min_Z = map->pt_array[idx].axis[Z];
 		// need to check the other values?
+		printf("pt id is %d and stored values X: %f Y: %f Z: %f\n", idx, map->pt_array[idx].axis[X], map->pt_array[idx].axis[Y], map->pt_array[idx].axis[Z]);
+		fflush(stdout);
 		idx++;
 	}
 	free_strs(pts);
@@ -117,18 +122,19 @@ void	set_map_points(map_t *map)
 	line_number = 0;
 	while (++i)
 	{
-		if (map->map_data[i] == '\n')
+		if (map->map_data[i] == '\n' || map->map_data[i] == '\0')
 		{
 			line = ft_substr(remainder, 0, \
-							((char *)&map->pt_array[i] - remainder));
-			remainder = (char *)&map->pt_array[i + 1];
+							(&map->map_data[i] - remainder));
+			ft_printf("line is %s\n", line);
+			remainder = &map->map_data[i + 1];
 			add_points(line, map, line_number++);
 			free(line);
 		}
 		if (map->map_data[i] == '\0')
 			break ;
 	}
-	free(line);
+	//free(line);
 }
 
 int	load_map(char *map_file_path, map_t *map)
