@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 14:08:07 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:19:04 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void	add_points(char *line, map_t *map, int line_number)
 		printf("axis x %f divided by 2 %f\n", map->dim.axis[X],  map->dim.axis[X] / 2);
 		map->pt_array[idx].axis[X] = idx - map->dim.axis[X] / 2;
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
-		map->pt_array[idx].colour = DEFAULT_COLOUR;
+		map->pt_array[idx].color = DEFAULT_COLOR;
 		if (ft_strchr(pts[idx], ','))
-			map->pt_array[idx].hex_colour = set_hexcolour(pts[idx]);
+			map->pt_array[idx].hex_color = set_hexcolor(pts[idx]);
 		if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
 			map->dim.axis[Z] = map->pt_array[idx].axis[Z];
 		if (map->pt_array[idx].axis[Z] < map->min_Z)

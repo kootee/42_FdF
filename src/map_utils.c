@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 13:02:39 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:18:17 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void    init_colors(map_t *map)
 {
-    map->colors.background = BLACK;
+    map->colors.background = GREEN;
     map->colors.bottom = WHITE;
     map->colors.top = MAGENTA;
 }
-/* Add colour to all the points, according to the Z position or given colour */
+/* Add color to all the points, according to the Z position or given color */
 void    set_point_colors(map_t *map, point_t *points, colors_t colors, int len)
 {
     int i;
@@ -28,17 +28,17 @@ void    set_point_colors(map_t *map, point_t *points, colors_t colors, int len)
     z_len = map->dim.axis[Z] - map->min_Z;
     while (i < len)
     {
-        points[i].colour = DEFAULT_COLOUR;
-        if (points[i].hex_colour > 0)
+        points[i].color = DEFAULT_COLOR;
+        if (points[i].hex_color > 0)
         {
-            points[i].colour = points[i].hex_colour;
+            points[i].color = points[i].hex_color;
         }
         else if (points[i].axis[Z] == map->min_Z)
-            points[i].colour = colors.bottom;
+            points[i].color = colors.bottom;
         else if (points[i].axis[Z] == map->dim.axis[Z])
-            points[i].colour = colors.top;
+            points[i].color = colors.top;
         else
-            points[i].colour = gradient(colors.bottom, colors.top, \
+            points[i].color = gradient(colors.bottom, colors.top, \
                                 z_len, z_len - points[i].axis[Z]);
         i++;
     }

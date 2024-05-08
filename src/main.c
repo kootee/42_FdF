@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 15:21:01 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:32:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void	draw_line(fdf_t *fdf)
 		mlx_put_pixel(fdf->img, 0 + i, 0 + i, 255);
 		while (j++ < fdf->img[0].count)
 		{
-			fdf->img[0].pixels[i * 4] = 255; 
-			fdf->img[0].pixels[i * 4 + 1] = 0; 
-			fdf->img[0].pixels[i * 4 + 2] = 0; 
-			fdf->img[0].pixels[i * 4 + 3] = 255;
+			fdf->img->pixels[i * 4] = 255; 
+			fdf->img->pixels[i * 4 + 1] = 0; 
+			fdf->img->pixels[i * 4 + 2] = 0; 
+			fdf->img->pixels[i * 4 + 3] = 255;
 			//fdf->img[0].pixels[i * 4] = 255;
 			//ft_printf("pixel data is %d \n", fdf->img[0].pixels[j]);
 		}

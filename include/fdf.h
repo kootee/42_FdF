@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 14:31:23 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:29:59 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@
 # define BLACK		0x000000
 # define WHITE		0xffffff
 # define MAGENTA	0xff0099
+# define GREEN		0xff9900
 
-# define DEFAULT_COLOUR MAGENTA
+# define DEFAULT_COLOR MAGENTA
 
 typedef enum {
 	EXIT_CMD_COUNT_ERROR = 200,
@@ -74,8 +75,8 @@ typedef struct cam_s {
 }			cam_t;
 
 typedef struct point_s {
-	int32_t	colour;
-	int32_t	hex_colour;
+	int32_t	color;
+	int32_t	hex_color;
 	float	axis[3];
 }				point_t;
 
@@ -125,12 +126,12 @@ int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
 
 /* Colour functions */
 // int32_t	get_colour(int32_t hex_val);
-int32_t	set_hexcolour(char *str);
+int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
 
 /* Map modification functions */
 
 /* Drawing utilities */
-void	set_background(fdf_t *fdf);
+void	set_background(fdf_t *fdf, int color);
 
 #endif

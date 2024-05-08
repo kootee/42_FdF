@@ -6,11 +6,12 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 14:55:57 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:06:40 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <unistd.h>
 
 void    init_projection_map(point_t *src_pts, int len, point_t *dest_pts)
 {
@@ -52,7 +53,7 @@ point_t  isometric_project(point_t point)
     transf_matrix[1][1] = 1;
 } */
 
-void    center_map_to_window(point_t *points, int len)
+void    center_to_window(point_t *points, int len)
 {
     int i;
     int x_offset;
@@ -88,8 +89,8 @@ void    line(fdf_t *fdf, point_t start, point_t end)
     pixel.axis[Y] = start.axis[Y];
     while (line > 0)
     {
-        pixel.colour = gradient(start.colour, end.colour, len, len - line);
-        mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.colour); // or ft_putpix FIX later
+        pixel.color = gradient(start.color, end.color, len, len - line);
+        mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.color); // or ft_putpix FIX later
         pixel.axis[X] += delta_v.axis[X];
         pixel.axis[Y] += delta_v.axis[Y];
         line -= 1;
@@ -146,6 +147,22 @@ void    scale_map(point_t *points, int scale, int len)
     }
 }
 
+void    print_map(point_t *pts, map_t *map)
+{
+    int i = 0;
+    int j = 0;
+    while (i < map->dim.axis[Y])
+    {
+        while (j < map->dim.axis[X])
+        {
+            printf("% 0.2f,%0.2f ", pts[i].axis[X], pts[i].axis[Y]);
+            j++;
+            i++;
+        }
+        j = 0;
+    }
+}
+
 int draw_map(fdf_t *fdf)
 {
     int i;
@@ -154,19 +171,17 @@ int draw_map(fdf_t *fdf)
     i = 0;
     map_projection = malloc(fdf->map.len * sizeof(point_t));
     if (map_projection == NULL)
-        handle_error(EXIT_MALLOC_FAIL);
-    set_background(fdf);
-    
-    /* Test that the projection works */
-    // init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
-    // set scale ?
-    // if move on user input then move here
- /*    while (i < fdf->map.len)
+        handle_error(EXIT_MALLOC_FAIL); // go to free functions
+    set_background(fdf, fdf->map.colors.background);
+    init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
+    print_map(fdf->map.pt_array, &fdf->map);
+/*     while (i < fdf->map.len)
     {
         map_projection[i] = isometric_project(map_projection[i]);
-    }
+    } */
     scale_map(map_projection, fdf->map.scale, fdf->map.len);
-    center_map_to_window(map_projection, fdf->map.len);
-    draw_wires(fdf, map_projection); */
+    draw_wires(fdf, map_projection);
+    // center_to_window(map_projection, fdf->map.len);
+    // if move on user input then move here
     return (0);
 }

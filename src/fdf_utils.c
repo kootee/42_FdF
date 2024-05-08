@@ -6,20 +6,20 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 10:42:27 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:16:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int32_t	set_hexcolour(char *str)
+int32_t	set_hexcolor(char *str)
 {
-	int32_t colour;
+	int32_t color;
 	
 	while(*str != ',')
 		str++;
-	colour = ft_atoi_base(++str, 16);
-	return (colour);
+	color = ft_atoi_base(++str, 16);
+	return (color);
 }
 
 bool	is_hexa_letter(char c)
