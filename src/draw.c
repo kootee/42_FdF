@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 12:21:47 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:55:57 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void    line(fdf_t *fdf, point_t start, point_t end)
     while (line > 0)
     {
         pixel.colour = gradient(start.colour, end.colour, len, len - line);
-        mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.colour);
+        mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.colour); // or ft_putpix FIX later
         pixel.axis[X] += delta_v.axis[X];
         pixel.axis[Y] += delta_v.axis[Y];
         line -= 1;
@@ -156,21 +156,17 @@ int draw_map(fdf_t *fdf)
     if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL);
     set_background(fdf);
-    init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
     
     /* Test that the projection works */
-    i = 0;
-    while (i < fdf->map.len)
+    // init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
+    // set scale ?
+    // if move on user input then move here
+ /*    while (i < fdf->map.len)
     {
         map_projection[i] = isometric_project(map_projection[i]);
     }
-    /* --- */
-    // set scale ?
-    // if move on user input then move here
-    // set_isometric_projection(fdf, map_projection);
     scale_map(map_projection, fdf->map.scale, fdf->map.len);
     center_map_to_window(map_projection, fdf->map.len);
-    /* Draw the lines */
-    draw_wires(fdf, map_projection);
-    return (1);
+    draw_wires(fdf, map_projection); */
+    return (0);
 }

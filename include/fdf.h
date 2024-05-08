@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 13:23:57 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:31:23 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,11 @@ void    set_point_colors(map_t *map, point_t *pts, colors_t clrs, int len);
 
 /* Draw functions */
 int		draw_map(fdf_t *fdf);
+int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
+
 
 /* Colour functions */
-int32_t	get_colour(int32_t hex_val);
+// int32_t	get_colour(int32_t hex_val);
 int32_t	set_hexcolour(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
 

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 15:19:22 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:21:01 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	init_fdf(fdf_t *fdf)
 {
+	int image_instance_index;
+	int image_instance_index2;
 	/* Start mlx */
 	fdf->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "FDF", true); // add function to put name of map
 	if (fdf->mlx == NULL)
@@ -25,23 +27,39 @@ static void	init_fdf(fdf_t *fdf)
 		handle_error_and_free(fdf, mlx_errno);
 
 	/* Put image to window */
-	if (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0)
+	image_instance_index = mlx_image_to_window(fdf->mlx, fdf->img, 0, 0);
+	image_instance_index2 = mlx_image_to_window(fdf->mlx, fdf->img, 0, 0);
+	if (image_instance_index != 0)
 		handle_error_and_free(fdf, mlx_errno);
 	
 	/* Dynamic memory allocation of necessary pointers */
 	fdf->camera = NULL;
 	fdf->mouse = NULL;
 	fdf->win = fdf->mlx->window;
+	ft_printf("img instance idx is %d\n", image_instance_index);
+
+	ft_printf("img instance idx is %d\n", image_instance_index2);
 }
 
 void	draw_line(fdf_t *fdf)
 {
 	int i = 0;
+	size_t j = 0;
 	mlx_t *mlx_inst = fdf->mlx;
 	ft_printf("pressed space \n");
 	while(i < mlx_inst->width && i < mlx_inst->height)
 	{
 		mlx_put_pixel(fdf->img, 0 + i, 0 + i, 255);
+		while (j++ < fdf->img[0].count)
+		{
+			fdf->img[0].pixels[i * 4] = 255; 
+			fdf->img[0].pixels[i * 4 + 1] = 0; 
+			fdf->img[0].pixels[i * 4 + 2] = 0; 
+			fdf->img[0].pixels[i * 4 + 3] = 255;
+			//fdf->img[0].pixels[i * 4] = 255;
+			//ft_printf("pixel data is %d \n", fdf->img[0].pixels[j]);
+		}
+		//ft_putpixel(fdf->img, 0 + i, 0 + i, 255);
 		i++;
 	}
 }
@@ -69,7 +87,7 @@ int	main(int argc, char **argv)
 	if (load_map(argv[1], &fdf.map) > 0)
 		handle_error(EXIT_INVALID_MAP);
 	init_fdf(&fdf);
-	// draw_map(&fdf);
+	draw_map(&fdf);
 	/* Error check */
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);

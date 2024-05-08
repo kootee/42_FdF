@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/07 12:56:18 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:32:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,15 @@ int get_endian() {
 	return (endian);
 }
 
-void	set_pixel_colour(uint8_t *pixel_buffer, int colour, int alpha)
+void	set_pixel_colour(uint8_t *pixel_buffer, int color, int alpha)
 {
-	if (get_endian() == 0)
+
+	*(pixel_buffer++) = (uint8_t)(color >> 24);
+	*(pixel_buffer++) = (uint8_t)(color >> 16);
+	*(pixel_buffer++) = (uint8_t)(color >> 8);
+	*(pixel_buffer++) = (uint8_t)(alpha & 0xFF);
+	
+	/* if (get_endian() == 0)
 	{
 		pixel_buffer[0] = alpha;
 		pixel_buffer[1] = (colour >> 16) & 0xFF;
@@ -58,7 +64,7 @@ void	set_pixel_colour(uint8_t *pixel_buffer, int colour, int alpha)
 		pixel_buffer[1] = (colour >> 8) & 0xFF;
 		pixel_buffer[2] = (colour >> 16) & 0xFF;
 		pixel_buffer[3] = alpha;
-	}
+	} */
 }
 
 void set_background(fdf_t *fdf)
@@ -75,7 +81,7 @@ void set_background(fdf_t *fdf)
 		while (pixel_grid[X] < WIN_WIDTH)
 		{
 			pixel = (pixel_grid[Y] * fdf->img->width) + (pixel_grid[X] * 4);
-			set_pixel_colour(&fdf->img->pixels[pixel], background_colour, 1);
+			set_pixel_colour(&fdf->img->pixels[pixel], background_colour, 50);
 			pixel_grid[X]++;
 		}
 		pixel_grid[Y]++;
@@ -83,16 +89,16 @@ void set_background(fdf_t *fdf)
 	}
 }
 
-/* int	ft_putpixel(fdf_t *fdf, point_t pixel_data)
+int	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color)
 {
 	int	pixel;
 	int	alpha;
 	
-	alpha = 0;
-	if (pixel_data.axis[X] > WIN_WIDTH || pixel_data.axis[Y] > WIN_WIDTH \
-		|| pixel_data.axis[X] < 0 || pixel_data.axis[Y] < 0)
+	alpha = 0xFF;
+	if (x > WIN_WIDTH || y > WIN_WIDTH \
+		|| x < 0 || y < 0)
 		return (-1);
-	pixel = ((int)pixel_data.axis[Y] * WIN_WIDTH * 4) + ((int)pixel_data.axis[X] * 4);
-	set_pixel_colour(&fdf->img->pixels[pixel], pixel_data.colour, 0);
+	pixel = ((int)y * WIN_WIDTH * 4) + ((int)x * 4);
+	set_pixel_colour(&img[0].pixels[pixel], color, 50);
 	return (0);
-} */
+}
