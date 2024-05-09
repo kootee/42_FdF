@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 17:06:40 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:53:31 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void    init_projection_map(point_t *src_pts, int len, point_t *dest_pts)
     while (i < len)
     {
         dest_pts[i] = src_pts[i];
+        printf("pt x%0.2f and y%0.2f and z%0.2f\n", src_pts[i].axis[X], src_pts[i].axis[Y], src_pts[i].axis[Z]);
         i++;
     }
 }
@@ -66,6 +67,7 @@ void    center_to_window(point_t *points, int len)
     {
         points[i].axis[X] = points[i].axis[X] + x_offset;
         points[i].axis[Y] = points[i].axis[Y] + y_offset;
+        i++;
         // what to do with Z? check from ref
     }
 }
@@ -90,7 +92,8 @@ void    line(fdf_t *fdf, point_t start, point_t end)
     while (line > 0)
     {
         pixel.color = gradient(start.color, end.color, len, len - line);
-        mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.color); // or ft_putpix FIX later
+        ft_putpixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.color);
+        // mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.color); // or ft_putpix FIX later
         pixel.axis[X] += delta_v.axis[X];
         pixel.axis[Y] += delta_v.axis[Y];
         line -= 1;
@@ -147,22 +150,6 @@ void    scale_map(point_t *points, int scale, int len)
     }
 }
 
-void    print_map(point_t *pts, map_t *map)
-{
-    int i = 0;
-    int j = 0;
-    while (i < map->dim.axis[Y])
-    {
-        while (j < map->dim.axis[X])
-        {
-            printf("% 0.2f,%0.2f ", pts[i].axis[X], pts[i].axis[Y]);
-            j++;
-            i++;
-        }
-        j = 0;
-    }
-}
-
 int draw_map(fdf_t *fdf)
 {
     int i;
@@ -174,14 +161,20 @@ int draw_map(fdf_t *fdf)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     set_background(fdf, fdf->map.colors.background);
     init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
-    print_map(fdf->map.pt_array, &fdf->map);
+    printf("printing all now");
+/*     while (i < fdf->map.len)
+    {
+        printf("pt id is %d and stored values X: %0.4f Y: %0.4f Z: %0.4f\n", i, map_projection[i].axis[X], map_projection[i].axis[Y], map_projection[i].axis[Z]);
+        printf("\n");
+        i++;
+    } */
+    center_to_window(map_projection, fdf->map.len);
 /*     while (i < fdf->map.len)
     {
         map_projection[i] = isometric_project(map_projection[i]);
     } */
-    scale_map(map_projection, fdf->map.scale, fdf->map.len);
+    scale_map(map_projection, (int)2.5, fdf->map.len);
     draw_wires(fdf, map_projection);
-    // center_to_window(map_projection, fdf->map.len);
     // if move on user input then move here
     return (0);
 }

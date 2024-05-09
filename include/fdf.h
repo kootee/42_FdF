@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 16:29:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:18:31 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define BLACK		0x000000
 # define WHITE		0xffffff
 # define MAGENTA	0xff0099
-# define GREEN		0xff9900
+# define LIGHTBLUE	0x87CEFA
 
 # define DEFAULT_COLOR MAGENTA
 

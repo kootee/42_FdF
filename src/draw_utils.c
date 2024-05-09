@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 16:33:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:39:04 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,21 @@ int get_endian() {
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha)
 {
 
-	*(pixel_buffer++) = (uint8_t)(color >> 24);
-	*(pixel_buffer++) = (uint8_t)(color >> 16);
-	*(pixel_buffer++) = (uint8_t)(color >> 8);
-	*(pixel_buffer++) = (uint8_t)(alpha & 0xFF);
-	
-	/* if (get_endian() == 0)
+	if (get_endian() == 0)
 	{
-		pixel_buffer[0] = alpha;
-		pixel_buffer[1] = (color >> 16) & 0xFF;
-		pixel_buffer[2] = (color >> 8) & 0xFF;
-		pixel_buffer[3] = (color) & 0xFF;
+		pixel_buffer[R] = color;
+		pixel_buffer[G] = color >> 8;
+		pixel_buffer[B] = color >> 16;
+		pixel_buffer[A] = alpha;
 	}
 	else
 	{
-		pixel_buffer[0] = (color) & 0xFF;
-		pixel_buffer[1] = (color >> 8) & 0xFF;
-		pixel_buffer[2] = (color >> 16) & 0xFF;
-		pixel_buffer[3] = alpha;
-	} */
+		pixel_buffer[R] = color >> 16;
+		pixel_buffer[G] = color >> 8;
+		pixel_buffer[B] = color;
+		pixel_buffer[A] = alpha;
+	}
+	// printf("R: %02X, G: %02X, B: %02X, A: %02X\n", pixel_buffer[R], pixel_buffer[G], pixel_buffer[B], pixel_buffer[A]);
 }
 
 void set_background(fdf_t *fdf, int background_color)
@@ -79,7 +75,7 @@ void set_background(fdf_t *fdf, int background_color)
 		while (grid[X] < WIN_WIDTH)
 		{
 			pixel = (grid[Y] * (fdf->img->width * 4)) + (grid[X] * 4);
-			set_pixel_color(&fdf->img->pixels[pixel], background_color, 50);
+			set_pixel_color(&fdf->img->pixels[pixel], background_color, 255);
 			grid[X]++;
 		}
 		grid[Y]++;
@@ -97,6 +93,6 @@ int	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color)
 		|| x < 0 || y < 0)
 		return (-1);
 	pixel = ((int)y * WIN_WIDTH * 4) + ((int)x * 4);
-	set_pixel_color(&img[0].pixels[pixel], color, 50);
+	set_pixel_color(&img->pixels[pixel], color, 255);
 	return (0);
 }

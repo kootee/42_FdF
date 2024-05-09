@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 16:32:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:24:54 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,17 @@ static void	init_fdf(fdf_t *fdf)
 	fdf->camera = NULL;
 	fdf->mouse = NULL;
 	fdf->win = fdf->mlx->window;
-	ft_printf("img instance idx is %d\n", image_instance_index);
-
-	ft_printf("img instance idx is %d\n", image_instance_index2);
 }
 
 void	draw_line(fdf_t *fdf)
 {
 	int i = 0;
-	size_t j = 0;
-	mlx_t *mlx_inst = fdf->mlx;
+	
 	ft_printf("pressed space \n");
-	while(i < mlx_inst->width && i < mlx_inst->height)
+	while(i < fdf->mlx->width && i < fdf->mlx->height)
 	{
-		mlx_put_pixel(fdf->img, 0 + i, 0 + i, 255);
-		while (j++ < fdf->img[0].count)
-		{
-			fdf->img->pixels[i * 4] = 255; 
-			fdf->img->pixels[i * 4 + 1] = 0; 
-			fdf->img->pixels[i * 4 + 2] = 0; 
-			fdf->img->pixels[i * 4 + 3] = 255;
-			//fdf->img[0].pixels[i * 4] = 255;
-			//ft_printf("pixel data is %d \n", fdf->img[0].pixels[j]);
-		}
-		//ft_putpixel(fdf->img, 0 + i, 0 + i, 255);
+		// mlx_put_pixel(fdf->img, 0 + i, 0 + i, 255);
+		ft_putpixel(fdf->img, 0 + i, 0 + i, MAGENTA);
 		i++;
 	}
 }
@@ -81,17 +68,22 @@ void	ft_hook(void *param)
 int	main(int argc, char **argv)
 {
 	fdf_t	fdf;
-
+	int i  = 0;
 	if (argc != 2) 
 		handle_error(EXIT_CMD_COUNT_ERROR);
 	if (load_map(argv[1], &fdf.map) > 0)
 		handle_error(EXIT_INVALID_MAP);
+	while (i < fdf.map.len)
+    {
+        printf("pt id is %d and stored values X: %0.4f Y: %0.4f Z: %0.4f\n", i, fdf.map.pt_array[i].axis[X], fdf.map.pt_array[i].axis[Y], fdf.map.pt_array[i].axis[Z]);
+        printf("\n");
+        i++;
+    }
 	init_fdf(&fdf);
 	draw_map(&fdf);
 	/* Error check */
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);
-	
 	mlx_terminate(fdf.mlx);
 	return (EXIT_SUCCESS);
 }

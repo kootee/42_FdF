@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 16:19:04 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:43:39 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,46 +80,49 @@ void	set_map_dimensions(map_t *map)
 
 void	add_points(char *line, map_t *map, int line_number)
 {
-	char **pts;
-	int	idx;
+	int			i;
+	char		**pts;
+	static int	idx = 0;
 	
 	pts = ft_split(line, ' '); // malloc protect
-	idx = 0;
-	while (pts[idx] && pts[idx][0] != '\n')
+	i = 0;
+	while (pts[i] && pts[i][0] != '\n')
 	{
-		// check if its valid input
-		map->pt_array[idx].axis[Z] = ft_atoi(pts[idx]);
-		printf("axis x %d divided by 2 %d\n", (int)map->dim.axis[X], (int)map->dim.axis[X] / 2);
-		printf("axis x %f divided by 2 %f\n", map->dim.axis[X],  map->dim.axis[X] / 2);
-		map->pt_array[idx].axis[X] = idx - map->dim.axis[X] / 2;
+/* 		if (!valid_point(&splited[i][0]))
+			terminate(ERR_EMPTY); IMPLEMENT */
+		map->pt_array[idx].axis[Z] = ft_atoi(pts[i]);
+		map->pt_array[idx].axis[X] = i - map->dim.axis[X] / 2;
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
 		map->pt_array[idx].color = DEFAULT_COLOR;
-		if (ft_strchr(pts[idx], ','))
-			map->pt_array[idx].hex_color = set_hexcolor(pts[idx]);
+		if (ft_strchr(pts[i], ','))
+			map->pt_array[idx].hex_color = set_hexcolor(pts[i]);
 		if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
 			map->dim.axis[Z] = map->pt_array[idx].axis[Z];
 		if (map->pt_array[idx].axis[Z] < map->min_Z)
 			map->min_Z = map->pt_array[idx].axis[Z];
 		// need to check the other values?
-		printf("pt id is %d and stored values X: %f Y: %f Z: %f\n", idx, map->pt_array[idx].axis[X], map->pt_array[idx].axis[Y], map->pt_array[idx].axis[Z]);
+		printf("pt id is %d and stored values X: %0.4f Y: %0.4f Z: %0.4f\n", idx, map->pt_array[idx].axis[X], map->pt_array[idx].axis[Y], map->pt_array[idx].axis[Z]);
 		fflush(stdout);
+		i++;
 		idx++;
 	}
+	printf("\n");
 	free_strs(pts);
 }
 
 void	set_map_points(map_t *map)
 {
-	int		i;
-	char	*line;
-	char	*remainder;
-	int		line_number;
+	int			i;
+	char		*line;
+	char		*remainder;
+	static int	line_count;
+	// static int	points_count;
 	
 	line = NULL;
 	remainder = map->map_data;
 	map->pt_array = ft_calloc(map->len, sizeof(point_t));
 	i = 0;
-	line_number = 0;
+	line_count = 0;
 	while (++i)
 	{
 		if (map->map_data[i] == '\n' || map->map_data[i] == '\0')
@@ -128,7 +131,7 @@ void	set_map_points(map_t *map)
 							(&map->map_data[i] - remainder));
 			ft_printf("line is %s\n", line);
 			remainder = &map->map_data[i + 1];
-			add_points(line, map, line_number++);
+			add_points(line, map, line_count++);
 			free(line);
 		}
 		if (map->map_data[i] == '\0')
