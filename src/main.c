@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 09:32:13 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:51:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ static void	init_fdf(fdf_t *fdf)
 	int image_instance_index;
 	int image_instance_index2;
 	/* Start mlx */
-	fdf->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "FDF", true); // add function to put name of map
+	fdf->mlx = mlx_init(WIN_X, WIN_Y, "FDF", true); // add function to put name of map
 	if (fdf->mlx == NULL)
 		handle_error(mlx_errno);
 		
 	/* Init mlx image */
-	fdf->img = mlx_new_image(fdf->mlx, WIN_WIDTH, WIN_HEIGHT);
+	fdf->img = mlx_new_image(fdf->mlx, WIN_X, WIN_Y);
 	if (fdf->img == NULL)
 		handle_error_and_free(fdf, mlx_errno);
 

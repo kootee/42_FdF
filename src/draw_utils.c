@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/09 13:39:04 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:51:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ void set_background(fdf_t *fdf, int background_color)
 	
 	grid[X] = 0;
 	grid[Y] = 0;
-	while (grid[Y] < WIN_HEIGHT)
+	while (grid[Y] < WIN_Y)
 	{
-		while (grid[X] < WIN_WIDTH)
+		while (grid[X] < WIN_X)
 		{
 			pixel = (grid[Y] * (fdf->img->width * 4)) + (grid[X] * 4);
 			set_pixel_color(&fdf->img->pixels[pixel], background_color, 255);
@@ -89,10 +89,10 @@ int	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color)
 	int	alpha;
 	
 	alpha = 0xFF;
-	if (x > WIN_WIDTH || y > WIN_WIDTH \
+	if (x > WIN_X || y > WIN_X \
 		|| x < 0 || y < 0)
 		return (-1);
-	pixel = ((int)y * WIN_WIDTH * 4) + ((int)x * 4);
+	pixel = ((int)y * WIN_X * 4) + ((int)x * 4);
 	set_pixel_color(&img->pixels[pixel], color, 255);
 	return (0);
 }

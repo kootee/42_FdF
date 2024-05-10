@@ -59,7 +59,7 @@ int32_t main(void)
 	point_t end;
 
 	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "MLX42", true)))
+	if (!(mlx = mlx_init(WIN_X, WIN_Y, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);

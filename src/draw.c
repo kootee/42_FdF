@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 10:55:22 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:01:06 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    print_pts(point_t *pts, map_t *map)
     }
 }
 
-void    init_projection_map(point_t *src_pts, int len, point_t *dest_pts)
+void    copy_map_pts(point_t *src_pts, int len, point_t *dest_pts)
 {
     int i;
 
@@ -81,8 +81,8 @@ void    center_to_window(point_t *points, int len)
     int y_offset;
 
     i = 0;
-    x_offset = WIN_WIDTH / 2;
-    y_offset = WIN_HEIGHT / 2;
+    x_offset = WIN_X / 2;
+    y_offset = WIN_Y / 2;
     while(i < len)
     {
         points[i].axis[X] = points[i].axis[X] + x_offset;
@@ -156,50 +156,62 @@ void    draw_wires(fdf_t *fdf, point_t *map_projection)
     }
 }
 
-bool    inside_limits(point_t *projection_pts, int len)
+bool    is_inside_limits(map_t *map, int len)
 {
-    int i;
-
+    int     i;
+    float   origo_x;
+    float   origo_y;
+    
     i = 0;
+    origo_x = map->dim.axis[X] / 2;
+    origo_y = map->dim.axis[Y] / 2;
     while (i < len)
     {
-        if (projection_pts[i].axis[X] < WIN_MARGIN || 
-            projection_pts[i].axis[X] > WIN_WIDTH - WIN_MARGIN)
+        if (map->pt_array[i].axis[X] < origo_x - (WIN_X / 2) + WIN_MARGIN || 
+            map->pt_array[i].axis[X] > origo_x + (WIN_X / 2) - WIN_MARGIN)
             return (false); 
-        if (projection_pts[i].axis[Y] < WIN_MARGIN || 
-            projection_pts[i].axis[Y] > WIN_HEIGHT - WIN_MARGIN)
+        if (map->pt_array[i].axis[Y] < origo_y - (WIN_Y / 2) + WIN_MARGIN || 
+            map->pt_array[i].axis[Y] > origo_y + (WIN_Y / 2) - WIN_MARGIN)
             return (false);
         i++;
     }
     return (true);
 }
 
-
-void    scale_map(fdf_t *fdf, point_t *projection_pts, int len)
+void    scale_points(map_t *map, int len)
 {
     int i;
     
     i = 0;
-    fdf->map.origo.axis[X] = fdf->mlx->width / 2;
-    fdf->map.origo.axis[Y] = fdf->mlx->height / 2;
-    fdf->map.origo.axis[Z] = 0;
-    fdf->map.scale = 1;
-    while(inside_limits(projection_pts, fdf->map.len) == true)
+    while (i < len)
     {
+        map->pt_array[i].axis[X] *= map->scale;
+        map->pt_array[i].axis[Y] *= map->scale;
+        map->pt_array[i].axis[Z] *= map->scale;
+        i++;
+    }
+    i = 0;
+}
+void    scale_map(fdf_t *fdf, int map_len)
+{
+    fdf->map.scale = 1; // not necessary if only done once as this is initialised
+    while(is_inside_limits(&fdf->map, map_len) == true)
+    {
+        scale_points(&fdf->map, map_len);
+        if (is_inside_limits(&fdf->map, map_len) == false)
+        {
+            fdf->map.scale = 0.8;
+            scale_points(&fdf->map, map_len);
+            break ;
+        }
+        fdf->map.scale += 0.2;
+        
         printf("scaling with 0.2\n");
         printf("scale is %f\n", fdf->map.scale);
-        while (i < len)
-        {
-            projection_pts[i].axis[X] *= fdf->map.scale;
-            projection_pts[i].axis[Y] *= fdf->map.scale;
-            projection_pts[i].axis[Z] *= fdf->map.scale;
-            i++;
-        }
-        i = 0;
         printf("map is now \n");
-        print_pts(projection_pts, &fdf->map);
-        fdf->map.scale += 0.2;
+        print_pts(fdf->map.pt_array, &fdf->map);
     }
+    // copy to projection
 }
 
 int draw_map(fdf_t *fdf)
@@ -212,7 +224,8 @@ int draw_map(fdf_t *fdf)
     if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     set_background(fdf, fdf->map.colors.background);
-    init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
+    scale_map(fdf, fdf->map.len);
+    copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
     printf("printing all now\n");
     print_pts(map_projection, &fdf->map);
 /*     while (i < fdf->map.len)
@@ -222,7 +235,6 @@ int draw_map(fdf_t *fdf)
     center_to_window(map_projection, fdf->map.len);
     printf("printing all after centering\n");
     print_pts(map_projection, &fdf->map);
-    scale_map(fdf, map_projection, fdf->map.len);
     draw_wires(fdf, map_projection);
     // if move on user input then move here
     return (0);

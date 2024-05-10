@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 09:25:09 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:51:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	init_map(map_t *map)
 	map->dim.axis[X] = 0;
 	map->dim.axis[Y] = 0;
 	map->dim.axis[Z] = 0;
-	map->origo.axis[X] = WIN_WIDTH / 2;
-	map->origo.axis[Y] = WIN_HEIGHT / 2;
+	map->origo.axis[X] = WIN_X / 2;
+	map->origo.axis[Y] = WIN_Y / 2;
 	map->origo.axis[Y] = 0;
 	map->len = 0;
 	map->map_data = NULL;

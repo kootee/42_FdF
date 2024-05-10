@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 11:08:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:56:43 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "MLX42.h"
 # include "libft.h"
 
-# define WIN_WIDTH	512
-# define WIN_HEIGHT	512
+# define WIN_X	512
+# define WIN_Y	512
 # define WIN_MARGIN 10
 
 # define BLACK		0x000000
@@ -132,7 +132,7 @@ int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
 
 /* Map modification functions */
-void    scale_map(fdf_t *fdf, point_t *projection_pts, int len);
+void    scale_map(fdf_t *fdf, int len);
 
 /* Drawing utilities */
 void	set_background(fdf_t *fdf, int color);
