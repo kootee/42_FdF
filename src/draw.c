@@ -6,12 +6,32 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/09 16:53:31 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:55:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <unistd.h>
+
+
+void    print_pts(point_t *pts, map_t *map)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while (i < map->len)
+    {
+        printf("Row %d:", k);
+        while (j++ < map->dim.axis[X])
+        {
+            printf("    %0.1f,%0.1f,%0.1f    ", pts[i].axis[X], pts[i].axis[Y], pts[i].axis[Z]);
+            i++;
+        }
+        printf("\n");
+        k++;
+        j = 0;
+    }
+}
 
 void    init_projection_map(point_t *src_pts, int len, point_t *dest_pts)
 {
@@ -136,17 +156,49 @@ void    draw_wires(fdf_t *fdf, point_t *map_projection)
     }
 }
 
-void    scale_map(point_t *points, int scale, int len)
+bool    inside_limits(point_t *projection_pts, int len)
 {
     int i;
 
     i = 0;
     while (i < len)
     {
-        points[i].axis[X] *= scale;
-        points[i].axis[Y] *= scale;
-        points[i].axis[Z] *= scale;
+        if (projection_pts[i].axis[X] < WIN_MARGIN || 
+            projection_pts[i].axis[X] > WIN_WIDTH - WIN_MARGIN)
+            return (false); 
+        if (projection_pts[i].axis[Y] < WIN_MARGIN || 
+            projection_pts[i].axis[Y] > WIN_HEIGHT - WIN_MARGIN)
+            return (false);
         i++;
+    }
+    return (true);
+}
+
+
+void    scale_map(fdf_t *fdf, point_t *projection_pts, int len)
+{
+    int i;
+    
+    i = 0;
+    fdf->map.origo.axis[X] = fdf->mlx->width / 2;
+    fdf->map.origo.axis[Y] = fdf->mlx->height / 2;
+    fdf->map.origo.axis[Z] = 0;
+    fdf->map.scale = 1;
+    while(inside_limits(projection_pts, fdf->map.len) == true)
+    {
+        printf("scaling with 0.2\n");
+        printf("scale is %f\n", fdf->map.scale);
+        while (i < len)
+        {
+            projection_pts[i].axis[X] *= fdf->map.scale;
+            projection_pts[i].axis[Y] *= fdf->map.scale;
+            projection_pts[i].axis[Z] *= fdf->map.scale;
+            i++;
+        }
+        i = 0;
+        printf("map is now \n");
+        print_pts(projection_pts, &fdf->map);
+        fdf->map.scale += 0.2;
     }
 }
 
@@ -161,19 +213,16 @@ int draw_map(fdf_t *fdf)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     set_background(fdf, fdf->map.colors.background);
     init_projection_map(fdf->map.pt_array, fdf->map.len, map_projection);
-    printf("printing all now");
-/*     while (i < fdf->map.len)
-    {
-        printf("pt id is %d and stored values X: %0.4f Y: %0.4f Z: %0.4f\n", i, map_projection[i].axis[X], map_projection[i].axis[Y], map_projection[i].axis[Z]);
-        printf("\n");
-        i++;
-    } */
-    center_to_window(map_projection, fdf->map.len);
+    printf("printing all now\n");
+    print_pts(map_projection, &fdf->map);
 /*     while (i < fdf->map.len)
     {
         map_projection[i] = isometric_project(map_projection[i]);
     } */
-    scale_map(map_projection, (int)2.5, fdf->map.len);
+    center_to_window(map_projection, fdf->map.len);
+    printf("printing all after centering\n");
+    print_pts(map_projection, &fdf->map);
+    scale_map(fdf, map_projection, fdf->map.len);
     draw_wires(fdf, map_projection);
     // if move on user input then move here
     return (0);

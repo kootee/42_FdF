@@ -12,7 +12,7 @@
 			"program": "${workspaceFolder}/fdf",
 			"args": ["maps/mini.fdf"],
 			"stopAtEntry": true,
-			"cwd": "${workspaceFolder}",
+			"cwd": "${workspaceFolder}", 
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb"

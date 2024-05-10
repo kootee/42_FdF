@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/09 16:48:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 09:52:24 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    init_colors(map_t *map)
 {
-    map->colors.background = BLACK;
+    map->colors.background = LIGHTBLUE;
     map->colors.bottom = WHITE;
     map->colors.top = MAGENTA;
 }
