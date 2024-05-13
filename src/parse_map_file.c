@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 12:51:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/13 10:52:50 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	set_map_dimensions(map_t *map)
 			|| map->map_data[i + 1] == ' ' || map->map_data[i + 1] == '\n'))
 		{
 			pt_count++; // is a valid input and next one is a space or newline add to the counter of elements
-			ft_printf("pt count is %d\n", pt_count);	
+			// ft_printf("pt count is %d\n", pt_count);	
 		}
 		if	(map->map_data[i] == '\n')
 		{

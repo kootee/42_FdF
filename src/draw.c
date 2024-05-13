@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 13:30:17 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/13 11:19:55 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,17 @@ point_t  isometric_project(point_t point)
     transf_matrix[1][1] = 1;
 } */
 
-void    center_to_window(point_t *points, float scale, int len)
+void    center_to_window(point_t *points, map_t *map)
 {
     int i;
     int x_offset;
     int y_offset;
-
-    if (scale > 1)
-        printf("scale was bigger than 1\n");
-    i = 0;
-    x_offset = WIN_X / 2;
-    y_offset = WIN_Y / 2;
-    while(i < len)
+    
+    i = 0;    
+    x_offset = (WIN_X / 2); // - (fabsf(map->pt_array[(int)map->dim.axis[X]].axis[X] - map->pt_array[0].axis[X]) / 2);
+    y_offset = (WIN_Y / 2); // - (fabsf(map->pt_array[(int)map->dim.axis[Y] * (int)map->dim.axis[X]].axis[X] - map->pt_array[0].axis[X]) / 2);
+    printf("offset is %i %i\n", x_offset, y_offset);
+    while(i < map->len)
     {
         points[i].axis[X] = points[i].axis[X] + x_offset;
         points[i].axis[Y] = points[i].axis[Y] + y_offset;
@@ -157,29 +156,6 @@ void    draw_wires(fdf_t *fdf, point_t *map_projection)
         i = i + fdf->map.dim.axis[X];
     }
 }
-
-bool    is_inside_limits(map_t *map, int len)
-{
-    int     i;
-    float   origo_x;
-    float   origo_y;
-    
-    i = 0;
-    origo_x = map->dim.axis[X] / 2;
-    origo_y = map->dim.axis[Y] / 2;
-    while (i < len)
-    {
-        if (map->pt_array[i].axis[X] < origo_x - (WIN_X / 2) + WIN_MARGIN || 
-            map->pt_array[i].axis[X] > origo_x + (WIN_X / 2) - WIN_MARGIN)
-            return (false); 
-        if (map->pt_array[i].axis[Y] < origo_y - (WIN_Y / 2) + WIN_MARGIN || 
-            map->pt_array[i].axis[Y] > origo_y + (WIN_Y / 2) - WIN_MARGIN)
-            return (false);
-        i++;
-    }
-    return (true);
-}
-
 void    scale_points(map_t *map, int len)
 {
     int i;
@@ -194,12 +170,49 @@ void    scale_points(map_t *map, int len)
     }
     i = 0;
 }
+
+bool    is_inside_limits(map_t *map, int len)
+{
+    int     i;
+    float   limit_x[2];
+    float   limit_y[2];
+    int     last_x;
+    int     last_y;
+
+    last_x = (int)map->dim.axis[X] - 1;
+    last_y = (int)map->dim.axis[Y] * map->dim.axis[X] - 1;
+    
+    i = 0;
+    printf("limits x %f %f and y %f %f\n", limit_x[0], limit_x[1], limit_y[0], limit_y[1]);
+    printf("X length is %0.2f - %0.2f: %0.4f\n", map->pt_array[last_x].axis[X],  map->pt_array[0].axis[X], fabsf(map->pt_array[last_x].axis[X] - map->pt_array[0].axis[X]));
+    printf("Y length is %0.2f - %0.2f: %0.4f\n", map->pt_array[last_y].axis[Y],  map->pt_array[0].axis[Y], fabsf(map->pt_array[last_y].axis[Y] - map->pt_array[0].axis[Y]));
+    while (i < len)
+    {
+        if (fabsf(map->pt_array[last_x].axis[X] - map->pt_array[0].axis[X]) > WIN_X - (WIN_MARGIN * 2))
+            return (false); 
+        if (fabsf(map->pt_array[last_y].axis[Y] - map->pt_array[0].axis[Y]) > WIN_Y - (WIN_MARGIN * 2))
+            return (false);
+/*         if (map->pt_array[i].axis[X] < origo_x - (WIN_X / 2) + WIN_MARGIN || 
+            map->pt_array[i].axis[X] > origo_x + (WIN_X / 2) - WIN_MARGIN)
+            return (false); 
+        if (map->pt_array[i].axis[Y] < origo_y - (WIN_Y / 2) + WIN_MARGIN || 
+            map->pt_array[i].axis[Y] > origo_y + (WIN_Y / 2) - WIN_MARGIN)
+            return (false); */
+        i++;
+    }
+    return (true);
+}
+
 void    scale_map(fdf_t *fdf, int map_len)
 {
     fdf->map.scale = 1; // not necessary if only done once as this is initialised
+    float origo_x = fdf->map.dim.axis[X] / 2;
+    float origo_y = fdf->map.dim.axis[Y] / 2;
     while(is_inside_limits(&fdf->map, map_len) == true)
     {
         scale_points(&fdf->map, map_len);
+        origo_x *= fdf->map.scale;
+        origo_y *= fdf->map.scale;
         if (is_inside_limits(&fdf->map, map_len) == false)
         {
             fdf->map.scale = 0.8;
@@ -210,6 +223,7 @@ void    scale_map(fdf_t *fdf, int map_len)
         
         printf("scaling with 0.2\n");
         printf("scale is %f\n", fdf->map.scale);
+        printf("origo scaled to %f %f\n", origo_x, origo_x);
         printf("map is now \n");
         print_pts(fdf->map.pt_array, &fdf->map);
     }
@@ -226,16 +240,18 @@ int draw_map(fdf_t *fdf)
     if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     set_background(fdf, fdf->map.colors.background);
-    scale_map(fdf, fdf->map.len);
-    copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
     
+    scale_map(fdf, fdf->map.len);
+    center_to_window(fdf->map.pt_array, &fdf->map);
+    
+    copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
     printf("printing all now\n");
     print_pts(map_projection, &fdf->map);
-    center_to_window(map_projection, fdf->map.scale, fdf->map.len);
-/*     while (i < fdf->map.len)
+    while (i < fdf->map.len)
     {
         map_projection[i] = isometric_project(map_projection[i]);
-    } */
+        i++;
+    }
     printf("printing all after centering\n");
     print_pts(map_projection, &fdf->map);
     draw_wires(fdf, map_projection);

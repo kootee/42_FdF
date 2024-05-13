@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 13:31:06 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/13 08:00:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "MLX42.h"
 # include "libft.h"
 
-# define WIN_X	900
-# define WIN_Y	512
+# define WIN_X	1080
+# define WIN_Y	1080
 # define WIN_MARGIN 50
 
 # define BLACK		0x000000
