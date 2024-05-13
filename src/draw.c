@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 13:01:06 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:30:17 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void    copy_map_pts(point_t *src_pts, int len, point_t *dest_pts)
     while (i < len)
     {
         dest_pts[i] = src_pts[i];
-        printf("pt x%0.2f and y%0.2f and z%0.2f\n", src_pts[i].axis[X], src_pts[i].axis[Y], src_pts[i].axis[Z]);
+        // printf("pt x%0.2f and y%0.2f and z%0.2f\n", src_pts[i].axis[X], src_pts[i].axis[Y], src_pts[i].axis[Z]);
         i++;
     }
 }
@@ -74,12 +74,14 @@ point_t  isometric_project(point_t point)
     transf_matrix[1][1] = 1;
 } */
 
-void    center_to_window(point_t *points, int len)
+void    center_to_window(point_t *points, float scale, int len)
 {
     int i;
     int x_offset;
     int y_offset;
 
+    if (scale > 1)
+        printf("scale was bigger than 1\n");
     i = 0;
     x_offset = WIN_X / 2;
     y_offset = WIN_Y / 2;
@@ -226,13 +228,14 @@ int draw_map(fdf_t *fdf)
     set_background(fdf, fdf->map.colors.background);
     scale_map(fdf, fdf->map.len);
     copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
+    
     printf("printing all now\n");
     print_pts(map_projection, &fdf->map);
+    center_to_window(map_projection, fdf->map.scale, fdf->map.len);
 /*     while (i < fdf->map.len)
     {
         map_projection[i] = isometric_project(map_projection[i]);
     } */
-    center_to_window(map_projection, fdf->map.len);
     printf("printing all after centering\n");
     print_pts(map_projection, &fdf->map);
     draw_wires(fdf, map_projection);
