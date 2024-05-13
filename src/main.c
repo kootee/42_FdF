@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 12:51:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:48:51 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	main(int argc, char **argv)
         printf("\n");
         i++;
     }
+	print_pts(fdf.map.pt_array, &fdf.map);
 	init_fdf(&fdf);
 	draw_map(&fdf);
 	/* Error check */

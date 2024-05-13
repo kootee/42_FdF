@@ -10,7 +10,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/fdf",
-			"args": ["maps/10-2.fdf"],
+			"args": ["maps/mini.fdf"],
 			"stopAtEntry": true,
 			"cwd": "${workspaceFolder}", 
 			"environment": [],
