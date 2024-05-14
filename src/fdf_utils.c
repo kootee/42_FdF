@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/08 16:16:35 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:52:15 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int32_t	set_hexcolor(char *str)
 	
 	while(*str != ',')
 		str++;
-	color = ft_atoi_base(++str, 16);
+	color = ft_atoi_base(str + 2, 16);
 	return (color);
 }
 

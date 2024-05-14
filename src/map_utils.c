@@ -6,11 +6,27 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 09:52:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:55:33 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	init_map(map_t *map)
+{
+	map->dim.axis[X] = 0;
+	map->dim.axis[Y] = 0;
+	map->dim.axis[Z] = 0;
+	map->origo.axis[X] = WIN_X / 2;
+	map->origo.axis[Y] = WIN_Y / 2;
+	map->origo.axis[Z] = 0;
+	map->len = 0;
+	map->map_data = NULL;
+	map->pt_array = NULL;
+	map->min_Z = INT32_MAX;
+	map->scale = 1;
+	init_colors(map);
+}
 
 void    init_colors(map_t *map)
 {

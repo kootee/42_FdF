@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 11:02:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:39:03 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include <string.h>
 # include <sys/wait.h>
 # include <math.h>
@@ -105,10 +104,12 @@ typedef struct fdf_s {
 }	fdf_t;
 
 /* Map parse functions */
-int		load_map(char *map_file_path, map_t *map);
+void	load_map(char *map_file_path, map_t *map);
+void	init_map(map_t *map);
 
 /* Error handling */
 void	handle_error(int errno);
+void	handle_map_error(map_t *map);
 void	handle_error_and_free(fdf_t *fdf, int errno);
 
 /* FDF utility functions */
@@ -132,7 +133,6 @@ int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
 
 /* Map modification functions */
-void    scale_map(fdf_t *fdf, int len);
 
 /* Drawing utilities */
 void	set_background(fdf_t *fdf, int color);

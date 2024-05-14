@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:57:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/04/26 10:03:37 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:51:58 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static char	to_lower(char c)
 	return (c);
 }
 
-static int get_digit(char c, int digits_in_base)
+static int	get_digit(char c, int digits_in_base)
 {
-	int max_digit;
-	
+	int	max_digit;
+
 	if (digits_in_base <= 10)
 		max_digit = digits_in_base + '0';
 	else
@@ -35,12 +35,15 @@ static int get_digit(char c, int digits_in_base)
 		return (-1);
 }
 
-int ft_atoi_base(const char *str, int str_base)
+int	ft_atoi_base(const char *str, int str_base)
 {
-	int result = 0;
-	int sign = 1;
-	int digit;
+	int	result;
+	int	sign;
+	int	digit;
 
+	result = 0;
+	sign = 1;
+	digit = 0;
 	if (str == NULL)
 		return (-1);
 	if (*str == '-')
@@ -48,11 +51,14 @@ int ft_atoi_base(const char *str, int str_base)
 		sign = -1;
 		++str;
 	}
-	while ((digit = get_digit(to_lower(*str), str_base)) >= 0)
+	while (digit >= 0)
 	{
+		digit = get_digit(to_lower(*str), str_base);
+		if (digit < 0)
+			break ;
 		result = result * str_base;
-		result = result + (digit * sign);
+		result = result + digit;
 		++str;
 	}
-	return (result);
+	return (result * sign);
 }

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 11:24:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:36:34 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void    print_pts(point_t *pts, map_t *map)
         printf("Row %d:", k);
         while (j++ < map->dim.axis[X])
         {
-            printf("        %0.1f,  %0.1f,  %0.1f   ", pts[i].axis[X], pts[i].axis[Y], pts[i].axis[Z]);
+            printf("    %0.1f,%0.1f,%0.1f   ", pts[i].axis[X], pts[i].axis[Y], pts[i].axis[Z]);
             i++;
         }
         printf("\n");
@@ -253,7 +253,7 @@ void    center_map(point_t *points, point_t origo, int len)
 {
     int i;
     i = 0;
-    printf("moving pts by x: %0.2f y: %0.2f z: %0.2f\n", origo.axis[X], origo.axis[Y], origo.axis[Z]);
+    // printf("moving pts by x: %0.2f y: %0.2f z: %0.2f\n", origo.axis[X], origo.axis[Y], origo.axis[Z]);
     while (i < len)
     {
         points[i].axis[X] = points[i].axis[X] + origo.axis[X];
@@ -296,15 +296,15 @@ int draw_map(fdf_t *fdf)
     copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
     set_background(fdf, fdf->map.colors.background);
     
-    printf("printing all now\n");
-    print_pts(map_projection, &fdf->map);
+    // printf("printing all now\n");
+    // print_pts(map_projection, &fdf->map);
     
     project_and_modify_map(fdf, map_projection); // parses map and sets projection and scale etc
 
     draw_wires(fdf, map_projection);
     
-    printf("printing all after modifications\n");
-    print_pts(map_projection, &fdf->map);
+    // printf("printing all after modifications\n");
+    // print_pts(map_projection, &fdf->map);
     // if move on user input then move here
     return (0);
 }

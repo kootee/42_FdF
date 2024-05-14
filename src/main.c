@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/13 15:28:17 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:01:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,14 @@ void	ft_hook(void *param)
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(fdf->mlx);
 }
-/* add above to fdf.c file */
+
 int	main(int argc, char **argv)
 {
 	fdf_t	fdf;
-	int i  = 0;
+
 	if (argc != 2) 
 		handle_error(EXIT_CMD_COUNT_ERROR);
-	if (load_map(argv[1], &fdf.map) > 0)
-		handle_error(EXIT_INVALID_MAP);
-	while (i < fdf.map.len)
-    {
-        printf("pt id is %d and stored values X: %0.4f Y: %0.4f Z: %0.4f\n", i, fdf.map.pt_array[i].axis[X], fdf.map.pt_array[i].axis[Y], fdf.map.pt_array[i].axis[Z]);
-        printf("\n");
-        i++;
-    }
+	load_map(argv[1], &fdf.map);
 	print_pts(fdf.map.pt_array, &fdf.map);
 	init_fdf(&fdf);
 	draw_map(&fdf);
