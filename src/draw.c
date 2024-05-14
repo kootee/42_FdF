@@ -6,16 +6,16 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/13 14:11:10 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:24:24 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <unistd.h>
 
-void    do_map_modifications(fdf_t *fdf, point_t *projected_map_pts);
+void    project_and_modify_map(fdf_t *fdf, point_t *projected_map_pts);
 
-bool    is_inside_limits(point_t *points, int len)
+bool    is_inside_window(point_t *points, int len)
 {
     int i;
 
@@ -50,7 +50,7 @@ void    print_pts(point_t *pts, map_t *map)
     }
 }
 
-void    copy_map_pts(point_t *src_pts, int len, point_t *dest_pts)
+void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
 {
     int i;
 
@@ -132,7 +132,6 @@ void    line(fdf_t *fdf, point_t start, point_t end)
     {
         pixel.color = gradient(start.color, end.color, len, len - line);
         ft_putpixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.color);
-        // mlx_put_pixel(fdf->img, pixel.axis[X], pixel.axis[Y], pixel.color); // or ft_putpix FIX later
         pixel.axis[X] += delta_v.axis[X];
         pixel.axis[Y] += delta_v.axis[Y];
         line -= 1;
@@ -163,18 +162,18 @@ void    wire(point_t *point, fdf_t *fdf, int current_line_nbr)
     }
 }
 
-void    fit_projection(fdf_t *fdf, point_t *map_projection)
+void    fit_to_window(fdf_t *fdf, point_t *map_projection)
 {
     fdf->map.origo.axis[X] = WIN_X / 2;
     fdf->map.origo.axis[Y] = WIN_Y / 2;
     fdf->map.origo.axis[Z] = 0;
     fdf->map.scale = 1;
-    copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
-    do_map_modifications(fdf, map_projection);
-    while (is_inside_limits(map_projection, fdf->map.len) == true)
+    copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
+    project_and_modify_map(fdf, map_projection);
+    while (is_inside_window(map_projection, fdf->map.len) == true)
     {        
-        copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
-        do_map_modifications(fdf, map_projection);
+        copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
+        project_and_modify_map(fdf, map_projection);
         fdf->map.scale += 0.2; 
     }
 }
@@ -184,7 +183,7 @@ void    draw_wires(fdf_t *fdf, point_t *map_projection)
     int i;
     
     i = 0;
-    fit_projection(fdf, map_projection);
+    fit_to_window(fdf, map_projection);
     while (i < fdf->map.len)
     {
         wire(&map_projection[i], fdf, i / fdf->map.dim.axis[X]);
@@ -242,7 +241,7 @@ void    scale_z_points(point_t *pts, map_t *map)
     divisor = 1;
     proportion = map->dim.axis[Z] / map->dim.axis[X];
     if (proportion > 0.5)
-        divisor = proportion * 30;
+        divisor = proportion * 10;
     while (i < map->len)
     {
         pts[i].axis[Z] = pts[i].axis[Z] / divisor;
@@ -250,7 +249,7 @@ void    scale_z_points(point_t *pts, map_t *map)
     }
 }
 
-void    transform_map(point_t *points, point_t origo, int len)
+void    center_map(point_t *points, point_t origo, int len)
 {
     int i;
     i = 0;
@@ -258,26 +257,31 @@ void    transform_map(point_t *points, point_t origo, int len)
     while (i < len)
     {
         points[i].axis[X] = points[i].axis[X] + origo.axis[X];
-        points[i].axis[X] = points[i].axis[Y] + origo.axis[Y];
-        points[i].axis[X] = points[i].axis[Z] + origo.axis[Z];
+        points[i].axis[Y] = points[i].axis[Y] + origo.axis[Y];
+        points[i].axis[Z] = points[i].axis[Z] + origo.axis[Z];
         i++;
     }
 }
 
-void    do_map_modifications(fdf_t *fdf, point_t *projected_map_pts)
+void    project_and_modify_map(fdf_t *fdf, point_t *map_projection)
 {
     int i;
 
     i = 0;
-    // scale_z_points(projected_map_pts, &fdf->map);
+    scale_z_points(map_projection, &fdf->map);
     // rotate_to_angle();
-    while (i < fdf->map.len)
+    rot_x_axis(map_projection, map_projection, 30, fdf->map.len);
+    rot_y_axis(map_projection, map_projection, 330, fdf->map.len);
+    rot_z_axis(map_projection, map_projection, 30, fdf->map.len);
+/*     while (i < fdf->map.len)
     {
-        projected_map_pts[i] = isometric_project(projected_map_pts[i]);
+        map_projection[i] = isometric_project(map_projection[i]);
         i++;
-    }
-    scale_points(projected_map_pts, fdf->map.scale, fdf->map.len);
-    transform_map(projected_map_pts, fdf->map.origo, fdf->map.len);
+    } */
+    print_pts(map_projection, &fdf->map);
+
+    scale_points(map_projection, fdf->map.scale, fdf->map.len);
+    center_map(map_projection, fdf->map.origo, fdf->map.len);
 }
 
 int draw_map(fdf_t *fdf)
@@ -289,13 +293,13 @@ int draw_map(fdf_t *fdf)
     map_projection = malloc(fdf->map.len * sizeof(point_t));
     if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
-    copy_map_pts(fdf->map.pt_array, fdf->map.len, map_projection);
+    copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
     set_background(fdf, fdf->map.colors.background);
     
     printf("printing all now\n");
     print_pts(map_projection, &fdf->map);
     
-    do_map_modifications(fdf, map_projection); // parses map and sets projection and scale etc
+    project_and_modify_map(fdf, map_projection); // parses map and sets projection and scale etc
 
     draw_wires(fdf, map_projection);
     

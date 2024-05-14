@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/13 13:48:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:02:24 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,11 @@ void    scale_map(fdf_t *fdf, int len);
 
 /* Drawing utilities */
 void	set_background(fdf_t *fdf, int color);
+
+/* Matrix multiplications */
+void	rot_x_axis(point_t *points, point_t *projection, float angle, int len);
+void	rot_y_axis(point_t *points, point_t *projection, float angle, int len);
+void	rot_z_axis(point_t *points, point_t *projection, float angle, int len);
 
 /* For testing */
 void    print_pts(point_t *pts, map_t *map);
