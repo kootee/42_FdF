@@ -6,11 +6,22 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/10 12:51:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:03:38 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+
+int get_endian() 
+{
+    int	endian;
+	int16_t x;
+	
+	x = 0x0001;
+	endian = *((int8_t*)(&x)) == 0x01;
+	return (endian);
+}
 
 int32_t	gradient(int start_color, int end_color, int len, int pixel)
 {
@@ -32,15 +43,6 @@ int32_t	gradient(int start_color, int end_color, int len, int pixel)
 					round_to_int(pixel * rgb_increment[B]);
 	pixel_color = (new_color[R] << 16) + (new_color[G] << 8) + new_color[B];
 	return (pixel_color);
-}
-
-int get_endian() {
-    int	endian;
-	int16_t x;
-	
-	x = 0x0001;
-	endian = *((int8_t*)(&x)) == 0x01;
-	return (endian);
 }
 
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha)

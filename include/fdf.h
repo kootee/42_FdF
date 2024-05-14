@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 14:39:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:06:04 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ bool	is_hexa_letter(char c);
 void	free_strs(char **strs);
 void	free_map_pts(point_t **pts);
 int		round_to_int(double n);
+void	validate_point(char *str);
 
 /* Map utilities */
 void    init_colors(map_t *map);

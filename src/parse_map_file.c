@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 14:09:11 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:02:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int	add_points(char *line, map_t *map, int line_number)
 	i = 0;
 	while (pts[i] && pts[i][0] != '\n')
 	{
-/* 		if (!valid_point(&splited[i][0]))
-			terminate(ERR_EMPTY); IMPLEMENT */
+		validate_point(&pts[i][0]);
 		map->pt_array[idx].axis[Z] = ft_atoi(pts[i]);
 		map->pt_array[idx].axis[X] = i - map->dim.axis[X] / 2;
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
@@ -57,13 +56,13 @@ static int	set_map_points(map_t *map)
 	{
 		if (map->map_data[i] == '\n' || map->map_data[i] == '\0')
 		{
+			free(line);
 			line = ft_substr(remainder, 0, (&map->map_data[i] - remainder));
 			if (line == NULL)
 				return (EXIT_MALLOC_FAIL);
 			remainder = &map->map_data[i + 1];
 			if (add_points(line, map, line_count++) > 0) 
 				return (EXIT_MALLOC_FAIL);
-			free(line);
 		}
 		if (map->map_data[i] == '\0')
 			break ;
