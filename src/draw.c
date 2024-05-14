@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 13:36:34 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:40:49 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ int draw_map(fdf_t *fdf)
     point_t *map_projection;
     
     i = 0;
-    map_projection = malloc(fdf->map.len * sizeof(point_t));
+    map_projection = ft_calloc(fdf->map.len, sizeof(point_t));
     if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);

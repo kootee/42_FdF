@@ -6,18 +6,18 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 15:02:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:49:43 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	add_points(char *line, map_t *map, int line_number)
+static int	add_points(char *line, map_t *map, int line_number)
 {
 	int			i;
 	char		**pts;
 	static int	idx = 0;
-	
+
 	pts = ft_split(line, ' ');
 	if (pts == NULL)
 		return (EXIT_MALLOC_FAIL);
@@ -47,7 +47,7 @@ static int	set_map_points(map_t *map)
 	char		*line;
 	char		*remainder;
 	static int	line_count;
-	
+
 	remainder = map->map_data;
 	i = 0;
 	line_count = 0;
@@ -61,7 +61,7 @@ static int	set_map_points(map_t *map)
 			if (line == NULL)
 				return (EXIT_MALLOC_FAIL);
 			remainder = &map->map_data[i + 1];
-			if (add_points(line, map, line_count++) > 0) 
+			if (add_points(line, map, line_count++) > 0)
 				return (EXIT_MALLOC_FAIL);
 		}
 		if (map->map_data[i] == '\0')
@@ -77,14 +77,14 @@ static int	set_map_dimensions(map_t *map)
 
 	i = 0;
 	pt_count = 0;
-	while(map->map_data[i])
+	while (map->map_data[i])
 	{
 		if (map->map_data[i] == '\n' && map->map_data[i + 1] == '\0')
 			break ;
 		if (ft_isalnum(map->map_data[i]) && (map->map_data[i + 1] == '\0' \
 			|| map->map_data[i + 1] == ' ' || map->map_data[i + 1] == '\n'))
 			pt_count++;
-		if	(map->map_data[i++] == '\n')
+		if (map->map_data[i++] == '\n')
 		{
 			if (++map->dim.axis[Y] && map->dim.axis[X] == 0)
 				map->dim.axis[X] = pt_count;
@@ -98,12 +98,13 @@ static int	set_map_dimensions(map_t *map)
 	map->dim.axis[Y]++;
 	return (0);
 }
-static char *read_map_data(int fd)
+
+static char	*read_map_data(int fd)
 {
 	char	*line;
 	char	*map_data;
 	char	*temp_to_free;
-	
+
 	map_data = ft_calloc(1, sizeof(char));
 	if (map_data == NULL)
 		handle_error(EXIT_MALLOC_FAIL);
@@ -118,7 +119,7 @@ static char *read_map_data(int fd)
 		{
 			free(line);
 			free(temp_to_free);
-			handle_error(EXIT_MALLOC_FAIL);		
+			handle_error(EXIT_MALLOC_FAIL);
 		}
 		free(temp_to_free);
 		free(line);
@@ -135,6 +136,7 @@ void	load_map(char *map_file_path, map_t *map)
 	if (fd < 0)
 		handle_error(mlx_errno);
 	map->map_data = read_map_data(fd);
+	close(fd);
 	if (set_map_dimensions(map) > 0)
 		handle_map_error(map);
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
@@ -146,6 +148,5 @@ void	load_map(char *map_file_path, map_t *map)
 		free(map->pt_array);
 		handle_map_error(map);
 	}
-	set_point_colors(map, map->pt_array, map->colors, map->len);
-	close(fd);
+	set_point_colors(map, map->pt_array, map->colors, map->len); // fix
 }
