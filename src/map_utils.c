@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 15:05:43 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:13:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
 void	init_colors(map_t *map)
 {
 	map->colors.background = LIGHTBLUE;
-	map->colors.bottom = BLACK;
+	map->colors.bottom = WHITE;
 	map->colors.top = MAGENTA;
 }
 

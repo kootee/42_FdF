@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 15:01:14 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:15:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,39 @@
 # define Y_ISOMETRIC_ANG 330
 # define Z_ISOMETRIC_ANG 30
 
-typedef enum {
+typedef enum s_errorcode
+{
 	EXIT_CMD_COUNT_ERROR = 200,
 	EXIT_MALLOC_FAIL = 201,
 	EXIT_INVALID_MAP = 202
-} errorcode;
+}	t_errorcode;
 
-typedef	enum {
+typedef	enum coordinates_s
+{
 	X, Y, Z
-} coordinates;
+}	t_coordinates;
 
-typedef	enum {
+typedef	enum rgb_values_s
+{
 	R, G, B, A
-} rgb_values;
+}	rgb_values_t;
 
-typedef	struct	colors_s {
+typedef	struct	s_colors
+{
 	int32_t top;
 	int32_t bottom;
 	int32_t background;
-}				colors_t;
+}	t_colors;
 
-typedef struct	point_s {
+typedef struct point_s
+{
 	int32_t	color;
 	int32_t	hex_color;
 	float	axis[3];
-}				point_t;
+}	point_t;
 
-typedef struct	map_s {
+typedef struct map_s
+{
 	point_t		*pt_array;
 	point_t		origo;
 	point_t		dim;
@@ -70,13 +76,14 @@ typedef struct	map_s {
 	int			min_Z;
 	int			len;
 	float		scale;
-}				map_t;
+}	map_t;
 
-typedef struct	fdf_s {
+typedef struct fdf_s
+{
 	mlx_t		*mlx;
 	map_t		map;	
 	mlx_image_t	*img;
-}				fdf_t;
+}	fdf_t;
 
 /* Map parse */
 void	load_map(char *map_file_path, map_t *map);
@@ -91,7 +98,7 @@ void	validate_point(char *str, map_t *map);
 /* Draw */
 int		draw_map(fdf_t *fdf);
 int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
-void    line(fdf_t *fdf, point_t start, point_t end);
+void	line(fdf_t *fdf, point_t start, point_t end);
 
 /* Colour */
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha);
@@ -100,10 +107,10 @@ int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
 void	set_background(fdf_t *fdf, int32_t background);
 
 /* Map modification/projection */
-void    project_and_modify_map(fdf_t *fdf, point_t *map_projection);
-void    scale_z_points(point_t *pts, map_t *map);
-void    scale_points(point_t *pt_array, float scale, int len);
-void    fit_to_window(fdf_t *fdf, point_t *map_projection);
+void	project_and_modify_map(fdf_t *fdf, point_t *map_projection);
+void	scale_z_points(point_t *pts, map_t *map);
+void	scale_points(point_t *pt_array, float scale, int len);
+void	fit_to_window(fdf_t *fdf, point_t *map_projection);
 
 /* Matrix multiplications */
 void	rot_x_axis(point_t *points, point_t *projection, float angle, int len);
