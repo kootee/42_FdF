@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 09:24:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:15:08 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,22 @@
 # define MAGENTA	0xff0099
 # define LIGHTBLUE	0x87CEFA
 
+# define X_ISOMETRIC_ANG 30
+# define Y_ISOMETRIC_ANG 330
+# define Z_ISOMETRIC_ANG 30
+
 # define DEFAULT_COLOR MAGENTA
 
 typedef enum {
 	EXIT_CMD_COUNT_ERROR = 200,
 	EXIT_MAP_ALLOC_FAIL = 201,
-	EXIT_MALLOC_FAIL = 203,
-	EXIT_INVALID_MAP = 204
-} ErrorCode;
+	EXIT_MALLOC_FAIL = 202,
+	EXIT_INVALID_MAP = 203
+} errorcode;
 
 typedef	enum {
 	X, Y, Z
-} Coordinates;
+} coordinates;
 
 typedef	enum {
 	R, G, B, A
@@ -54,25 +58,6 @@ typedef	struct	colors_s {
 	int32_t bottom;
 	int32_t background;
 }				colors_t;
-
-typedef struct mouse_s {
-	int	button;
-	int	x;
-	int	y;
-	int	prev_x;
-	int	prev_y;
-}			mouse_t;
-
-typedef struct cam_s {
-	int		zoom;
-	double	x_angle;
-	double	y_angle;
-	double	z_angle;
-	float	z_height;
-	int		x_offset;
-	int		y_offset;
-	int		iso;
-}			cam_t;
 
 typedef struct point_s {
 	int32_t	color;
@@ -89,18 +74,12 @@ typedef struct map_s {
 	int			min_Z;
 	int			len;
 	float		scale;
-	// int		zoom_min;
-	// int		zoom_max;
 }				map_t;
 
 typedef struct fdf_s {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
-	map_t		map;
-	void		*win; // not used?
-	cam_t		*camera;
-	mouse_t		*mouse;
-	
+	map_t		map;	
 }	fdf_t;
 
 /* Map parse functions */
@@ -109,7 +88,7 @@ void	init_map(map_t *map);
 
 /* Error handling */
 void	handle_error(int errno);
-void	handle_map_error(map_t *map);
+void	handle_map_error(map_t *map, int errno);
 void	handle_error_terminate_mlx(fdf_t *fdf, int errno);
 
 /* FDF utility functions */
@@ -136,7 +115,7 @@ int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
 /* Map modification functions */
 
 /* Drawing utilities */
-void	set_background(fdf_t *fdf, int color);
+void	set_background(fdf_t *fdf, colors_t *color);
 
 /* Matrix multiplications */
 void	rot_x_axis(point_t *points, point_t *projection, float angle, int len);

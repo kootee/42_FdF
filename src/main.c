@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 09:49:27 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:56:11 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	init_fdf(fdf_t *fdf)
 {
-	fdf->mlx = mlx_init(WIN_X, WIN_Y, "FDF", true); // add function to put name of map
+	fdf->mlx = mlx_init(WIN_X, WIN_Y, "FDF", true);
 	if (fdf->mlx == NULL)
 		handle_error(mlx_errno);
 	fdf->img = mlx_new_image(fdf->mlx, WIN_X, WIN_Y);
@@ -22,9 +22,6 @@ static void	init_fdf(fdf_t *fdf)
 		handle_error_terminate_mlx(fdf, mlx_errno);
 	if (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0)
 		handle_error_terminate_mlx(fdf, mlx_errno);
-	fdf->camera = NULL;
-	fdf->mouse = NULL;
-	fdf->win = fdf->mlx->window;
 }
 
 static void	ft_hook(void *param)
@@ -45,10 +42,8 @@ int	main(int argc, char **argv)
 	if (argc != 2) 
 		handle_error(EXIT_CMD_COUNT_ERROR);
 	load_map(argv[1], &fdf.map);
-	print_pts(fdf.map.pt_array, &fdf.map);
 	init_fdf(&fdf);
 	draw_map(&fdf);
-	/* Error check */
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);
 	mlx_terminate(fdf.mlx);

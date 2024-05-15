@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 09:37:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:16:03 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,9 +210,9 @@ void    center_map(point_t *points, point_t origo, int len)
 void    project_and_modify_map(fdf_t *fdf, point_t *map_projection)
 {
     scale_z_points(map_projection, &fdf->map);
-    rot_x_axis(map_projection, map_projection, 30, fdf->map.len);
-    rot_y_axis(map_projection, map_projection, 330, fdf->map.len);
-    rot_z_axis(map_projection, map_projection, 30, fdf->map.len);
+    rot_x_axis(map_projection, map_projection, X_ISOMETRIC_ANG, fdf->map.len);
+    rot_y_axis(map_projection, map_projection, Y_ISOMETRIC_ANG, fdf->map.len);
+    rot_z_axis(map_projection, map_projection, Z_ISOMETRIC_ANG, fdf->map.len);
     scale_points(map_projection, fdf->map.scale, fdf->map.len);
     center_map(map_projection, fdf->map.origo, fdf->map.len);
 }
@@ -227,11 +227,8 @@ int draw_map(fdf_t *fdf)
     if (map_projection == NULL)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
-    set_background(fdf, fdf->map.colors.background);
+    set_background(fdf, &fdf->map.colors);
     project_and_modify_map(fdf, map_projection);
     draw_wires(fdf, map_projection);
-    // printf("printing all after modifications\n");
-    // print_pts(map_projection, &fdf->map);
-    // if move on user input then move here
     return (0);
 }

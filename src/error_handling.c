@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 08:52:57 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 09:59:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:33:59 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ void	handle_error(int errno)
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 	exit (errno);
 }
-void	handle_map_error(map_t *map)
+void	handle_map_error(map_t *map, int errno)
 {
 	free(map->map_data);
 	free(map->pt_array);
-	handle_error(EXIT_INVALID_MAP);
+	handle_error(errno);
 }
 void	handle_error_terminate_mlx(fdf_t *fdf, int errno)
 {
 	mlx_terminate(fdf->mlx);
-	/* needs to free map so far and the rest of fdf that's not mlx */
-	handle_error(errno);
+	handle_map_error(&fdf->map, errno);
 }

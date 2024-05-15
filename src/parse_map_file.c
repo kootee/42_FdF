@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 09:54:36 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:00:55 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,12 @@ void	load_map(char *map_file_path, map_t *map)
 	map->map_data = read_map_data(fd);
 	close(fd);
 	if (set_map_dimensions(map) > 0)
-		handle_map_error(map);
+		handle_map_error(map, EXIT_INVALID_MAP);
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
 	map->pt_array = ft_calloc(map->len, sizeof(point_t));
 	if (map->pt_array == NULL)
-		handle_map_error(map);
+		handle_map_error(map, EXIT_INVALID_MAP);
 	if (set_map_points(map) > 0)
-		handle_map_error(map);
-	set_point_colors(map, map->pt_array, map->colors, map->len); // fix
+		handle_map_error(map, EXIT_INVALID_MAP);
+	set_point_colors(map, map->pt_array, map->colors, map->len);
 }
