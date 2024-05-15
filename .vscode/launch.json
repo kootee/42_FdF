@@ -10,7 +10,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/fdf",
-			"args": ["maps/elem-col.fdf"],
+			"args": ["maps/pyra.fdf"],
 			"stopAtEntry": true,
 			"cwd": "${workspaceFolder}", 
 			"environment": [],

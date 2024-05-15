@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 15:40:49 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 09:37:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,35 +62,6 @@ void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
         i++;
     }
 }
-
-/* Change so that its according to angle that is given as parameter */
-point_t  isometric_project(point_t point)
-{
- int tmp; 
-
- tmp = point.axis[X];
- point.axis[X] = (tmp - point.axis[Y]) * cos(0.523599);
- point.axis[Y] = (tmp + point.axis[Y]) * sin(0.523599) - point.axis[Z];
- return (point);
-}
-
-/* void    set_isometric_projection(fdf_t *fdf, point_t *map_projection)
-{
-    // int j;
-    // float transf_matrix[3][3];
-    while (i < 3)
-    {
-        j = 0;
-        while (j < 3)
-        {
-            transf_matrix[i][j] = 0;
-            j++;
-        }
-        i++;
-    }
-    transf_matrix[0][0] = 1;
-    transf_matrix[1][1] = 1;
-} */
 
 void    center_to_window(point_t *points, map_t *map)
 {
@@ -204,32 +175,6 @@ void    scale_points(point_t *pt_array, float scale, int len)
         i++;
     }
 }
-/* void    scale_map(fdf_t *fdf, float scale, int map_len)
-{
-    fdf->map.scale = 1; // not necessary if only done once as this is initialised
-    float origo_x = fdf->map.dim.axis[X] / 2;
-    float origo_y = fdf->map.dim.axis[Y] / 2;
-    while(is_inside_limits(&fdf->map, map_len) == true)
-    {
-        scale_points(&fdf->map, map_len);
-        origo_x *= fdf->map.scale;
-        origo_y *= fdf->map.scale;
-        if (is_inside_limits(&fdf->map, map_len) == false)
-        {
-            fdf->map.scale = 0.8;
-            scale_points(&fdf->map, map_len);
-            break ;
-        }
-        fdf->map.scale += 0.2;
-        
-        printf("scaling with 0.2\n");
-        printf("scale is %f\n", fdf->map.scale);
-        printf("origo scaled to %f %f\n", origo_x, origo_x);
-        printf("map is now \n");
-        print_pts(fdf->map.pt_array, &fdf->map);
-    }
-    // copy to projection
-} */
 
 void    scale_z_points(point_t *pts, map_t *map)
 {
@@ -253,7 +198,6 @@ void    center_map(point_t *points, point_t origo, int len)
 {
     int i;
     i = 0;
-    // printf("moving pts by x: %0.2f y: %0.2f z: %0.2f\n", origo.axis[X], origo.axis[Y], origo.axis[Z]);
     while (i < len)
     {
         points[i].axis[X] = points[i].axis[X] + origo.axis[X];
@@ -265,21 +209,10 @@ void    center_map(point_t *points, point_t origo, int len)
 
 void    project_and_modify_map(fdf_t *fdf, point_t *map_projection)
 {
-    int i;
-
-    i = 0;
     scale_z_points(map_projection, &fdf->map);
-    // rotate_to_angle();
     rot_x_axis(map_projection, map_projection, 30, fdf->map.len);
     rot_y_axis(map_projection, map_projection, 330, fdf->map.len);
     rot_z_axis(map_projection, map_projection, 30, fdf->map.len);
-/*     while (i < fdf->map.len)
-    {
-        map_projection[i] = isometric_project(map_projection[i]);
-        i++;
-    } */
-    print_pts(map_projection, &fdf->map);
-
     scale_points(map_projection, fdf->map.scale, fdf->map.len);
     center_map(map_projection, fdf->map.origo, fdf->map.len);
 }
@@ -295,14 +228,8 @@ int draw_map(fdf_t *fdf)
         handle_error(EXIT_MALLOC_FAIL); // go to free functions
     copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
     set_background(fdf, fdf->map.colors.background);
-    
-    // printf("printing all now\n");
-    // print_pts(map_projection, &fdf->map);
-    
-    project_and_modify_map(fdf, map_projection); // parses map and sets projection and scale etc
-
+    project_and_modify_map(fdf, map_projection);
     draw_wires(fdf, map_projection);
-    
     // printf("printing all after modifications\n");
     // print_pts(map_projection, &fdf->map);
     // if move on user input then move here

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 15:06:04 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 09:24:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ void	init_map(map_t *map);
 /* Error handling */
 void	handle_error(int errno);
 void	handle_map_error(map_t *map);
-void	handle_error_and_free(fdf_t *fdf, int errno);
+void	handle_error_terminate_mlx(fdf_t *fdf, int errno);
 
 /* FDF utility functions */
 bool	is_hexa_letter(char c);
 void	free_strs(char **strs);
 void	free_map_pts(point_t **pts);
 int		round_to_int(double n);
-void	validate_point(char *str);
+void	validate_point(char *str, map_t *map);
 
 /* Map utilities */
 void    init_colors(map_t *map);

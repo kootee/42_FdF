@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 15:49:43 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 09:54:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	add_points(char *line, map_t *map, int line_number)
 	i = 0;
 	while (pts[i] && pts[i][0] != '\n')
 	{
-		validate_point(&pts[i][0]);
+		validate_point(pts[i], map);
 		map->pt_array[idx].axis[Z] = ft_atoi(pts[i]);
 		map->pt_array[idx].axis[X] = i - map->dim.axis[X] / 2;
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
@@ -89,12 +89,12 @@ static int	set_map_dimensions(map_t *map)
 			if (++map->dim.axis[Y] && map->dim.axis[X] == 0)
 				map->dim.axis[X] = pt_count;
 			if (pt_count != map->dim.axis[X])
-				return (EXIT_FAILURE);
+				return (EXIT_INVALID_MAP);
 			pt_count = 0;
 		}
 	}
 	if (pt_count != 0 && pt_count != map->dim.axis[X])
-		return (EXIT_FAILURE);
+		return (EXIT_INVALID_MAP);
 	map->dim.axis[Y]++;
 	return (0);
 }
@@ -144,9 +144,6 @@ void	load_map(char *map_file_path, map_t *map)
 	if (map->pt_array == NULL)
 		handle_map_error(map);
 	if (set_map_points(map) > 0)
-	{
-		free(map->pt_array);
 		handle_map_error(map);
-	}
 	set_point_colors(map, map->pt_array, map->colors, map->len); // fix
 }
