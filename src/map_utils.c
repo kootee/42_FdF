@@ -6,11 +6,23 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 11:07:18 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:20:04 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
+{
+    int i;
+
+    i = 0;
+    while (i < len)
+    {
+        dest_pts[i] = src_pts[i];
+        i++;
+    }
+}
 
 void	init_map(map_t *map)
 {

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 11:15:08 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:28:57 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define BLACK		0x000000
 # define WHITE		0xffffff
 # define MAGENTA	0xff0099
-# define LIGHTBLUE	0x87CEFA
+# define LIGHTBLUE	0x87cefa
 
 # define X_ISOMETRIC_ANG 30
 # define Y_ISOMETRIC_ANG 330
@@ -101,21 +101,23 @@ void	validate_point(char *str, map_t *map);
 /* Map utilities */
 void    init_colors(map_t *map);
 void    set_point_colors(map_t *map, point_t *pts, colors_t clrs, int len);
+void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts);
 
 /* Draw functions */
 int		draw_map(fdf_t *fdf);
 int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
 
-
 /* Colour functions */
-// int32_t	get_colour(int32_t hex_val);
+void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha);
 int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
+void	set_background(fdf_t *fdf, colors_t *color);
 
 /* Map modification functions */
-
-/* Drawing utilities */
-void	set_background(fdf_t *fdf, colors_t *color);
+void    project_and_modify_map(fdf_t *fdf, point_t *map_projection);
+void    scale_z_points(point_t *pts, map_t *map);
+void    scale_points(point_t *pt_array, float scale, int len);
+void    center_map(point_t *points, point_t origo, int len);
 
 /* Matrix multiplications */
 void	rot_x_axis(point_t *points, point_t *projection, float angle, int len);

@@ -6,14 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 11:16:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:28:09 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <unistd.h>
-
-void    project_and_modify_map(fdf_t *fdf, point_t *projected_map_pts);
 
 bool    is_inside_window(point_t *points, int len)
 {
@@ -29,38 +26,6 @@ bool    is_inside_window(point_t *points, int len)
         i++;
     }
     return (true);
-}
-
-void    print_pts(point_t *pts, map_t *map)
-{
-    int i = 0;
-    int j = 0;
-    int k = 0;
-    while (i < map->len)
-    {
-        printf("Row %d:", k);
-        while (j++ < map->dim.axis[X])
-        {
-            printf("    %0.1f,%0.1f,%0.1f   ", pts[i].axis[X], pts[i].axis[Y], pts[i].axis[Z]);
-            i++;
-        }
-        printf("\n");
-        k++;
-        j = 0;
-    }
-}
-
-void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
-{
-    int i;
-
-    i = 0;
-    while (i < len)
-    {
-        dest_pts[i] = src_pts[i];
-        // printf("pt x%0.2f and y%0.2f and z%0.2f\n", src_pts[i].axis[X], src_pts[i].axis[Y], src_pts[i].axis[Z]);
-        i++;
-    }
 }
 
 void    center_to_window(point_t *points, map_t *map)
@@ -162,51 +127,6 @@ void    draw_wires(fdf_t *fdf, point_t *map_projection)
     }
 }
 
-void    scale_points(point_t *pt_array, float scale, int len)
-{
-    int i;
-    
-    i = 0;
-    while (i < len)
-    {
-        pt_array[i].axis[X] *= scale;
-        pt_array[i].axis[Y] *= scale;
-        pt_array[i].axis[Z] *= scale;
-        i++;
-    }
-}
-
-void    scale_z_points(point_t *pts, map_t *map)
-{
-    float   proportion;
-    int     divisor;
-    int     i;
-
-    i = 0;
-    divisor = 1;
-    proportion = map->dim.axis[Z] / map->dim.axis[X];
-    if (proportion > 0.5)
-        divisor = proportion * 10;
-    while (i < map->len)
-    {
-        pts[i].axis[Z] = pts[i].axis[Z] / divisor;
-        i++;
-    }
-}
-
-void    center_map(point_t *points, point_t origo, int len)
-{
-    int i;
-    i = 0;
-    while (i < len)
-    {
-        points[i].axis[X] = points[i].axis[X] + origo.axis[X];
-        points[i].axis[Y] = points[i].axis[Y] + origo.axis[Y];
-        points[i].axis[Z] = points[i].axis[Z] + origo.axis[Z];
-        i++;
-    }
-}
-
 void    project_and_modify_map(fdf_t *fdf, point_t *map_projection)
 {
     scale_z_points(map_projection, &fdf->map);
@@ -225,7 +145,7 @@ int draw_map(fdf_t *fdf)
     i = 0;
     map_projection = ft_calloc(fdf->map.len, sizeof(point_t));
     if (map_projection == NULL)
-        handle_error(EXIT_MALLOC_FAIL); // go to free functions
+        handle_error_terminate_mlx(fdf, EXIT_MALLOC_FAIL);
     copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
     set_background(fdf, &fdf->map.colors);
     project_and_modify_map(fdf, map_projection);
