@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:53:48 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/14 15:48:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:21:31 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	rot_x_axis(point_t *projection, point_t *points, float angle, int len)
 	projection_matrix[2][1] = sin(radius);
 	projection_matrix[2][2] = cos(radius);
 	i = -1;
-	while (i++ < len)
+	while (++i < len)
 		projection[i] = multiply_matrix(projection_matrix, points[i]);
 }
 
@@ -89,7 +89,7 @@ void	rot_y_axis(point_t *points, point_t *projection, float angle, int len)
 	projection_matrix[2][0] = -sin(radius);
 	projection_matrix[2][2] = cos(radius);
 	i = -1;
-	while (i++ < len)
+	while (++i < len)
 		projection[i] = multiply_matrix(projection_matrix, points[i]);
 }
 
@@ -118,6 +118,6 @@ void	rot_z_axis(point_t *points, point_t *projection, float angle, int len)
 	projection_matrix[1][1] = cos(radius);
 	projection_matrix[2][2] = 1;
 	i = -1;
-	while (i++ < len)
+	while (++i < len)
 		projection[i] = multiply_matrix(projection_matrix, points[i]);
 }

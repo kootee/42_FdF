@@ -1,5 +1,6 @@
 NAME	= fdf
-CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -Ofast -g
+CC		= cc
+CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -Ofast -g -fsanitize=address
 LIBMLX	= MLX42
 LIBFT	= libft
 debug	?= 0
@@ -24,7 +25,7 @@ libs:
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJS)

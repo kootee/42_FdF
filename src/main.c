@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 10:56:11 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:20:07 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static void	init_fdf(fdf_t *fdf)
 
 static void	ft_hook(void *param)
 {
-	fdf_t *fdf;
-	mlx_t *mlx_inst;
-	
+	fdf_t	*fdf;
+	mlx_t	*mlx_inst;
+
 	fdf = param;
 	mlx_inst = fdf->mlx;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_ESCAPE))
@@ -39,13 +39,14 @@ int	main(int argc, char **argv)
 {
 	fdf_t	fdf;
 
-	if (argc != 2) 
+	if (argc != 2)
 		handle_error(EXIT_CMD_COUNT_ERROR);
 	load_map(argv[1], &fdf.map);
 	init_fdf(&fdf);
 	draw_map(&fdf);
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);
+	free(fdf.map.pt_array);
 	mlx_terminate(fdf.mlx);
 	return (EXIT_SUCCESS);
 }

@@ -6,22 +6,37 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 11:20:04 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:06:03 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
+void	validate_point(char *str, map_t *map)
 {
-    int i;
+	while (*str)
+	{
+		if (ft_isalnum(*str) || *str == ',' || *str == '\n' || *str == '-')
+		{
+			if (*str > 'G' && *str < 'Z')
+				handle_map_error(map, EXIT_INVALID_MAP);
+		}
+		else
+			handle_map_error(map, EXIT_INVALID_MAP);
+		str++;
+	}
+}
 
-    i = 0;
-    while (i < len)
-    {
-        dest_pts[i] = src_pts[i];
-        i++;
-    }
+void	copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		dest_pts[i] = src_pts[i];
+		i++;
+	}
 }
 
 void	init_map(map_t *map)
@@ -47,6 +62,8 @@ void	init_colors(map_t *map)
 	map->colors.top = MAGENTA;
 }
 
+/* Add color to all the points, according to the Z position or given color */
+/* set the rest of the colors depending on the position according to Z */
 void	set_point_colors(map_t *map, point_t *points, colors_t colors, int len)
 {
 	int	i;
@@ -71,5 +88,3 @@ void	set_point_colors(map_t *map, point_t *points, colors_t colors, int len)
 		i++;
 	}
 }
-/* Add color to all the points, according to the Z position or given color */
-/* set the rest of the colors depending on the position according to Z */

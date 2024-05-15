@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 08:52:57 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 10:33:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:16:17 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	handle_error(int errno)
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 	exit (errno);
 }
+
 void	handle_map_error(map_t *map, int errno)
 {
-	free(map->map_data);
 	free(map->pt_array);
 	handle_error(errno);
 }
+
 void	handle_error_terminate_mlx(fdf_t *fdf, int errno)
 {
 	mlx_terminate(fdf->mlx);
