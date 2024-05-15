@@ -6,38 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 13:06:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:05:43 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	validate_point(char *str, map_t *map)
-{
-	while (*str)
-	{
-		if (ft_isalnum(*str) || *str == ',' || *str == '\n' || *str == '-')
-		{
-			if (*str > 'G' && *str < 'Z')
-				handle_map_error(map, EXIT_INVALID_MAP);
-		}
-		else
-			handle_map_error(map, EXIT_INVALID_MAP);
-		str++;
-	}
-}
-
-void	copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
-{
-	int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		dest_pts[i] = src_pts[i];
-		i++;
-	}
-}
 
 void	init_map(map_t *map)
 {
@@ -55,10 +28,22 @@ void	init_map(map_t *map)
 	init_colors(map);
 }
 
+void	copy_map_points(point_t *src_pts, int len, point_t *dest_pts)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		dest_pts[i] = src_pts[i];
+		i++;
+	}
+}
+
 void	init_colors(map_t *map)
 {
 	map->colors.background = LIGHTBLUE;
-	map->colors.bottom = WHITE;
+	map->colors.bottom = BLACK;
 	map->colors.top = MAGENTA;
 }
 
@@ -86,5 +71,20 @@ void	set_point_colors(map_t *map, point_t *points, colors_t colors, int len)
 			points[i].color = gradient(colors.bottom, colors.top, \
 								z_len, z_len - points[i].axis[Z]);
 		i++;
+	}
+}
+
+void	validate_point(char *str, map_t *map)
+{
+	while (*str)
+	{
+		if (ft_isalnum(*str) || *str == ',' || *str == '\n' || *str == '-')
+		{
+			if (*str > 'G' && *str < 'Z')
+				handle_map_error(map, EXIT_INVALID_MAP);
+		}
+		else
+			handle_map_error(map, EXIT_INVALID_MAP);
+		str++;
 	}
 }

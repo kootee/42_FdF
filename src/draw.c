@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 13:06:27 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:45:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ int	draw_map(fdf_t *fdf)
 	if (map_projection == NULL)
 		handle_error_terminate_mlx(fdf, EXIT_MALLOC_FAIL);
 	copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
-	set_background(fdf, &fdf->map.colors);
+	set_background(fdf, fdf->map.colors.background);
 	project_and_modify_map(fdf, map_projection);
 	draw_wires(fdf, map_projection);
-	return (0);
+	return (EXIT_SUCCESS);
 }
