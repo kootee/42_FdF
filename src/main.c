@@ -6,13 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 13:20:07 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:48:46 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	init_fdf(fdf_t *fdf)
+static void	init_fdf(t_fdf *fdf)
 {
 	fdf->mlx = mlx_init(WIN_X, WIN_Y, "FDF", true);
 	if (fdf->mlx == NULL)
@@ -26,7 +26,7 @@ static void	init_fdf(fdf_t *fdf)
 
 static void	ft_hook(void *param)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 	mlx_t	*mlx_inst;
 
 	fdf = param;
@@ -37,7 +37,7 @@ static void	ft_hook(void *param)
 
 int	main(int argc, char **argv)
 {
-	fdf_t	fdf;
+	t_fdf	fdf;
 
 	if (argc != 2)
 		handle_error(EXIT_CMD_COUNT_ERROR);

@@ -6,13 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 14:45:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:48:46 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	draw_point_wire(point_t *point, fdf_t *fdf, int current_line)
+static void	draw_point_wire(t_point *point, t_fdf *fdf, int current_line)
 {
 	int	i;
 	int	x_end;
@@ -36,7 +36,7 @@ static void	draw_point_wire(point_t *point, fdf_t *fdf, int current_line)
 	}
 }
 
-static void	draw_wires(fdf_t *fdf, point_t *map_projection)
+static void	draw_wires(t_fdf *fdf, t_point *map_projection)
 {
 	int	i;
 
@@ -49,7 +49,7 @@ static void	draw_wires(fdf_t *fdf, point_t *map_projection)
 	}
 }
 
-static void	center_map(point_t *points, point_t origo, int len)
+static void	center_map(t_point *points, t_point origo, int len)
 {
 	int	i;
 
@@ -63,7 +63,7 @@ static void	center_map(point_t *points, point_t origo, int len)
 	}
 }
 
-void	project_and_modify_map(fdf_t *fdf, point_t *map_projection)
+void	project_and_modify_map(t_fdf *fdf, t_point *map_projection)
 {
 	scale_z_points(map_projection, &fdf->map);
 	rot_x_axis(map_projection, map_projection, X_ISOMETRIC_ANG, fdf->map.len);
@@ -73,13 +73,13 @@ void	project_and_modify_map(fdf_t *fdf, point_t *map_projection)
 	center_map(map_projection, fdf->map.origo, fdf->map.len);
 }
 
-int	draw_map(fdf_t *fdf)
+int	draw_map(t_fdf *fdf)
 {
 	int		i;
-	point_t	*map_projection;
+	t_point	*map_projection;
 
 	i = 0;
-	map_projection = ft_calloc(fdf->map.len, sizeof(point_t));
+	map_projection = ft_calloc(fdf->map.len, sizeof(t_point));
 	if (map_projection == NULL)
 		handle_error_terminate_mlx(fdf, EXIT_MALLOC_FAIL);
 	copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);

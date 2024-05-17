@@ -6,17 +6,17 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:53:48 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 14:21:31 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:47:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-point_t	multiply_matrix(float matrix[3][3], point_t point)
+t_point	multiply_matrix(float matrix[3][3], t_point point)
 {
 	int		i;
 	int		j;
-	point_t	mult_res;
+	t_point	mult_res;
 
 	i = 0;
 	mult_res = point;
@@ -35,7 +35,7 @@ point_t	multiply_matrix(float matrix[3][3], point_t point)
 	return (mult_res);
 }
 
-void	rot_x_axis(point_t *projection, point_t *points, float angle, int len)
+void	rot_x_axis(t_point *projection, t_point *points, float angle, int len)
 {
 	int		i;
 	int		j;
@@ -64,7 +64,7 @@ void	rot_x_axis(point_t *projection, point_t *points, float angle, int len)
 		projection[i] = multiply_matrix(projection_matrix, points[i]);
 }
 
-void	rot_y_axis(point_t *points, point_t *projection, float angle, int len)
+void	rot_y_axis(t_point *points, t_point *projection, float angle, int len)
 {
 	int		i;
 	int		j;
@@ -93,7 +93,7 @@ void	rot_y_axis(point_t *points, point_t *projection, float angle, int len)
 		projection[i] = multiply_matrix(projection_matrix, points[i]);
 }
 
-void	rot_z_axis(point_t *points, point_t *projection, float angle, int len)
+void	rot_z_axis(t_point *points, t_point *projection, float angle, int len)
 {
 	int		i;
 	int		j;

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 15:15:22 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:53:26 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,90 +42,95 @@ typedef enum s_errorcode
 	EXIT_INVALID_MAP = 202
 }	t_errorcode;
 
-typedef	enum coordinates_s
+typedef enum s_coordinates
 {
-	X, Y, Z
+	X,
+	Y,
+	Z
 }	t_coordinates;
 
-typedef	enum rgb_values_s
+typedef enum s_rgb_values
 {
-	R, G, B, A
-}	rgb_values_t;
+	R,
+	G,
+	B,
+	A
+}	t_rgb_values;
 
-typedef	struct	s_colors
+typedef struct s_colors
 {
-	int32_t top;
-	int32_t bottom;
-	int32_t background;
+	int32_t	top;
+	int32_t	bottom;
+	int32_t	background;
 }	t_colors;
 
-typedef struct point_s
+typedef struct s_point
 {
 	int32_t	color;
 	int32_t	hex_color;
 	float	axis[3];
-}	point_t;
+}	t_point;
 
-typedef struct map_s
+typedef struct s_map
 {
-	point_t		*pt_array;
-	point_t		origo;
-	point_t		dim;
-	colors_t	colors;
+	t_point		*pt_array;
+	t_point		origo;
+	t_point		dim;
+	t_colors	colors;
 	char		*map_data;
-	int			min_Z;
+	int			min_z;
 	int			len;
 	float		scale;
-}	map_t;
+}	t_map;
 
-typedef struct fdf_s
+typedef struct s_fdf
 {
 	mlx_t		*mlx;
-	map_t		map;	
+	t_map		map;	
 	mlx_image_t	*img;
-}	fdf_t;
+}	t_fdf;
 
 /* Map parse */
-void	load_map(char *map_file_path, map_t *map);
+void	load_map(char *map_file_path, t_map *map);
 
 /* Map utilities */
-void	init_map(map_t *map);
-void    copy_map_points(point_t *src_pts, int len, point_t *dest_pts);
-void    init_colors(map_t *map);
-void    set_point_colors(map_t *map, point_t *pts, colors_t clrs, int len);
-void	validate_point(char *str, map_t *map);
+void	init_map(t_map *map);
+void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts);
+void	init_colors(t_map *map);
+void	set_point_colors(t_map *map, t_point *pts, t_colors clrs, int len);
+void	validate_point(char *str, t_map *map);
 
 /* Draw */
-int		draw_map(fdf_t *fdf);
+int		draw_map(t_fdf *fdf);
 int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
-void	line(fdf_t *fdf, point_t start, point_t end);
+void	line(t_fdf *fdf, t_point start, t_point end);
 
 /* Colour */
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha);
 int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
-void	set_background(fdf_t *fdf, int32_t background);
+void	set_background(t_fdf *fdf, int32_t background);
 
 /* Map modification/projection */
-void	project_and_modify_map(fdf_t *fdf, point_t *map_projection);
-void	scale_z_points(point_t *pts, map_t *map);
-void	scale_points(point_t *pt_array, float scale, int len);
-void	fit_to_window(fdf_t *fdf, point_t *map_projection);
+void	project_and_modify_map(t_fdf *fdf, t_point *map_projection);
+void	scale_z_points(t_point *pts, t_map *map);
+void	scale_points(t_point *pt_array, float scale, int len);
+void	fit_to_window(t_fdf *fdf, t_point *map_projection);
 
 /* Matrix multiplications */
-void	rot_x_axis(point_t *points, point_t *projection, float angle, int len);
-void	rot_y_axis(point_t *points, point_t *projection, float angle, int len);
-void	rot_z_axis(point_t *points, point_t *projection, float angle, int len);
+void	rot_x_axis(t_point *points, t_point *projection, float angle, int len);
+void	rot_y_axis(t_point *points, t_point *projection, float angle, int len);
+void	rot_z_axis(t_point *points, t_point *projection, float angle, int len);
 
 /* FDF utilities */
 bool	is_hexa_letter(char c);
 void	free_strs(char **strs);
-void	free_map_pts(point_t **pts);
+void	free_map_pts(t_point **pts);
 int		round_to_int(double n);
 
 /* Error handling */
 void	handle_error(int errno);
-void	handle_map_error(map_t *map, int errno);
-void	handle_error_terminate_mlx(fdf_t *fdf, int errno);
+void	handle_map_error(t_map *map, int errno);
+void	handle_error_terminate_mlx(t_fdf *fdf, int errno);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 13:17:23 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:52:59 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	add_points(char *line, map_t *map, int line_number)
+static int	add_points(char *line, t_map *map, int line_number)
 {
 	int			i;
 	char		**pts;
@@ -32,8 +32,8 @@ static int	add_points(char *line, map_t *map, int line_number)
 			map->pt_array[idx].hex_color = set_hexcolor(pts[i]);
 		if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
 			map->dim.axis[Z] = map->pt_array[idx].axis[Z];
-		if (map->pt_array[idx].axis[Z] < map->min_Z)
-			map->min_Z = map->pt_array[idx].axis[Z];
+		if (map->pt_array[idx].axis[Z] < map->min_z)
+			map->min_z = map->pt_array[idx].axis[Z];
 		i++;
 		idx++;
 	}
@@ -41,7 +41,7 @@ static int	add_points(char *line, map_t *map, int line_number)
 	return (EXIT_SUCCESS);
 }
 
-static int	set_map_points(map_t *map)
+static int	set_map_points(t_map *map)
 {
 	int			i;
 	char		*line;
@@ -70,7 +70,7 @@ static int	set_map_points(map_t *map)
 	return (EXIT_SUCCESS);
 }
 
-static int	set_map_dimensions(map_t *map)
+static int	set_map_dimensions(t_map *map)
 {
 	int	pt_count;
 	int	i;
@@ -127,7 +127,7 @@ static char	*read_map_data(int fd)
 	return (map_data);
 }
 
-void	load_map(char *map_file_path, map_t *map)
+void	load_map(char *map_file_path, t_map *map)
 {
 	int		fd;
 
@@ -139,7 +139,7 @@ void	load_map(char *map_file_path, map_t *map)
 	if (set_map_dimensions(map) > 0)
 		handle_map_error(map, EXIT_INVALID_MAP);
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
-	map->pt_array = ft_calloc(map->len, sizeof(point_t));
+	map->pt_array = ft_calloc(map->len, sizeof(t_point));
 	if (map->pt_array == NULL)
 	{
 		free(map->map_data);

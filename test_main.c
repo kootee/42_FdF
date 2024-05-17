@@ -55,8 +55,8 @@ void ft_hook(void* param)
 int32_t main(void)
 {
 	mlx_t* mlx;
-	point_t start;
-	point_t end;
+	t_point start;
+	t_point end;
 
 	// Gotta error check this stuff
 	if (!(mlx = mlx_init(WIN_X, WIN_Y, "MLX42", true)))

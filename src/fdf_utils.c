@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 13:12:46 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:47:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int32_t	set_hexcolor(char *str)
 	return (color);
 }
 
-void	free_map_pts(point_t **pts)
+void	free_map_pts(t_point **pts)
 {
 	while (pts)
 	{

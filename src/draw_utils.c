@@ -6,17 +6,17 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:20 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/15 13:14:25 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:48:46 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 /* check that the pixel is within the window */
-void	line(fdf_t *fdf, point_t start, point_t end)
+void	line(t_fdf *fdf, t_point start, t_point end)
 {
-	point_t	delta_v;
-	point_t	pixel;
+	t_point	delta_v;
+	t_point	pixel;
 	int		line;
 	int		len;
 

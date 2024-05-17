@@ -11,7 +11,17 @@ LIBS	= ${LIBMLX}/build/libmlx42.a -ldl -lglfw \
 			-L"/Users/${USER}/.brew/opt/glfw/lib/" -pthread -lm \
 			-L${LIBFT} -lft
 
-SRCS	= ${wildcard src/*.c}
+SRCS	= 	src/main.c \
+			src/color_functions.c \
+			src/draw_utils.c \
+			src/draw.c \
+			src/error_handling.c \
+			src/fdf_utils.c \
+			src/map_projection_utils.c \
+			src/map_utils.c \
+			src/parse_map_file.c \
+			src/projection_matrices.c \
+			src/wire_functions.c
 
 OBJS	= ${SRCS:.c=.o}
 
