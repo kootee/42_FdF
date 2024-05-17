@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 16:21:06 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:36:00 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	load_map(char *map_file_path, t_map *map);
 void	init_map(t_map *map);
 void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts);
 void	validate_point(char *str, t_map *map);
-void	set_uneven(int idx, int line_number, t_map *map);
+void	set_uneven(int idx, int line_number, t_map *map, int i);
 void	check_path(t_map *map, char *str);
 
 /* Draw */

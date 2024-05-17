@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:40 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:36:31 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts)
 	}
 }
 
-void	set_uneven(int idx, int line_number, t_map *map)
+void	set_uneven(int idx, int line_number, t_map *map, int i)
 {
+	while ()
 	idx++;
 	map->pt_array[idx].axis[Z] = 80;
 	map->pt_array[idx].axis[X] = map->dim.axis[X];
@@ -63,7 +64,9 @@ void	validate_point(char *str, t_map *map)
 	{
 		if (ft_isalnum(*str) || *str == ',' || *str == '\n' || *str == '-')
 		{
-			if (*str > 'G' && *str < 'Z')
+			if (*str >= 'G' && *str <= 'Z')
+				handle_error(map, EXIT_INVALID_MAP_PTS);
+			if (*str >= 'g' && *str <= 'z')
 				handle_error(map, EXIT_INVALID_MAP_PTS);
 		}
 		else
