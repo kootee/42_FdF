@@ -6,13 +6,22 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:20 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:48:46 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:07:07 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/* check that the pixel is within the window */
+int32_t	set_hexcolor(char *str)
+{
+	int32_t	color;
+
+	while (*str != ',')
+		str++;
+	color = ft_atoi_base(str + 3, 16);
+	return (color);
+}
+
 void	line(t_fdf *fdf, t_point start, t_point end)
 {
 	t_point	delta_v;

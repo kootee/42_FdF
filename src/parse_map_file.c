@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:52:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:16:46 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	add_points(char *line, t_map *map, int line_number)
 
 	pts = ft_split(line, ' ');
 	if (pts == NULL)
-		return (EXIT_MALLOC_FAIL);
+		return (EXIT_FAILURE);
 	i = 0;
 	while (pts[i] && pts[i][0] != '\n')
 	{
@@ -30,18 +30,17 @@ static int	add_points(char *line, t_map *map, int line_number)
 		map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
 		if (ft_strchr(pts[i], ','))
 			map->pt_array[idx].hex_color = set_hexcolor(pts[i]);
-		if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
-			map->dim.axis[Z] = map->pt_array[idx].axis[Z];
-		if (map->pt_array[idx].axis[Z] < map->min_z)
-			map->min_z = map->pt_array[idx].axis[Z];
+		set_z_values(map, idx);
 		i++;
 		idx++;
 	}
+	if (i != map->dim.axis[X] && line_number != map->dim.axis[Y])
+		set_uneven(++idx, line_number, map);
 	free_strs(pts);
 	return (EXIT_SUCCESS);
 }
 
-static int	set_map_points(t_map *map)
+static void	set_map_points(t_map *map)
 {
 	int			i;
 	char		*line;
@@ -51,26 +50,26 @@ static int	set_map_points(t_map *map)
 	remainder = map->map_data;
 	i = 0;
 	line_count = 0;
-	line = NULL;
+	if (map->map_data[i] == '\0')
+		handle_error(map, EXIT_INVALID_MAP);
 	while (++i)
 	{
 		if (map->map_data[i] == '\n' || map->map_data[i] == '\0')
 		{
-			free(line);
 			line = ft_substr(remainder, 0, (&map->map_data[i] - remainder));
 			if (line == NULL)
-				return (EXIT_MALLOC_FAIL);
+				handle_error(map, EXIT_MALLOC_FAIL);
 			remainder = &map->map_data[i + 1];
 			if (add_points(line, map, line_count++) > 0)
-				return (EXIT_MALLOC_FAIL);
+				handle_error(map, EXIT_MALLOC_FAIL);
+			free(line);
 		}
 		if (map->map_data[i] == '\0')
 			break ;
 	}
-	return (EXIT_SUCCESS);
 }
 
-static int	set_map_dimensions(t_map *map)
+static void	set_map_dimensions(t_map *map)
 {
 	int	pt_count;
 	int	i;
@@ -86,20 +85,17 @@ static int	set_map_dimensions(t_map *map)
 			pt_count++;
 		if (map->map_data[i++] == '\n')
 		{
-			if (++map->dim.axis[Y] && map->dim.axis[X] == 0)
-				map->dim.axis[X] = pt_count;
-			if (pt_count != map->dim.axis[X])
-				return (EXIT_INVALID_MAP);
+			map->dim.axis[X] = pt_count;
+			++map->dim.axis[Y];
+			map->dim.axis[X] = pt_count;
 			pt_count = 0;
 		}
 	}
-	if (pt_count != 0 && pt_count != map->dim.axis[X])
-		return (EXIT_INVALID_MAP);
 	map->dim.axis[Y]++;
-	return (0);
+	map->len = map->dim.axis[X] * map->dim.axis[Y];
 }
 
-static char	*read_map_data(int fd)
+static char	*read_map_data(t_map *map, int fd)
 {
 	char	*line;
 	char	*map_data;
@@ -107,7 +103,7 @@ static char	*read_map_data(int fd)
 
 	map_data = ft_calloc(1, sizeof(char));
 	if (map_data == NULL)
-		handle_error(EXIT_MALLOC_FAIL);
+		handle_error(map, EXIT_MALLOC_FAIL);
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -119,7 +115,7 @@ static char	*read_map_data(int fd)
 		{
 			free(line);
 			free(temp_to_free);
-			handle_error(EXIT_MALLOC_FAIL);
+			handle_error(map, EXIT_MALLOC_FAIL);
 		}
 		free(temp_to_free);
 		free(line);
@@ -131,26 +127,18 @@ void	load_map(char *map_file_path, t_map *map)
 {
 	int		fd;
 
+	check_path(map, map_file_path);
 	init_map(map);
 	fd = open(map_file_path, O_RDONLY);
 	if (fd < 0)
-		handle_error(mlx_errno);
-	map->map_data = read_map_data(fd);
-	if (set_map_dimensions(map) > 0)
-		handle_map_error(map, EXIT_INVALID_MAP);
-	map->len = map->dim.axis[X] * map->dim.axis[Y];
+		handle_error(map, EXIT_OPEN_ERROR);
+	map->map_data = read_map_data(map, fd);
+	close(fd);
+	set_map_dimensions(map);
 	map->pt_array = ft_calloc(map->len, sizeof(t_point));
 	if (map->pt_array == NULL)
-	{
-		free(map->map_data);
-		handle_map_error(map, EXIT_INVALID_MAP);
-	}
-	if (set_map_points(map) > 0)
-	{
-		free(map->map_data);
-		handle_map_error(map, EXIT_INVALID_MAP);
-	}
-	set_point_colors(map, map->pt_array, map->colors, map->len);
+		handle_error(map, EXIT_MALLOC_FAIL);
+	set_map_points(map);
 	free(map->map_data);
-	close(fd);
+	set_point_colors(map, map->pt_array, map->colors, map->len);
 }

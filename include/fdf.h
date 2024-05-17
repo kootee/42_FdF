@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:53:26 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:21:06 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ typedef enum s_errorcode
 {
 	EXIT_CMD_COUNT_ERROR = 200,
 	EXIT_MALLOC_FAIL = 201,
-	EXIT_INVALID_MAP = 202
+	EXIT_INVALID_MAP_PTS = 202,
+	EXIT_INVALID_MAP_DIM = 203,
+	EXIT_OPEN_ERROR = 204,
+	EXIT_INVALID_FILE_NAME = 205,
+	EXIT_INVALID_MAP = 206
 }	t_errorcode;
 
 typedef enum s_coordinates
@@ -96,20 +100,22 @@ void	load_map(char *map_file_path, t_map *map);
 /* Map utilities */
 void	init_map(t_map *map);
 void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts);
-void	init_colors(t_map *map);
-void	set_point_colors(t_map *map, t_point *pts, t_colors clrs, int len);
 void	validate_point(char *str, t_map *map);
+void	set_uneven(int idx, int line_number, t_map *map);
+void	check_path(t_map *map, char *str);
 
 /* Draw */
-int		draw_map(t_fdf *fdf);
-int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
+void	draw_map(t_fdf *fdf, t_point *map_projection);
 void	line(t_fdf *fdf, t_point start, t_point end);
+int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
 
 /* Colour */
+void	init_colors(t_map *map);
+void	set_background(t_fdf *fdf, int32_t background);
+void	set_point_colors(t_map *map, t_point *pts, t_colors clrs, int len);
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha);
 int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
-void	set_background(t_fdf *fdf, int32_t background);
 
 /* Map modification/projection */
 void	project_and_modify_map(t_fdf *fdf, t_point *map_projection);
@@ -124,13 +130,13 @@ void	rot_z_axis(t_point *points, t_point *projection, float angle, int len);
 
 /* FDF utilities */
 bool	is_hexa_letter(char c);
-void	free_strs(char **strs);
-void	free_map_pts(t_point **pts);
 int		round_to_int(double n);
+int		get_endian(void);
+void	free_strs(char **strs);
+void	set_z_values(t_map *map, int idx);
 
 /* Error handling */
-void	handle_error(int errno);
-void	handle_map_error(t_map *map, int errno);
-void	handle_error_terminate_mlx(t_fdf *fdf, int errno);
+void	handle_error(t_map *map, int errno);
+void	error_terminate_mlx(t_fdf *fdf, int errno);
 
 #endif

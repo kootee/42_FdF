@@ -6,30 +6,28 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:47:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:20:27 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int32_t	set_hexcolor(char *str)
+void	set_z_values(t_map *map, int idx)
 {
-	int32_t	color;
-
-	while (*str != ',')
-		str++;
-	color = ft_atoi_base(str + 3, 16);
-	return (color);
+	if (map->dim.axis[Z] < map->pt_array[idx].axis[Z])
+		map->dim.axis[Z] = map->pt_array[idx].axis[Z];
+	if (map->pt_array[idx].axis[Z] < map->min_z)
+		map->min_z = map->pt_array[idx].axis[Z];
 }
 
-void	free_map_pts(t_point **pts)
+int	get_endian(void)
 {
-	while (pts)
-	{
-		free(*pts);
-		pts++;
-	}
-	free(pts);
+	int		endian;
+	int16_t	x;
+
+	x = 0x0001;
+	endian = (*((int8_t *)(&x)) == 0x01);
+	return (endian);
 }
 
 void	free_strs(char **strs)

@@ -6,20 +6,42 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:48:46 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:59:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	get_endian(void)
+void	init_colors(t_map *map)
 {
-	int		endian;
-	int16_t	x;
+	map->colors.background = LIGHTBLUE;
+	map->colors.bottom = WHITE;
+	map->colors.top = MAGENTA;
+}
 
-	x = 0x0001;
-	endian = (*((int8_t *)(&x)) == 0x01);
-	return (endian);
+void	set_point_colors(t_map *map, t_point *points, t_colors colors, int len)
+{
+	int	i;
+	int	z_len;
+
+	i = 0;
+	z_len = map->dim.axis[Z] - map->min_z;
+	while (i < len)
+	{
+		points[i].color = DEFAULT_COLOR;
+		if (points[i].hex_color > 0)
+		{
+			points[i].color = points[i].hex_color;
+		}
+		else if (points[i].axis[Z] == map->min_z)
+			points[i].color = colors.bottom;
+		else if (points[i].axis[Z] == map->dim.axis[Z])
+			points[i].color = colors.top;
+		else
+			points[i].color = gradient(colors.bottom, colors.top, \
+								z_len, z_len - points[i].axis[Z]);
+		i++;
+	}
 }
 
 int32_t	gradient(int start_color, int end_color, int len, int pixel)

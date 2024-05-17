@@ -6,11 +6,20 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:58:57 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:20:40 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	check_path(t_map *map, char *str)
+{
+	size_t	len;
+
+	len = ft_strlen(str);
+	if (ft_strncmp(&str[len - 4], ".fdf", 4) != 0)
+		handle_error(map, EXIT_INVALID_FILE_NAME);
+}
 
 void	init_map(t_map *map)
 {
@@ -40,38 +49,12 @@ void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts)
 	}
 }
 
-void	init_colors(t_map *map)
+void	set_uneven(int idx, int line_number, t_map *map)
 {
-	map->colors.background = LIGHTBLUE;
-	map->colors.bottom = WHITE;
-	map->colors.top = MAGENTA;
-}
-
-/* Add color to all the points, according to the Z position or given color */
-/* set the rest of the colors depending on the position according to Z */
-void	set_point_colors(t_map *map, t_point *points, t_colors colors, int len)
-{
-	int	i;
-	int	z_len;
-
-	i = 0;
-	z_len = map->dim.axis[Z] - map->min_z;
-	while (i < len)
-	{
-		points[i].color = DEFAULT_COLOR;
-		if (points[i].hex_color > 0)
-		{
-			points[i].color = points[i].hex_color;
-		}
-		else if (points[i].axis[Z] == map->min_z)
-			points[i].color = colors.bottom;
-		else if (points[i].axis[Z] == map->dim.axis[Z])
-			points[i].color = colors.top;
-		else
-			points[i].color = gradient(colors.bottom, colors.top, \
-								z_len, z_len - points[i].axis[Z]);
-		i++;
-	}
+	idx++;
+	map->pt_array[idx].axis[Z] = 80;
+	map->pt_array[idx].axis[X] = map->dim.axis[X];
+	map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;
 }
 
 void	validate_point(char *str, t_map *map)
@@ -81,10 +64,10 @@ void	validate_point(char *str, t_map *map)
 		if (ft_isalnum(*str) || *str == ',' || *str == '\n' || *str == '-')
 		{
 			if (*str > 'G' && *str < 'Z')
-				handle_map_error(map, EXIT_INVALID_MAP);
+				handle_error(map, EXIT_INVALID_MAP_PTS);
 		}
 		else
-			handle_map_error(map, EXIT_INVALID_MAP);
+			handle_error(map, EXIT_INVALID_MAP_PTS);
 		str++;
 	}
 }

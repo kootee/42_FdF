@@ -10,7 +10,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/fdf",
-			"args": ["maps/minimap.fdf"],
+			"args": ["maps/pylone.fdf"],
 			"stopAtEntry": true,
 			"cwd": "${workspaceFolder}", 
 			"environment": [],
