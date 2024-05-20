@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 12:12:32 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:16:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,18 @@ void	set_point_colors(t_map *map, t_point *points, t_colors colors)
 		{
 			points[i].color = points[i].hex_color;
 		}
-		else if (points[i].axis[Z] == map->min_z)
-			points[i].color = colors.bottom;
 		else if (points[i].axis[Z] == map->dim.axis[Z])
 			points[i].color = colors.top;
-		else
+		else if (points[i].axis[Z] == map->min_z && points[i].axis[Z] != 0)
+			points[i].color = colors.bottom;
+/* 		else if (points[i].axis[Z] == 0)
+			points[i].color = WHITE; */
+		else if (points[i].axis[Z] >= 0)
 			points[i].color = gradient(colors.bottom, colors.top, \
 								z_len, points[i].axis[Z]);
+		else
+			points[i].color = gradient(colors.bottom, WHITE, \
+								map->min_z, map->min_z - points[i].axis[Z]);
 		i++;
 	}
 }

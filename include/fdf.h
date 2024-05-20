@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 10:58:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:58:25 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@
 # include "libft.h"
 
 # define WIN_X	1080
-# define WIN_Y	1080
+# define WIN_Y	540
 # define WIN_MARGIN 50
 
 # define BLACK		0x000000
 # define WHITE		0xffffff
 # define MAGENTA	0xff0099
 # define LIGHTBLUE	0x87cefa
+# define ORANGE		0xffc100
+# define DARKORANGE	0xd75000
 
 # define DEFAULT_COLOR BLACK
 

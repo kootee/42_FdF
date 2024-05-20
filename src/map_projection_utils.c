@@ -6,11 +6,12 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:47:49 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 10:48:46 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:43:39 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
 static bool	is_inside_window(t_point *points, int len)
 {
@@ -59,7 +60,11 @@ void	fit_to_window(t_fdf *fdf, t_point *map_projection)
 	{
 		copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
 		project_and_modify_map(fdf, map_projection);
-		fdf->map.scale += 0.2;
+		if (fdf->map.len > 200000)
+			fdf->map.scale += 0.4;
+		else
+			fdf->map.scale += 0.2;
+		printf("scale is now %f\n", fdf->map.scale);
 	}
 }
 
