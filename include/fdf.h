@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 16:36:00 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:58:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	load_map(char *map_file_path, t_map *map);
 void	init_map(t_map *map);
 void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts);
 void	validate_point(char *str, t_map *map);
-void	set_uneven(int idx, int line_number, t_map *map, int i);
+void	set_uneven(int idx, int line_number, t_map *map);
 void	check_path(t_map *map, char *str);
 
 /* Draw */
@@ -112,7 +112,7 @@ int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
 /* Colour */
 void	init_colors(t_map *map);
 void	set_background(t_fdf *fdf, int32_t background);
-void	set_point_colors(t_map *map, t_point *pts, t_colors clrs, int len);
+void	set_point_colors(t_map *map, t_point *pts, t_colors clrs);
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha);
 int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);

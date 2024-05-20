@@ -6,11 +6,12 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 15:59:22 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:12:32 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
 void	init_colors(t_map *map)
 {
@@ -19,14 +20,14 @@ void	init_colors(t_map *map)
 	map->colors.top = MAGENTA;
 }
 
-void	set_point_colors(t_map *map, t_point *points, t_colors colors, int len)
+void	set_point_colors(t_map *map, t_point *points, t_colors colors)
 {
 	int	i;
 	int	z_len;
 
 	i = 0;
 	z_len = map->dim.axis[Z] - map->min_z;
-	while (i < len)
+	while (i < map->len)
 	{
 		points[i].color = DEFAULT_COLOR;
 		if (points[i].hex_color > 0)
@@ -39,7 +40,7 @@ void	set_point_colors(t_map *map, t_point *points, t_colors colors, int len)
 			points[i].color = colors.top;
 		else
 			points[i].color = gradient(colors.bottom, colors.top, \
-								z_len, z_len - points[i].axis[Z]);
+								z_len, points[i].axis[Z]);
 		i++;
 	}
 }

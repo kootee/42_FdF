@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 16:35:39 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:39:37 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	add_points(char *line, t_map *map, int line_number)
 		idx++;
 	}
 	if (i != map->dim.axis[X] && line_number != map->dim.axis[Y])
-		set_uneven(++idx, line_number, map, i);
+		set_uneven(++idx, line_number, map);
 	free_strs(pts);
 	return (EXIT_SUCCESS);
 }
@@ -140,5 +140,5 @@ void	load_map(char *map_file_path, t_map *map)
 		handle_error(map, EXIT_MALLOC_FAIL);
 	set_map_points(map);
 	free(map->map_data);
-	set_point_colors(map, map->pt_array, map->colors, map->len);
+	set_point_colors(map, map->pt_array, map->colors);
 }

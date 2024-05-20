@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:27 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:04:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	round_to_int(double n)
 	int	rounded;
 
 	rounded = (int)n;
-	if (n - rounded >= 0.5)
+	if (n - rounded >= .5)
 		rounded++;
 	return (rounded);
 }
