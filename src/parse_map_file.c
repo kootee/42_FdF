@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 11:39:37 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:46:25 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	add_points(char *line, t_map *map, int line_number)
 		i++;
 		idx++;
 	}
-	if (i != map->dim.axis[X] && line_number != map->dim.axis[Y])
+	if (i != map->dim.axis[X] && line_number != map->dim.axis[Y]
+		&& line_number != map->dim.axis[Y] - 1)
 		set_uneven(++idx, line_number, map);
 	free_strs(pts);
 	return (EXIT_SUCCESS);
@@ -83,14 +84,17 @@ static void	set_map_dimensions(t_map *map)
 		if (ft_isalnum(map->map_data[i]) && (map->map_data[i + 1] == '\0' \
 			|| map->map_data[i + 1] == ' ' || map->map_data[i + 1] == '\n'))
 			pt_count++;
-		if (map->map_data[i++] == '\n')
+		if (map->map_data[i] == '\n')
 		{
 			map->dim.axis[X] = pt_count;
-			++map->dim.axis[Y];
+			map->dim.axis[Y]++;
 			map->dim.axis[X] = pt_count;
 			pt_count = 0;
 		}
+		i++;
 	}
+	if (map->dim.axis[X] == 0)
+		map->dim.axis[X] = pt_count;
 	map->dim.axis[Y]++;
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
 }

@@ -10,7 +10,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/fdf",
-			"args": ["maps/elem-fract.fdf"],
+			"args": ["maps/minimap.fdf"],
 			"stopAtEntry": true,
 			"cwd": "${workspaceFolder}", 
 			"environment": [],

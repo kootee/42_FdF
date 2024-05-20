@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 08:52:57 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 14:09:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:58:16 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	handle_error(t_map *map, int errno)
 {
-	if (errno == EXIT_CMD_COUNT_ERROR)
-		ft_putstr_fd("Error: Invalid command count\n", STDERR_FILENO);
-	else if (errno == EXIT_OPEN_ERROR)
+	if (errno == EXIT_CMD_COUNT_ERROR || errno == EXIT_OPEN_ERROR \
+		|| errno == EXIT_INVALID_FILE_NAME)
+	{
 		ft_putstr_fd("Error: Invalid file\n", STDERR_FILENO);
+		exit(errno);
+	}
 	else if (errno == EXIT_INVALID_MAP)
 		ft_putstr_fd("Error: Invalid map\n", STDERR_FILENO);
 	else if (errno == EXIT_INVALID_MAP_DIM)

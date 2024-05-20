@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 13:16:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:30:45 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,38 @@ void	init_colors(t_map *map)
 {
 	map->colors.background = LIGHTBLUE;
 	map->colors.bottom = WHITE;
-	map->colors.top = MAGENTA;
+	map->colors.top = GREEN;
 }
 
 void	set_point_colors(t_map *map, t_point *points, t_colors colors)
 {
 	int	i;
 	int	z_len;
-
+	int z_max;
+	
 	i = 0;
+	z_max = (int)map->dim.axis[Z];
 	z_len = map->dim.axis[Z] - map->min_z;
 	while (i < map->len)
 	{
 		points[i].color = DEFAULT_COLOR;
 		if (points[i].hex_color > 0)
-		{
 			points[i].color = points[i].hex_color;
-		}
-		else if (points[i].axis[Z] == map->dim.axis[Z])
-			points[i].color = colors.top;
-		else if (points[i].axis[Z] == map->min_z && points[i].axis[Z] != 0)
-			points[i].color = colors.bottom;
-/* 		else if (points[i].axis[Z] == 0)
-			points[i].color = WHITE; */
-		else if (points[i].axis[Z] >= 0)
-			points[i].color = gradient(colors.bottom, colors.top, \
-								z_len, points[i].axis[Z]);
 		else
-			points[i].color = gradient(colors.bottom, WHITE, \
-								map->min_z, map->min_z - points[i].axis[Z]);
+		{
+			if (points[i].axis[Z] == map->dim.axis[Z])
+				points[i].color = colors.top;
+			else if (points[i].axis[Z] == 0)
+				points[i].color = WHITE;
+			else if (points[i].axis[Z] == map->min_z && map->min_z != 0)
+				points[i].color = colors.bottom;
+			else if (points[i].axis[Z] > 0)
+				points[i].color = gradient(WHITE, colors.top, \
+									(int)map->dim.axis[Z], points[i].axis[Z]);
+			else
+				points[i].color = gradient(colors.bottom, WHITE, \
+									-map->min_z, - (map->min_z - points[i].axis[Z]));
+		}
 		i++;
 	}
 }
