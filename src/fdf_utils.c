@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 10:21:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:15:35 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_strs(char **strs)
 	}
 	free(strs);
 }
+
 bool	is_valid_pixel(t_point *point)
 {
 	if (point->axis[X] < 0 || point->axis[X] > WIN_X)

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 08:52:57 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 13:33:07 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:15:03 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	handle_error(t_map *map, int errno)
 	else if (errno == EXIT_INVALID_MAP_PTS)
 	{
 		free(map->map_data);
-		free(map->pt_array);		
+		free(map->pt_array);
 		ft_putstr_fd("Error: Invalid map points\n", STDERR_FILENO);
 	}
 	else

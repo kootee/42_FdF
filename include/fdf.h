@@ -6,15 +6,13 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 13:52:30 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:23:44 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include <stdbool.h>
-# include <string.h>
 # include <fcntl.h>
 # include <math.h>
 # include "libft.h"
@@ -109,7 +107,6 @@ void	check_path(t_map *map, char *str);
 /* Draw */
 void	draw_map(t_fdf *fdf, t_point *map_projection);
 void	line(t_fdf *fdf, t_point start, t_point end);
-void	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
 
 /* Colour */
 void	init_colors(t_map *map);
@@ -132,7 +129,6 @@ void	rot_y_axis(t_point *points, t_point *projection, float angle, int len);
 void	rot_z_axis(t_point *points, t_point *projection, float angle, int len);
 
 /* FDF utilities */
-bool	is_hexa_letter(char c);
 int		get_endian(void);
 void	free_strs(char **strs);
 void	set_z_values(t_map *map, int idx);

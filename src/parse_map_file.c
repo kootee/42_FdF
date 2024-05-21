@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 13:30:34 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:16:43 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	set_map_dimensions(t_map *map)
 		if (map->map_data[i] == '\n')
 		{
 			if (map->dim.axis[X] != 0 && (pt_count > map->dim.axis[X] + 1
-				|| pt_count < map->dim.axis[X] - 1))
+					|| pt_count < map->dim.axis[X] - 1))
 				handle_error(map, EXIT_INVALID_MAP_DIM);
 			map->dim.axis[Y]++;
 			map->dim.axis[X] = pt_count;

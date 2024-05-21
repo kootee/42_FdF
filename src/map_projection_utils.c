@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:47:49 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 13:44:07 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:15:51 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	scale_z_points(t_point *pts, t_map *map)
 		i++;
 	}
 }
+
 void	center_map(t_point *points, t_point origo, int len)
 {
 	int	i;
