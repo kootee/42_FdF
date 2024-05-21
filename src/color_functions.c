@@ -6,71 +6,66 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 19:30:45 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 09:22:57 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
 
 void	init_colors(t_map *map)
 {
 	map->colors.background = LIGHTBLUE;
-	map->colors.bottom = WHITE;
-	map->colors.top = GREEN;
+	map->colors.bottom = GREEN;
+	map->colors.top = MAGENTA;
+	map->colors.base = WHITE;
 }
 
 void	set_point_colors(t_map *map, t_point *points, t_colors colors)
 {
 	int	i;
 	int	z_len;
-	int z_max;
 	
 	i = 0;
-	z_max = (int)map->dim.axis[Z];
 	z_len = map->dim.axis[Z] - map->min_z;
 	while (i < map->len)
 	{
 		points[i].color = DEFAULT_COLOR;
 		if (points[i].hex_color > 0)
 			points[i].color = points[i].hex_color;
+		else if (points[i].axis[Z] == map->dim.axis[Z])
+			points[i].color = colors.top;
+		else if (points[i].axis[Z] == 0)
+			points[i].color = colors.base;
+		else if (points[i].axis[Z] == map->min_z && map->min_z != 0)
+			points[i].color = colors.bottom;
+		else if (points[i].axis[Z] > 0)
+			points[i].color = gradient(colors.base, colors.top, \
+							(int)map->dim.axis[Z], points[i].axis[Z]);
 		else
-		{
-			if (points[i].axis[Z] == map->dim.axis[Z])
-				points[i].color = colors.top;
-			else if (points[i].axis[Z] == 0)
-				points[i].color = WHITE;
-			else if (points[i].axis[Z] == map->min_z && map->min_z != 0)
-				points[i].color = colors.bottom;
-			else if (points[i].axis[Z] > 0)
-				points[i].color = gradient(WHITE, colors.top, \
-									(int)map->dim.axis[Z], points[i].axis[Z]);
-			else
-				points[i].color = gradient(colors.bottom, WHITE, \
-									-map->min_z, - (map->min_z - points[i].axis[Z]));
-		}
+			points[i].color = gradient(colors.bottom, colors.base, \
+							-map->min_z, - (map->min_z - points[i].axis[Z]));	
 		i++;
 	}
 }
 
 int32_t	gradient(int start_color, int end_color, int len, int pixel)
 {
-	double	rgb_increment[3];
+	float	rgb_increment[3];
 	int		new_color[3];
 	int		pixel_color;
 
-	rgb_increment[R] = (double)((end_color >> 16) - \
-						(start_color >> 16)) / (double)len;
-	rgb_increment[G] = (double)(((end_color >> 8) & 0xFF) - \
-						((start_color >> 8) & 0xFF)) / (double)len;
-	rgb_increment[B] = (double)((end_color & 0xFF) - \
-						(start_color & 0xFF)) / (double)len;
+	rgb_increment[R] = (float)((end_color >> 16) - \
+						(start_color >> 16)) / (float)len;
+	rgb_increment[G] = (float)(((end_color >> 8) & 0xFF) - \
+						((start_color >> 8) & 0xFF)) / (float)len;
+	rgb_increment[B] = (float)((end_color & 0xFF) - \
+						(start_color & 0xFF)) / (float)len;
 	new_color[R] = ((start_color >> 16) & 0xFF) + \
-					round_to_int(pixel * rgb_increment[R]);
+					(int)round(pixel * rgb_increment[R]);
 	new_color[G] = ((start_color >> 8) & 0xFF) + \
-					round_to_int(pixel * rgb_increment[G]);
+					(int)round(pixel * rgb_increment[G]);
 	new_color[B] = (start_color & 0xFF) + \
-					round_to_int(pixel * rgb_increment[B]);
+					(int)round(pixel * rgb_increment[B]);
 	pixel_color = (new_color[R] << 16) + (new_color[G] << 8) + new_color[B];
 	return (pixel_color);
 }

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 19:31:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 09:25:01 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@
 # define WHITE		0xffffff
 # define MAGENTA	0xff0099
 # define LIGHTBLUE	0x87cefa
-# define ORANGE		0xffc100
-# define DARKORANGE	0xd75000
-# define GREEN		0x00ff2e
+# define GREEN		0x00ff00
 
 # define DEFAULT_COLOR BLACK
 
@@ -69,6 +67,7 @@ typedef struct s_colors
 	int32_t	top;
 	int32_t	bottom;
 	int32_t	background;
+	int32_t	base;
 }	t_colors;
 
 typedef struct s_point
@@ -133,10 +132,10 @@ void	rot_z_axis(t_point *points, t_point *projection, float angle, int len);
 
 /* FDF utilities */
 bool	is_hexa_letter(char c);
-int		round_to_int(double n);
 int		get_endian(void);
 void	free_strs(char **strs);
 void	set_z_values(t_map *map, int idx);
+bool	is_valid_pixel(t_point *point);
 
 /* Error handling */
 void	handle_error(t_map *map, int errno);

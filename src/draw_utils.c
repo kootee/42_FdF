@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:20 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 11:37:49 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 09:28:44 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	line(t_fdf *fdf, t_point start, t_point end)
 	int		line;
 	int		len;
 
+	if (!is_valid_pixel(&start) && !is_valid_pixel(&end))
+		return ;
 	delta_v.axis[X] = end.axis[X] - start.axis[X];
 	delta_v.axis[Y] = end.axis[Y] - start.axis[Y];
 	line = sqrt((delta_v.axis[X] * delta_v.axis[X]) + \

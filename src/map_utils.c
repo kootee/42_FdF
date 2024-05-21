@@ -6,12 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:00:53 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 19:25:21 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 08:59:57 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
 
 void	check_path(t_map *map, char *str)
 {
@@ -52,7 +51,6 @@ void	copy_map_points(t_point *src_pts, int len, t_point *dest_pts)
 
 void	set_uneven(int idx, int line_number, t_map *map)
 {
-	printf("was uneven idx is %d\n", idx);
 	map->pt_array[idx].axis[Z] = 0;
 	map->pt_array[idx].axis[X] = map->dim.axis[X];
 	map->pt_array[idx].axis[Y] = line_number - map->dim.axis[Y] / 2;

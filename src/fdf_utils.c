@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:33:16 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 12:04:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 09:28:09 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,12 @@ void	free_strs(char **strs)
 	}
 	free(strs);
 }
-
-int	round_to_int(double n)
+bool	is_valid_pixel(t_point *point)
 {
-	int	rounded;
-
-	rounded = (int)n;
-	if (n - rounded >= .5)
-		rounded++;
-	return (rounded);
+	if (point->axis[X] < 0 || point->axis[X] > WIN_X)
+		return (false);
+	if (point->axis[Y] < 0 || point->axis[Y] > WIN_Y)
+		return (false);
+	else
+		return (true);
 }

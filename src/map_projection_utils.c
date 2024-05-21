@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:47:49 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 12:43:39 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 08:51:34 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	fit_to_window(t_fdf *fdf, t_point *map_projection)
 		copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
 		project_and_modify_map(fdf, map_projection);
 		if (fdf->map.len > 200000)
-			fdf->map.scale += 0.4;
+			fdf->map.scale = 2;
 		else
 			fdf->map.scale += 0.2;
 		printf("scale is now %f\n", fdf->map.scale);
