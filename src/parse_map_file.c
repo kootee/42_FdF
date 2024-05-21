@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/20 19:46:25 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:32:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ static int	add_points(char *line, t_map *map, int line_number)
 		i++;
 		idx++;
 	}
-	if (i != map->dim.axis[X] && line_number != map->dim.axis[Y]
-		&& line_number != map->dim.axis[Y] - 1)
+	if (i != map->dim.axis[X] && line_number != map->dim.axis[Y])
 		set_uneven(++idx, line_number, map);
 	free_strs(pts);
 	return (EXIT_SUCCESS);
@@ -75,9 +74,9 @@ static void	set_map_dimensions(t_map *map)
 	int	pt_count;
 	int	i;
 
-	i = 0;
+	i = -1;
 	pt_count = 0;
-	while (map->map_data[i])
+	while (map->map_data[++i])
 	{
 		if (map->map_data[i] == '\n' && map->map_data[i + 1] == '\0')
 			break ;
@@ -86,17 +85,17 @@ static void	set_map_dimensions(t_map *map)
 			pt_count++;
 		if (map->map_data[i] == '\n')
 		{
-			map->dim.axis[X] = pt_count;
+			if (map->dim.axis[X] != 0 && (pt_count > map->dim.axis[X] + 1
+				|| pt_count < map->dim.axis[X] - 1))
+				handle_error(map, EXIT_INVALID_MAP_DIM);
 			map->dim.axis[Y]++;
 			map->dim.axis[X] = pt_count;
 			pt_count = 0;
 		}
-		i++;
 	}
 	if (map->dim.axis[X] == 0)
 		map->dim.axis[X] = pt_count;
 	map->dim.axis[Y]++;
-	map->len = map->dim.axis[X] * map->dim.axis[Y];
 }
 
 static char	*read_map_data(t_map *map, int fd)
@@ -139,6 +138,7 @@ void	load_map(char *map_file_path, t_map *map)
 	map->map_data = read_map_data(map, fd);
 	close(fd);
 	set_map_dimensions(map);
+	map->len = map->dim.axis[X] * map->dim.axis[Y];
 	map->pt_array = ft_calloc(map->len, sizeof(t_point));
 	if (map->pt_array == NULL)
 		handle_error(map, EXIT_MALLOC_FAIL);

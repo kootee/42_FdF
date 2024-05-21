@@ -6,19 +6,19 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 09:25:01 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:24:16 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include <string.h>
-# include <math.h>
-# include <fcntl.h>
 # include <stdbool.h>
-# include "MLX42.h"
+# include <string.h>
+# include <fcntl.h>
+# include <math.h>
 # include "libft.h"
+# include "MLX42.h"
 
 # define WIN_X	1080
 # define WIN_Y	1080
