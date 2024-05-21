@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 12:19:15 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 09:22:57 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:40:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	set_point_colors(t_map *map, t_point *points, t_colors colors)
 {
 	int	i;
 	int	z_len;
-	
+
 	i = 0;
 	z_len = map->dim.axis[Z] - map->min_z;
 	while (i < map->len)
@@ -43,7 +43,7 @@ void	set_point_colors(t_map *map, t_point *points, t_colors colors)
 							(int)map->dim.axis[Z], points[i].axis[Z]);
 		else
 			points[i].color = gradient(colors.bottom, colors.base, \
-							-map->min_z, - (map->min_z - points[i].axis[Z]));	
+							- map->min_z, - (map->min_z - points[i].axis[Z]));
 		i++;
 	}
 }
@@ -54,8 +54,8 @@ int32_t	gradient(int start_color, int end_color, int len, int pixel)
 	int		new_color[3];
 	int		pixel_color;
 
-	rgb_increment[R] = (float)((end_color >> 16) - \
-						(start_color >> 16)) / (float)len;
+	rgb_increment[R] = (float)((end_color >> 16) - (start_color >> 16)) \
+						/ (float)len;
 	rgb_increment[G] = (float)(((end_color >> 8) & 0xFF) - \
 						((start_color >> 8) & 0xFF)) / (float)len;
 	rgb_increment[B] = (float)((end_color & 0xFF) - \

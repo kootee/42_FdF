@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 10:32:34 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/17 13:36:21 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:55:20 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	main(int argc, char **argv)
 	load_map(argv[1], &fdf.map);
 	init_fdf(&fdf);
 	map_projection = ft_calloc(fdf.map.len, sizeof(t_point));
+	if (map_projection == NULL)
+		error_terminate_mlx(&fdf, EXIT_MALLOC_FAIL);
 	draw_map(&fdf, map_projection);
 	mlx_loop_hook(fdf.mlx, ft_hook, &fdf);
 	mlx_loop(fdf.mlx);

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 10:24:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:52:30 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 
 # define DEFAULT_COLOR BLACK
 
+# define Z_SCALE	20
 # define X_ISOMETRIC_ANG 30
 # define Y_ISOMETRIC_ANG 330
 # define Z_ISOMETRIC_ANG 30
@@ -43,8 +44,7 @@ typedef enum s_errorcode
 	EXIT_INVALID_MAP_PTS = 202,
 	EXIT_INVALID_MAP_DIM = 203,
 	EXIT_OPEN_ERROR = 204,
-	EXIT_INVALID_FILE_NAME = 205,
-	EXIT_INVALID_MAP = 206
+	EXIT_INVALID_FILE_NAME = 205
 }	t_errorcode;
 
 typedef enum s_coordinates
@@ -109,21 +109,22 @@ void	check_path(t_map *map, char *str);
 /* Draw */
 void	draw_map(t_fdf *fdf, t_point *map_projection);
 void	line(t_fdf *fdf, t_point start, t_point end);
-int		ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
+void	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color);
 
 /* Colour */
 void	init_colors(t_map *map);
 void	set_background(t_fdf *fdf, int32_t background);
 void	set_point_colors(t_map *map, t_point *pts, t_colors clrs);
 void	set_pixel_color(uint8_t *pixel_buffer, int color, int alpha);
-int32_t	set_hexcolor(char *str);
 int32_t	gradient(int start_colour, int end_colour, int len, int pixel);
+int32_t	set_hexcolor(char *str);
 
 /* Map modification/projection */
 void	project_and_modify_map(t_fdf *fdf, t_point *map_projection);
 void	scale_z_points(t_point *pts, t_map *map);
 void	scale_points(t_point *pt_array, float scale, int len);
 void	fit_to_window(t_fdf *fdf, t_point *map_projection);
+void	center_map(t_point *points, t_point origo, int len);
 
 /* Matrix multiplications */
 void	rot_x_axis(t_point *points, t_point *projection, float angle, int len);

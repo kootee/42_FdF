@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:47:49 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 10:08:01 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:44:07 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,8 @@ static bool	is_inside_window(t_point *points, int len)
 	return (true);
 }
 
-void	center_to_window(t_point *points, t_map *map)
-{
-	int	i;
-	int	x_offset;
-	int	y_offset;
-
-	i = 0;
-	x_offset = (WIN_X / 2);
-	y_offset = (WIN_Y / 2);
-	while (i < map->len)
-	{
-		points[i].axis[X] = points[i].axis[X] + x_offset;
-		points[i].axis[Y] = points[i].axis[Y] + y_offset;
-		i++;
-	}
-}
-
 void	fit_to_window(t_fdf *fdf, t_point *map_projection)
 {
-	fdf->map.origo.axis[X] = WIN_X / 2;
-	fdf->map.origo.axis[Y] = WIN_Y / 2;
-	fdf->map.origo.axis[Z] = 0;
-	fdf->map.scale = 1;
 	copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
 	project_and_modify_map(fdf, map_projection);
 	while (is_inside_window(map_projection, fdf->map.len))
@@ -73,10 +52,23 @@ void	scale_z_points(t_point *pts, t_map *map)
 	divisor = 1;
 	proportion = map->dim.axis[Z] / map->dim.axis[X];
 	if (proportion > 0.5)
-		divisor = proportion * 20;
+		divisor = proportion * Z_SCALE;
 	while (i < map->len)
 	{
 		pts[i].axis[Z] = pts[i].axis[Z] / divisor;
+		i++;
+	}
+}
+void	center_map(t_point *points, t_point origo, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		points[i].axis[X] = points[i].axis[X] + origo.axis[X];
+		points[i].axis[Y] = points[i].axis[Y] + origo.axis[Y];
+		points[i].axis[Z] = points[i].axis[Z] + origo.axis[Z];
 		i++;
 	}
 }

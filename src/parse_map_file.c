@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:25:33 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 10:32:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:30:34 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	add_points(char *line, t_map *map, int line_number)
 
 	pts = ft_split(line, ' ');
 	if (pts == NULL)
-		return (EXIT_FAILURE);
+		return (EXIT_MALLOC_FAIL);
 	i = 0;
 	while (pts[i] && pts[i][0] != '\n')
 	{
@@ -51,7 +51,7 @@ static void	set_map_points(t_map *map)
 	i = 0;
 	line_count = 0;
 	if (map->map_data[i] == '\0')
-		handle_error(map, EXIT_INVALID_MAP);
+		handle_error(map, EXIT_INVALID_MAP_PTS);
 	while (++i)
 	{
 		if (map->map_data[i] == '\n' || map->map_data[i] == '\0')
@@ -136,13 +136,14 @@ void	load_map(char *map_file_path, t_map *map)
 	if (fd < 0)
 		handle_error(map, EXIT_OPEN_ERROR);
 	map->map_data = read_map_data(map, fd);
-	close(fd);
 	set_map_dimensions(map);
 	map->len = map->dim.axis[X] * map->dim.axis[Y];
 	map->pt_array = ft_calloc(map->len, sizeof(t_point));
 	if (map->pt_array == NULL)
 		handle_error(map, EXIT_MALLOC_FAIL);
 	set_map_points(map);
-	free(map->map_data);
 	set_point_colors(map, map->pt_array, map->colors);
+	free(map->map_data);
+	map->map_data = NULL;
+	close(fd);
 }

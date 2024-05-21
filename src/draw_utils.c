@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:20 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 09:34:49 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:52:51 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,14 @@ void	line(t_fdf *fdf, t_point start, t_point end)
 	}
 }
 
-int	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color)
+void	ft_putpixel(mlx_image_t *img, float x, float y, int32_t color)
 {
 	int	pixel;
 	int	alpha;
 
 	alpha = 0xFF;
-	if (x > WIN_X || y > WIN_X \
-		|| x < 0 || y < 0)
-		return (-1);
-	pixel = ((int)y * WIN_X * 4) + ((int)x * 4);
+	if (x > WIN_X || y > WIN_Y || x < 0 || y < 0)
+		return ;
+	pixel = ((int)round(y) * WIN_X * 4) + ((int)round(x) * 4);
 	set_pixel_color(&img->pixels[pixel], color, alpha);
-	return (0);
 }

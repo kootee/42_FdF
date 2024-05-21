@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:04:14 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/05/21 10:06:00 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:46:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	draw_point_wire(t_point *point, t_fdf *fdf, int current_line)
 	int	map_height;
 
 	i = 0;
-	map_width = (int)fdf->map.dim.axis[X];
-	map_height = (int)fdf->map.dim.axis[Y];
+	map_width = (int)round(fdf->map.dim.axis[X]);
+	map_height = (int)round(fdf->map.dim.axis[Y]);
 	while (i < map_width)
 	{
 		x_end = i + 1;
@@ -49,20 +49,6 @@ static void	draw_wires(t_fdf *fdf, t_point *map_projection)
 	}
 }
 
-static void	center_map(t_point *points, t_point origo, int len)
-{
-	int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		points[i].axis[X] = points[i].axis[X] + origo.axis[X];
-		points[i].axis[Y] = points[i].axis[Y] + origo.axis[Y];
-		points[i].axis[Z] = points[i].axis[Z] + origo.axis[Z];
-		i++;
-	}
-}
-
 void	project_and_modify_map(t_fdf *fdf, t_point *map_projection)
 {
 	scale_z_points(map_projection, &fdf->map);
@@ -75,11 +61,6 @@ void	project_and_modify_map(t_fdf *fdf, t_point *map_projection)
 
 void	draw_map(t_fdf *fdf, t_point *map_projection)
 {
-	int		i;
-
-	i = 0;
-	if (map_projection == NULL)
-		error_terminate_mlx(fdf, EXIT_MALLOC_FAIL);
 	copy_map_points(fdf->map.pt_array, fdf->map.len, map_projection);
 	project_and_modify_map(fdf, map_projection);
 	set_background(fdf, fdf->map.colors.background);
